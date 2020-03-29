@@ -11,9 +11,10 @@ Reasons of that choice are next:
 3) Full control of database - game communication. Game can be configured to fetch data from a local database where processed data will be stored
 
 ### Stack of technologies
-Following technologies will be used:
-1) Linux OS (Centos 7) where game connector, game server, server side solution and database will be deployed
-2) SQF language  which allow to get data from database and apply it in game logic
+Following tech stack is used:
+1) MySQL rdbms
+2) Arma 3 dedi server
+3) ExtDB3 connector
 
 ## How to get started
 
