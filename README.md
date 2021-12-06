@@ -1,4 +1,4 @@
-# B2G Game Connector
+# H2G Game Connector
 
 ## Project status
 The project has proof of concept state now.
