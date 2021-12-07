@@ -2,7 +2,13 @@ Private ["_i","_split","_unit","_yield"];
 
 _unit = _this;
 
-if (_unit == leader (group _unit)) exitWith {"Leader"};
+if (_unit == leader (group _unit)) exitWith {
+    if(isPlayer _unit) then {
+        name _unit
+    } else {
+        "Leader"
+    }
+};
 
 _split = toArray(str _unit);
 
@@ -16,6 +22,6 @@ if (_find != -1) then {
 	};
 };
 
-if (count _yield == 0) exitWith {"0"};
+if (count _yield == 0) exitWith {''};
 
 toString(_yield)

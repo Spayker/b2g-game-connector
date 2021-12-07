@@ -1,6 +1,8 @@
 params ["_object", "_side"];
 private ["_height", "_markerName", "_markerText", "_currentUpgrades"];
 
+waitUntil {!isNil "unitMarker"};
+
 unitMarker = unitMarker + 1;
 _markerName = Format ["unitMarker%1",unitMarker];
 
@@ -18,6 +20,8 @@ if((_currentUpgrades # WF_UP_AAR1) > 0 ) then {
 _markerName setMarkerTextLocal _markerText;
 
 _height = missionNamespace getVariable "WF_C_STRUCTURES_ANTIAIRRADAR_DETECTION";
+
+waitUntil {!isNil "antiAirRadarInRange"};
 
 while {alive _object && !(isNull _object)} do {
 	if (antiAirRadarInRange) then {

@@ -7,7 +7,7 @@ if (typeName _sideId == "SIDE") then {_sideId = (_sideId) call WFCO_FNC_GetSideI
 if (_special == "FLY") then {
     _vehicle = createVehicle [_type, _position, [], 7, _special];
 } else {
-    _vehicle = createVehicle [_type, _position, [], 10, _special];
+    _vehicle = createVehicle [_type, [_position # 0, _position # 1, 0.5], [], 10, _special];
     _vehicle removeAllEventHandlers "HandleDamage";
     _vehicleHandleDamageEventHandler = _vehicle addEventHandler ["HandleDamage", {false}];
     [_vehicle, _vehicleHandleDamageEventHandler]  spawn {
@@ -15,8 +15,8 @@ if (_special == "FLY") then {
         _vehicle allowDamage false;
         sleep 15;
         _vehicle removeEventHandler ["HandleDamage", _eventHandler];
-        _vehicle allowDamage true
-    };
+        _vehicle allowDamage true;
+    }
 };
 
 _vehicle setVectorUp surfaceNormal position _vehicle;
@@ -30,12 +30,6 @@ for "_x" from 0 to ((count WF_C_AIR_VEHICLE_TO_REQUIP) - 1) do
 	if ((typeOf _vehicle) in _currentElement || _description in _currentElement) exitWith {		
 		[_vehicle, _currentElement # 1] call WFCO_FNC_Requip_AIR_VEH;
 	};	
-};
-
-if (_vehicle isKindOf "Plane") then {
-	_vehicle removeWeaponGlobal "Laserdesignator";
-	_vehicle removeWeaponGlobal "Laserdesignator_mounted";
-	_vehicle removeWeaponGlobal "Laserdesignator_pilotCamera";
 };
 
 if (_special == "FLY") then {

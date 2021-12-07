@@ -10,29 +10,9 @@ _txt = "";
 _colorBlue = [0,0,0.7,0.6];
 _colorGreen = [0,0.7,0,0.6];
 _colorRed = [0.7,0,0,0.6];
-_colorBlack = [0,0,0,0.6];
+_colorCiv = [0.4,0,0.5,1];
 
-if(WF_C_PARAMETER_COLORATION == 1) then {
-_colorEnemy =_colorRed;
-	if (side player == west) then {
-_colorResistance =_colorBlue;
-		_colorFriendly = _colorBlue;
-		_colorEnemy = _colorRed;
-	} else {
-		_colorFriendly = _colorRed;
-		_colorEnemy = _colorBlue;
-	};		
-} else {
-	_colorFriendly = _colorGreen;
-_colorEnemy = _colorRed;
-};
-	
-if(WF_C_PARAMETER_COLORATION == 1) then {
 	_colorResistance = _colorGreen;
-} else {
-	_colorResistance = _colorBlue;
-};
-
 _ui_bg = [0,0,0,0.7];
 _update = false;
 
@@ -57,7 +37,7 @@ while {!WF_GameOver} do {
 		if (!isNull _camp) then {
 			if (!isObjectHidden _camp) then {
 				_sideID = _camp getVariable "sideID";
-				_curSV = _camp getVariable "supplyValue";
+				_curSV = _maxSV;
 				if (_lastCheck == "Town") then {_delay = 0};
 				_txt = "";
 				_lastCheck = "Camp"
@@ -69,7 +49,9 @@ while {!WF_GameOver} do {
 		    if!(isNil '_townSpecialities') then {
 		         if(WF_C_MILITARY_BASE in (_townSpecialities)) then { _hasSuppluySpeciality = false };
 
-		         if(WF_C_RADAR in (_townSpecialities)) then { _hasSuppluySpeciality = false };
+		         if(WF_C_AIR_BASE in (_townSpecialities)) then { _hasSuppluySpeciality = false };
+
+		         if(WF_C_PORT in (_townSpecialities)) then { _hasSuppluySpeciality = false };
 
                  if(WF_C_MINE in (_townSpecialities)) then { _hasSuppluySpeciality = false }
 			};
@@ -89,8 +71,10 @@ while {!WF_GameOver} do {
 	
 			_barColor = _colorResistance;
 			
-			if ((_sideID == WESTID)&&(sideID == WESTID) || (_sideID == EASTID)&&(sideID == EASTID)) then {_barColor = _colorFriendly}; //--- Green
-			if ((_sideID == WESTID)&&(sideID == EASTID) || (_sideID == EASTID)&&(sideID == WESTID)) then {_barColor = _colorEnemy};
+			if(_sideID == WF_C_WEST_ID) then { _barColor = _colorBlue };
+			if(_sideID == WF_C_EAST_ID) then { _barColor = _colorRed };
+			if(_sideID == WF_C_GUER_ID) then { _barColor = _colorGreen };
+			if(_sideID == WF_C_CIV_ID) then { _barColor = _colorCiv };
 
 			_control = (uiNamespace getVariable "wf_title_capture") displayCtrl 601001;
 			_control ctrlShow true;

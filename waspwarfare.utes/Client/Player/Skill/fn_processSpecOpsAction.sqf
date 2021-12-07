@@ -4,7 +4,7 @@
 */
 private ['_min','_ran','_vehicle','_vehicles','_forbiddenVehs','_z'];
 
-_vehicles = player nearEntities [["Car","Motorcycle","Tank","Ship","Air"],5];
+_vehicles = player nearEntities [WF_C_CAR_MOTO_SHIP_TANK_AIR_KINDS,5];
 if (count _vehicles < 1) exitWith {};
 
 if (isNil "WF_SK_V_LockpickChance") then {
@@ -27,7 +27,7 @@ _forbiddenVehs = [];
 } forEach ["Light", "Heavy"];
 
 if((typeOf _vehicle) in _forbiddenVehs) exitWith {
-    hint (parseText(localize "STR_WF_INFO_Lockpick_Forbidden"));
+    [format["%1", localize "STR_WF_INFO_Lockpick_Forbidden"]] spawn WFCL_fnc_handleMessage;
 };
 
 if (locked _vehicle == 0) exitWith {};
@@ -54,7 +54,7 @@ if (_ran >= _min) then {
 	if (WF_SK_V_LockpickChance > -51) then {WF_SK_V_LockpickChance = WF_SK_V_LockpickChance - 1};
 	[_vehicle, false] remoteExecCall ["WFSE_fnc_RequestVehicleLock",2];
 
-	hint (parseText(localize "STR_WF_INFO_Lockpick_Succeed"));
+	[format["%1", localize "STR_WF_INFO_Lockpick_Succeed"]] spawn WFCL_fnc_handleMessage
 } else {
-	hint (parseText(localize "STR_WF_INFO_Lockpick_Failed"));
-};
+	[format["%1", localize "STR_WF_INFO_Lockpick_Failed"]] spawn WFCL_fnc_handleMessage
+}

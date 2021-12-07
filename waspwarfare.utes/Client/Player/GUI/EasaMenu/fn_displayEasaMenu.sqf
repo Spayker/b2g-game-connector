@@ -1,6 +1,11 @@
 WF_MenuAction = -1;
 
 _veh = vehicle player;
+if (_veh == player) then {
+    _playerUav = getConnectedUAV player;
+    if(!isNull _playerUav) then { _veh = _playerUav }
+};
+
 _type = typeOf (vehicle player);
 _pylons = [];
 _rearmPrice = 0;
@@ -50,7 +55,7 @@ private _allPylons = "true" configClasses (
 	_ix = _ix + 1;
 } foreach _allPylons;
 
-hint parseText(localize 'STR_WF_INFO_EASA_HELP');
+[format ["%1", localize 'STR_WF_INFO_EASA_HELP']] spawn WFCL_fnc_handleMessage;
 	
 lbAdd[230035, "ON"];
 lbAdd[230035, "OFF"];
@@ -234,7 +239,7 @@ while {alive player && dialog} do {
 		ctrlSetText [230006,"$" + str(round(_rearmPrice / 2))];		
 		
 		if(_trysell_message) then {
-			hint parseText(localize 'STR_WF_EASA_TRYSELL_MESSAGE');
+			[format["%1", localize 'STR_WF_EASA_TRYSELL_MESSAGE']] spawn WFCL_fnc_handleMessage
 		};		
 	};
 	
@@ -261,6 +266,6 @@ while {alive player && dialog} do {
 		-(round(_rearmPrice / 2)) Call WFCL_FNC_ChangePlayerFunds;		
 		
 		_veh setVariable ["_pylons", nil]; 
-		[_veh, side player] Spawn WFCO_FNC_RearmVehicle;
+		[_veh] Spawn WFCO_FNC_RearmVehicle;
 	};
 };

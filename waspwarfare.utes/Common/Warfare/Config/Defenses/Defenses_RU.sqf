@@ -32,15 +32,15 @@ _o pushBack 600;
 _t pushBack "Defense";
 _k pushBack "GL";
 
-_c pushBack 'CUP_O_Metis_RU';
+_c pushBack 'CUP_O_Kornet_RU';
 _n pushBack '';
-_o pushBack 650;
+_o pushBack 2000;
 _t pushBack "Defense";
 _k pushBack "AT";
 
-_c pushBack 'O_static_AA_F';
+_c pushBack 'CUP_O_Igla_AA_pod_RU';
 _n pushBack '';
-_o pushBack 700;
+_o pushBack 800;
 _t pushBack "Defense";
 _k pushBack "AA";
 
@@ -57,7 +57,7 @@ _t pushBack "Defense";
 _k pushBack "Artillery";
 
 //--- Defenses management for towns.
-if (isServer) then {[_side, _c, _k] Call Compile preprocessFile "Common\Warfare\Config\Config_Defenses_Towns.sqf"};
+if (isServer || isHeadLessClient) then {[_side, _c, _k] Call Compile preprocessFile "Common\Warfare\Config\Config_Defenses_Towns.sqf"};
 
 //--- Fortitications and rest.
 

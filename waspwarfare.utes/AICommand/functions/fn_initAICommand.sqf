@@ -19,6 +19,7 @@
 
 // Prevent init from running twice
 if(!isNil "AIC_INIT") exitWith {}; 
+if(isServer) exitWith {};
 AIC_INIT = true;
 
 params [["_autoConfigureCommanders",true]];
@@ -34,11 +35,12 @@ params [["_autoConfigureCommanders",true]];
 [] call AIC_fnc_eventHandlerManager;
 
 AIC_INIT_STARTUP_SCRIPTS_EXECUTED = true;
+AIC_INIT_REPORT_KINDS = ["Wheeled_APC","Tracked_APC","Car","Tank","Helicopter","Plane","Ship","StaticCannon","StaticMortar"];
 
-if(!_autoConfigureCommanders || !isServer) exitWith {};
+if(!_autoConfigureCommanders) exitWith {};
 
 // Auto-configure commanders and groups under command
-
+if ((!hasInterface && !isDedicated)) then {
 private["_commandersModules","_groupsModules","_configurationMode"];
 
 _commandersModules = allMissionObjects "AdvancedAICommand_Commanders";
@@ -69,20 +71,21 @@ if(_configurationMode == "SPECIFIED_COMMANDERS_SPECIFIED_GROUPS") then {
 				} forEach ( synchronizedObjects _x );
 			};
 		} forEach (synchronizedObjects _x);
-		[_configurationMode, [_x, _commandControlId]] remoteExec ["AIC_fnc_initAICommandClient", 0, true];
+		[_configurationMode, [_x, _commandControlId]] remoteExec ["AIC_fnc_initAICommandClient", -2, true];
 		_commandControlIndex = _commandControlIndex + 1;
 	} forEach _commandersModules;
 };
 
 if(_configurationMode == "SPECIFIED_COMMANDERS_ALL_GROUPS") then {
 	{
-		[_configurationMode, [_x]] remoteExec ["AIC_fnc_initAICommandClient", 0, true];
+		[_configurationMode, [_x]] remoteExec ["AIC_fnc_initAICommandClient", -2, true];
 	} forEach _commandersModules;
 };
 
 if(_configurationMode == "ALL_COMMANDERS_ALL_GROUPS") then {
-	[_configurationMode] remoteExec ["AIC_fnc_initAICommandClient", 0, true];
+	[_configurationMode] remoteExec ["AIC_fnc_initAICommandClient", -2, true];
 };
+}
 
 
 

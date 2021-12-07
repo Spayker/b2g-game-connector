@@ -18,7 +18,6 @@ WF_Camo = false;
 
 //--- Global Init, first file called.
 isHostedServer = (isServer && !isDedicated);
-isHeadLessClient = false;
 //--- Headless Client?
 isHeadLessClient = (!hasInterface && !isDedicated);
 
@@ -65,11 +64,21 @@ if (isHostedServer || (!isHeadLessClient && !isDedicated)) then {
 	["INITIALIZATION", "Init.sqf: Client is not null..."] Call WFCO_FNC_LogContent;
 };
 
-setObjectViewDistance 1750; //--- Server & Client default View Distance.
-setViewDistance 4000;
+//--- Server & Client default View Distance.
+if(isServer) then {
+    setObjectViewDistance 500;
+    setViewDistance 500;
+} else {
+    if (isHeadLessClient) then {
+        setObjectViewDistance 1000;
+        setViewDistance 1000;
+    } else {
+        setObjectViewDistance 1750;
+        setViewDistance 3000;
 waitUntil {time > 0};
 enableEnvironment [false, true];
-
+    }
+};
 
 if (isMultiplayer) then {Call WFCO_fnc_initParameters}; //--- In MP, we get the parameters.
 WF_Parameters_Ready = true; //--- All parameters are set and ready.
@@ -77,14 +86,15 @@ WF_Parameters_Ready = true; //--- All parameters are set and ready.
 call WFCO_fnc_initCommonConstants;//--- Set the constants and the parameters, skip the params if they're already defined.
 
 if (WF_Debug) then { //--- Debug.
-	missionNamespace setVariable ["WF_C_GAMEPLAY_UPGRADES_CLEARANCE", 7];
+	//missionNamespace setVariable ["WF_C_GAMEPLAY_UPGRADES_CLEARANCE", 7];
 	missionNamespace setVariable ["WF_C_TOWNS_OCCUPATION", 1];
 	missionNamespace setVariable ["WF_C_TOWNS_DEFENDER", 2];
-	//missionNamespace setVariable ["WF_C_TOWNS_STARTING_MODE", 2];
 	missionNamespace setVariable ["WF_C_ECONOMY_SUPPLY_START_EAST", 999999];
 	missionNamespace setVariable ["WF_C_ECONOMY_SUPPLY_START_WEST", 999999];
+	missionNamespace setVariable ["WF_C_ECONOMY_SUPPLY_START_GUER", 999999];
 	missionNamespace setVariable ["WF_C_ECONOMY_FUNDS_START_EAST", 999999];
 	missionNamespace setVariable ["WF_C_ECONOMY_FUNDS_START_WEST", 999999];
+	missionNamespace setVariable ["WF_C_ECONOMY_FUNDS_START_GUER", 999999];
 	missionNamespace setVariable ["WF_C_MODULE_WF_EASA", 1];
 	missionNamespace setVariable ["WF_DEBUG_DISABLE_TOWN_INIT", 0];  // 0 -> disabled, 1 -> enabled
 };
@@ -106,12 +116,6 @@ if (WF_Debug) then { //--- Debug.
 if (isHostedServer || isDedicated) then { //--- Run the server's part.
 	["INITIALIZATION", "initJIPCompatible.sqf: Executing the Server Initialization."] Call WFCO_FNC_LogContent;
 	[] spawn WFSE_fnc_initServer;
-};
-
-//--- Weather	
-if (WF_C_ENVIRONMENT_WEATHER_SNOWSTORM > 0) then {
-	//"_snowfall","_duration_storm","_ambient_sounds_al","_breath_vapors","_snow_burst","_effect_on_objects","_vanilla_fog","_local_fog","_intensifywind","_unitsneeze"
-	[true,           6000,                15,                    false,           10,             false, 			false,         true,        true,          true] execvm "Common\Module\Weather\SnowStorm\al_snow.sqf";
 };
 
 //--- Client initialization, either hosted or pure client. Part II

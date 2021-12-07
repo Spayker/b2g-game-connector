@@ -1,12 +1,20 @@
 _display = _this select 0;
 
 _enable = false;
+_gear_field_range = missionNamespace getVariable "WF_C_UNITS_PURCHASE_GEAR_MOBILE_RANGE";
+_gear_barrack_range = missionNamespace getVariable "WF_C_UNITS_PURCHASE_GEAR_RANGE";
+
+ctrlEnable [2001, false];
+ctrlEnable [2002, false];
+ctrlEnable [2003, false];
+ctrlEnable [2004, false];
+ctrlEnable [2007, false];
+
 if ((barracksInRange || lightInRange || heavyInRange || aircraftInRange || hangarInRange || depotInRange) && (player == leader WF_Client_Team)) then {_enable = true};
 ctrlEnable [2002,_enable];
 ctrlEnable [2004,commandInRange && (player == leader WF_Client_Team)]; //--- Special Menu
 
 WF_MenuAction = -1;
-WF_ForceUpdate = true;
 
 _AllButtons = [2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2011, 2012, 2013, 2014];
 
@@ -29,12 +37,23 @@ _AllButtons = [2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2011, 2012,
 while {alive player && dialog} do {
 	if (!dialog) exitWith {};
 
+	//--- vote menu
+    _isFirstOutTeam = WF_Client_Logic getVariable ["wf_isFirstOutTeam", false];
+    _friendlySides = WF_Client_Logic getVariable ["wf_friendlySides", []];
+    if(_isFirstOutTeam) then {
+        ctrlEnable [2004, false];
+        ctrlEnable [2008, false]
+    } else {
+        ctrlEnable [2004, true];
+        ctrlEnable [2008, true]
+    };
+
 	//--- Build Units.
 	_enable = false;
 	if ((barracksInRange || lightInRange || heavyInRange || aircraftInRange || hangarInRange || depotInRange) && (player == leader WF_Client_Team)) then {_enable = true};
 	ctrlEnable [2002,_enable];
 	ctrlEnable [2003,gearInRange];
-	ctrlEnable [2001,gearInRange];
+	ctrlEnable [2001,gearInRange || WF_FreeRolePurchase];
 
 	_enable = false; //added-MrNiceGuy
 	if (!isNull(commanderTeam)) then {if (commanderTeam == group player) then {_enable = true}};
@@ -55,7 +74,33 @@ while {alive player && dialog} do {
 	if (WF_MenuAction == 2) exitWith {
 		WF_MenuAction = -1;
 		closeDialog 0;
-		createDialog "WF_BuyGearMenu";
+		_closestShop = [vehicle player, _gear_field_range] Call WFCL_FNC_GetClosestCamp;
+		if(isNull _closestShop) then {
+		    _buildings = [];
+		    {
+		        _buildings = _buildings + ((_x) call WFCO_FNC_GetSideStructures)
+		    } forEach _friendlySides;
+            _closestShop = ['BARRACKSTYPE', _buildings, _gear_barrack_range, player] call WFCO_FNC_BuildingInRange;
+		};
+
+        _items = [];
+
+        _upgrades = (WF_Client_SideJoined) Call WFCO_FNC_GetSideUpgrades;
+        _upgrade_gear = _upgrades select WF_UP_GEAR;
+        {
+            _get = missionNamespace getVariable format["wf_%1", _x];
+            if (((_get select 0) select 0) <= _upgrade_gear) then {
+                _items pushBack _x;
+                _items pushBack ((_get select 0) select 1);
+                _items pushBack true
+            }
+        } forEach WF_C_GEAR_LIST;
+
+        _closestShop setVariable ['currentGearUpgradeLevel', _upgrade_gear];
+        _closestShop setVariable ['selectedRole', WF_gbl_boughtRoles select 0];
+        WF_C_GEAR_CARGO_OBJECTS pushBackUnique _closestShop;
+        [_closestShop, _items] call TER_fnc_addShopCargo;
+		[_closestShop] call TER_fnc_callShop;
 	};
 
 	//--- Team Menu.
@@ -139,7 +184,7 @@ while {alive player && dialog} do {
 		_vehicle = vehicle player;
 		
 		if (player == _vehicle) then {
-			_objects = player nearEntities[["Car","Motorcycle","Tank","Air"],10];
+			_objects = player nearEntities[WF_C_CAR_MOTO_TANK_AIR_KINDS,10];
 			if (count _objects > 0) then {
 				{
 					if (getPos _x select 2 > 3 && !surfaceIsWater (getPos _x)) then {
@@ -221,11 +266,11 @@ while {alive player && dialog} do {
 
 	if (WF_MenuAction == 17) then {
 		WF_MenuAction = -1;
-	    if ( zoomgps < 1 ) then { zoomgps = (zoomgps + 0.025); hint "zoom OUT";} else { zoomgps = 1; hint "GPS Zoom: \n MAX Value";};
+	    if ( zoomgps < 1 ) then { zoomgps = (zoomgps + 0.025)} else { zoomgps = 1};
 	};
 	if (WF_MenuAction == 18) then {
 		WF_MenuAction = -1;
-	    if ( zoomgps >= 0.025) then { zoomgps = (zoomgps - 0.025); hint "zoom IN";} else { zoomgps = 0.025; hint "GPS Zoom: \n MIN Value";};
+	    if ( zoomgps >= 0.025) then { zoomgps = (zoomgps - 0.025)} else { zoomgps = 0.025};
 	};
 	
 	sleep 0.1;

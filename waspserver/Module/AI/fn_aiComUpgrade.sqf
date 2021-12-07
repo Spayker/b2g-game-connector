@@ -3,11 +3,15 @@
 	 Parameters:
 		- Side.
 */
+Params ['_side'];
 
+[_side] spawn {
+
+    Params ['_side'];
 Private["_can_upgrade","_cost","_funds","_level","_logik","_path","_side","_to_upgrade","_upgrade","_upgrades"];
-
-_side = _this;
 _logik = (_side) Call WFCO_FNC_GetSideLogic;
+
+    waitUntil {!(_logik getVariable ["wf_upgrading", false])};
 
 _path = missionNamespace getVariable Format ["WF_C_UPGRADES_%1_AI_ORDER", _side];
 _upgrades = _logik getVariable "wf_upgrades";
@@ -20,6 +24,7 @@ _to_upgrade = [];
 	
 	if (_upgrades select _upgrade < _level) exitWith {_to_upgrade = _x;};
 } forEach _path;
+
 
 //--- Found something to upgrade!
 if (count _to_upgrade > 0) then {
@@ -34,13 +39,12 @@ if (count _to_upgrade > 0) then {
 	        };
 	    };
 
-        if((isNil '_cost'))then{ _cost = 1000; };
+        if((isNil '_cost'))then{ _cost = [1000] };
 
         //--- Validation.
         _can_upgrade = false;
 
-        _funds = _side Call WFSE_fnc_GetAICommanderFunds;
-        if ((_side Call WFCO_FNC_GetSideSupply) >= (_cost select 0) && _funds >= (_cost select 1)) then {_can_upgrade = true;};
+        if ((_side Call WFCO_FNC_GetSideSupply) >= (_cost select 0)) then {_can_upgrade = true;};
 
         //--- Roll on!
         if (_can_upgrade) then {
@@ -54,4 +58,5 @@ if (count _to_upgrade > 0) then {
 
 	};
 
-};
+    }
+}

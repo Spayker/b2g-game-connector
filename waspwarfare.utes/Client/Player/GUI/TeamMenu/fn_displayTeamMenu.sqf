@@ -18,8 +18,6 @@ if (hudOn) then {
 	ctrlSetText[13020, "HUD ON"];
 };
 
-ctrlEnable [1310999,false];
-
 ctrlSetText[13021, "HUD STYLE"];
 ctrlSetText[13022, format["%1 %2", localize "STR_WF_FACS_ICONS", localize "STR_WF_OFF"]];
 ctrlSetText [13101, Format [localize "STR_WF_TEAM_ObjectDistanceLabel",_currentOD]];
@@ -84,7 +82,8 @@ while {alive player && dialog} do {
 			{
 				if !(isPlayer _x) then {
 					if (_x isKindOf 'Man') then {removeAllWeapons _x};
-					_x setDammage 1;
+					[typeOf _x, false] call WFCL_FNC_AwardBounty;
+					deleteVehicle _x;
 				};
 			} forEach _destroy;
 			
@@ -131,13 +130,6 @@ while {alive player && dialog} do {
 		};
 	};
 
-	//--- HUD STYLE
-    if (WF_MenuAction == 114) then {
-    	WF_MenuAction = -1;
-
-    	hudStyle = !hudStyle;
-	};
-	
     //--- FACS ICONS
     if (WF_MenuAction == 115) then {
         WF_MenuAction = -1;
@@ -155,8 +147,15 @@ while {alive player && dialog} do {
 	if (WF_MenuAction == 101) exitWith {
 		WF_MenuAction = -1;
 		closeDialog 0;
-		createDialog "RscMenu_UnitCamera";
+		createDialog "Rsc_UnitCamera";
 	};
+	
+	//--- Squad menu
+    if (WF_MenuAction == 111) exitWith {
+        WF_MenuAction = -1;
+        closeDialog 0;
+        createDialog "RscMenu_Squad";
+    };
 	
 	if (_currentOD != _lastod) then {
 		setObjectViewDistance _currentOD;

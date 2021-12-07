@@ -15,6 +15,7 @@
 
 ["ALL_EAST"] call AIC_fnc_createCommandControl;
 ["ALL_WEST"] call AIC_fnc_createCommandControl;
+["ALL_GUER"] call AIC_fnc_createCommandControl;
 
 if(hasInterface) then {
 		
@@ -64,7 +65,7 @@ if(hasInterface) then {
 	
 };
 
-if(isServer) then {
+if(!hasInterface && !isDedicated) then {
 	[] spawn {
 		while {true} do {
 			{
@@ -77,6 +78,9 @@ if(isServer) then {
                         };
                         if(_side == west) then {
                             ["ALL_WEST",_x] call AIC_fnc_commandControlAddGroup
+                        };
+                        if(_side == resistance) then {
+                            ["ALL_GUER",_x] call AIC_fnc_commandControlAddGroup
                         };
                     }
                 }
@@ -112,6 +116,7 @@ if(isServer) then {
 			private ["_group","_groupControl","_lastWpRevision","_groupWaypoints","_groupControlWaypoints","_currentWpRevision","_groupControlWaypointArray","_wp","_goCodeWpFound","_wpType","_waitForCode","_wpActionScript","_wpCondition","_wpTimeout"];
 			{
 				_group = _x;
+				if (side _group != civilian && (_group getVariable["isHighCommandPurchased",false]) ) then {
 				_lastWpRevision = _group getVariable ["AIC_Server_Last_Wp_Revision",0];
 				_groupWaypoints = waypoints _group;
 				_groupControlWaypoints = [_group] call AIC_fnc_getAllActiveWaypoints;
@@ -130,7 +135,13 @@ if(isServer) then {
 								_priorWaypointDurationEnabled = true;
 							};
 							_wp = _group addWaypoint [_x select 1, 0];
+                                _groupLeader = leader _group;
+                                if (_wpCondition == "true") then {
+                                        _wp setWaypointStatements ["true", "[group this, "+str (_x select 0)+"] call AIC_fnc_disableWaypoint;" + _wpActionScript];
+                                    } else {
 							_wp setWaypointStatements [format ["true && ((group this) getVariable ['AIC_WP_DURATION_REMANING',0]) <= 0 && {%1}",_wpCondition], "[group this, "+str (_x select 0)+"] call AIC_fnc_disableWaypoint;" + _wpActionScript];
+							};
+
 							_wp setWaypointType _wpType;
 							if(!isNil "_wpTimeout") then {
 								_wp setWaypointTimeOut [_wpTimeout,_wpTimeout,_wpTimeout];
@@ -147,7 +158,6 @@ if(isServer) then {
 							if(!isNil "_wpLoiterDirection") then {
 								_wp setWaypointLoiterType _wpLoiterDirection;
 							};  
-							
 						};
 					} forEach _groupControlWaypointArray;
 					if(count (waypoints _group)==0) then {
@@ -172,10 +182,23 @@ if(isServer) then {
 						[_group, _nextActiveWaypoint] call AIC_fnc_setWaypoint;
 					};
 				};
-				
-			} forEach allGroups;
-			sleep 2;
-		};
-	};
-};
 
+                    {
+                        _crewVehicle = vehicle _x;
+                        if(_crewVehicle != _x) then {
+                            if ((speed _crewVehicle)  == 0 && canMove _crewVehicle) then {
+                            if (_x == driver _crewVehicle) then {
+                                    if(vehicle (leader _group) != leader _group) then {
+                                        _x doWatch objNull;
+                                        _x doFollow (leader _group)
+                                    };
+                                }
+                            }
+                        }
+                    } forEach (units _group);
+				}
+			} forEach allGroups;
+			sleep 5
+		}
+	}
+}

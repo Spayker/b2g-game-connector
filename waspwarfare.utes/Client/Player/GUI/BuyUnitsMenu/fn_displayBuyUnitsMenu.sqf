@@ -37,7 +37,6 @@ _updateList = true;
 _updateMap = true;
 _val = 0;
 _mbu = missionNamespace getVariable 'WF_C_PLAYERS_AI_MAX';
-_selectedRole = WF_gbl_boughtRoles select 0;
 
 ctrlSetText[12025,localize 'STR_WF_UNITS_FactionChoiceLabel' + ":"];
 ctrlSetText[120255,localize 'STR_WF_UNITS_PurchaseTypeChoiceLabel' + ":"];
@@ -90,13 +89,13 @@ while {alive player && dialog} do {
             if(_capturedMilitaryBases > 0) then {
                 _currentCost = ceil (_currentCost - (WF_C_MILITARY_BASE_DISCOUNT_PERCENT * _capturedMilitaryBases * _currentCost));
             };
-            if(_unit in WF_ADV_ARTILLERY) then {
-                if!(isNil '_selectedRole') then{
-                    if(_selectedRole == WF_ARTY_OPERATOR)then{
-                        _currentCost = ceil (_currentCost - (_currentCost * WF_ADV_ARTY_DISCOUNT));
-                    };
-                };
+
+
+            if(_unit == missionNamespace getVariable Format["WF_%1MHQNAME", WF_Client_SideJoined]) then {
+                _currentHQPenalty = missionNamespace getVariable (format ["wf_%1_hq_penalty", WF_Client_SideJoined]);
+                _currentCost = _currentCost + _currentHQPenalty;
             };
+
             _cpt = 1;
             _isInfantry = (_unit isKindOf 'Man');
             if !(_isInfantry) then {
@@ -107,25 +106,34 @@ while {alive player && dialog} do {
                 if (_extracrew) then {_extra = _extra + ((_currentUnit select QUERYUNITCREW) select 3)};
                 _currentCost = _currentCost + ((missionNamespace getVariable "WF_C_UNITS_CREW_COST") * _extra);
             };
+
             if ((_currentRow) != -1) then {
                 _funds = Call WFCL_FNC_GetPlayerFunds;
                 _skip = false;
                 if (_funds < _currentCost) then {
                     _skip = true;
-                    hint parseText(Format[localize 'STR_WF_INFO_Funds_Missing',_currentCost - _funds,_currentUnit select QUERYUNITLABEL])
+                    [Format[localize 'STR_WF_INFO_Funds_Missing',_currentCost - _funds,_currentUnit select QUERYUNITLABEL]] spawn WFCL_fnc_handleMessage
                 };
                 //--- Make sure that we own all camps before being able to purchase infantry.
                 if (_type == "Depot" && _isInfantry) then {
                     _totalCamps = _closest Call WFCO_FNC_GetTotalCamps;
                     _campsSide = [_closest,WF_Client_SideJoined] Call WFCO_FNC_GetTotalCampsOnSide;
-                    if (_totalCamps != _campsSide) then {_skip = true; hint parseText(localize 'STR_WF_INFO_Camps_Purchase')};
+                    if (_totalCamps != _campsSide) then {
+                        _skip = true;
+                        [format["%1", (localize 'STR_WF_INFO_Camps_Purchase')]] spawn WFCL_fnc_handleMessage
+                    };
                 };
                 if !(_skip) then {
                     _currentGroupSize = Count ((Units (group player)) Call WFCO_FNC_GetLiveUnits);
                     //--- Get the infantry limit based off the infantry upgrade.
                     _realSize = missionNamespace getVariable 'WF_C_PLAYERS_AI_MAX';
 
-                    if (_isInfantry) then {if ((unitQueu + _currentGroupSize + 1) > _realSize) then {_skip = true;hint parseText(Format [localize 'STR_WF_INFO_MaxGroup',_realSize])}};
+                    if (_isInfantry) then {
+                        if ((unitQueu + _currentGroupSize + 1) > _realSize) then {
+                            _skip = true;
+                            [Format [localize 'STR_WF_INFO_MaxGroup',_realSize]] spawn WFCL_fnc_handleMessage
+                        }
+                    };
 
                     if (!_isInfantry && !_skip) then {
                         _cpt = 0;
@@ -133,29 +141,58 @@ while {alive player && dialog} do {
                         if (_gunner) then {_cpt = _cpt + 1};
                         if (_commander) then {_cpt = _cpt + 1};
                         if (_extracrew) then {_cpt = _cpt + ((_currentUnit select QUERYUNITCREW) select 3)};
-                        if ((unitQueu + _currentGroupSize + _cpt) > _realSize && _cpt != 0) then {_skip = true;hint parseText(Format [localize 'STR_WF_INFO_MaxGroup',_realSize])};
+                        if ((unitQueu + _currentGroupSize + _cpt) > _realSize && _cpt != 0) then {
+                            _skip = true;
+                            [Format [localize 'STR_WF_INFO_MaxGroup',_realSize]] spawn WFCL_fnc_handleMessage
+                        };
                     };
                 };
 
                 if !(_skip) then {
                     if(_unit == missionNamespace getVariable Format["WF_%1MHQNAME", WF_Client_SideJoined]) then {
                         _mhqs = (WF_Client_SideJoined) Call WFCO_FNC_GetSideHQ;
+                        _mhqs = _mhqs - [objNull];
                         if(count _mhqs >= missionNamespace getVariable "WF_C_BASE_AREA") then {
                             _skip = true;
-                            hint parseText(Format [localize 'STR_WF_INFO_BaseArea_Reached',count _mhqs])
+                            [Format [localize 'STR_WF_INFO_BaseArea_Reached',count _mhqs]] spawn WFCL_fnc_handleMessage
                         }
                     }
                 };
 
                 if !(_skip) then {
+
                     //--- Check the max queu.
+                    if(_unit == missionNamespace getVariable Format["WF_%1MHQNAME", WF_Client_SideJoined]) then {
+                        if ((missionNamespace getVariable Format["WF_C_QUEUE_HQ_%1",_type]) < (missionNamespace getVariable Format["WF_C_QUEUE_%1_HQ_MAX",_type])) then {
+                            missionNamespace setVariable [Format["WF_C_QUEUE_HQ_%1",_type],(missionNamespace getVariable Format["WF_C_QUEUE_HQ_%1",_type])+1];
+
+                            _queu = _closest getVariable 'queu';
+                            _txt = Format [localize 'STR_WF_INFO_BuyEffective',_currentUnit select QUERYUNITLABEL];
+                            if (!isNil '_queu') then {if (count _queu > 0) then {_txt = Format [localize 'STR_WF_INFO_Queu',_currentUnit select QUERYUNITLABEL]}};
+                            [format["%1", _txt]] spawn WFCL_fnc_handleMessage;
+
+                            _gunnerEqCommander = false; //--crutch for vehicles such as CUP BPPU VODNIK--
+                            if(count _currentUnit >= 12) then {
+                                _gunnerEqCommander = _currentUnit # 11;
+                            };
+
+                            _params = [[_closest,_unit,[_driver,_gunner,_commander,_extracrew,_isLocked,_gunnerEqCommander],_type,_cpt], [_closest,_unit,[],_type,_cpt]] select (_isInfantry);
+                            _params Spawn WFCL_FNC_BuildUnit;
+                            -(_currentCost) Call WFCL_FNC_ChangePlayerFunds;
+                            _currentHQPenalty = missionNamespace getVariable (format ["wf_%1_hq_penalty", WF_Client_SideJoined]);
+                            missionNamespace setVariable [format ["wf_%1_hq_penalty", WF_Client_SideJoined], _currentHQPenalty + WF_C_ECONOMY_HQ_PENALTY_INCREASE_STEP, true];
+                            _update = true
+                        } else {
+                            [Format [localize 'STR_WF_INFO_Queu_Max',missionNamespace getVariable Format["WF_C_QUEUE_%1_HQ_MAX",_type]]] spawn WFCL_fnc_handleMessage
+                        }
+                    } else {
                     if ((missionNamespace getVariable Format["WF_C_QUEUE_%1",_type]) < (missionNamespace getVariable Format["WF_C_QUEUE_%1_MAX",_type])) then {
                         missionNamespace setVariable [Format["WF_C_QUEUE_%1",_type],(missionNamespace getVariable Format["WF_C_QUEUE_%1",_type])+1];
 
                         _queu = _closest getVariable 'queu';
-                        _txt = parseText(Format [localize 'STR_WF_INFO_BuyEffective',_currentUnit select QUERYUNITLABEL]);
-                        if (!isNil '_queu') then {if (count _queu > 0) then {_txt = parseText(Format [localize 'STR_WF_INFO_Queu',_currentUnit select QUERYUNITLABEL])}};
-                        hint _txt;
+                        _txt = Format [localize 'STR_WF_INFO_BuyEffective',_currentUnit select QUERYUNITLABEL];
+                        if (!isNil '_queu') then {if (count _queu > 0) then {_txt = Format [localize 'STR_WF_INFO_Queu',_currentUnit select QUERYUNITLABEL]}};
+                        [format["%1", _txt]] spawn WFCL_fnc_handleMessage;
 
                         _gunnerEqCommander = false; //--crutch for vehicles such as CUP BPPU VODNIK--
                         if(count _currentUnit >= 12) then {
@@ -166,8 +203,9 @@ while {alive player && dialog} do {
                         _params Spawn WFCL_FNC_BuildUnit;
                         -(_currentCost) Call WFCL_FNC_ChangePlayerFunds;
                     } else {
-                        hint parseText(Format [localize 'STR_WF_INFO_Queu_Max',missionNamespace getVariable Format["WF_C_QUEUE_%1_MAX",_type]]);
-                    };
+                        [Format [localize 'STR_WF_INFO_Queu_Max',missionNamespace getVariable Format["WF_C_QUEUE_%1_MAX",_type]]] spawn WFCL_fnc_handleMessage
+                        }
+                    }
                 };
             };
 		} else {
@@ -175,12 +213,13 @@ while {alive player && dialog} do {
             _currentValue = lnbValue[_listBox,[_currentRow,0]];
             _cost = lnbValue[_listBox,[_currentRow,1]];
             _generalSquadCounter = lnbValue[_listBox,[_currentRow,2]];
-            _cpt = 1;
+
 
 		    _generalGroupTemplates = missionNamespace getVariable Format["WF_%1AITEAMTEMPLATES",WF_Client_SideJoined];
 		    _generalGroupTemplateDescriptions = missionNamespace getVariable Format["WF_%1AITEAMTEMPLATEDESCRIPTIONS",WF_Client_SideJoined];
             _selectedGroupTemplate = _generalGroupTemplates # _generalSquadCounter;
             _selectedGroupTemplateDescription = _generalGroupTemplateDescriptions # _generalSquadCounter;
+            _cpt = 1;
 
             _commonTime = 0;
             {
@@ -195,23 +234,23 @@ while {alive player && dialog} do {
 
                 if (_funds < _cost) then {
                     _skip = true;
-                    hint parseText(Format[localize 'STR_WF_INFO_Funds_Missing',_cost - _funds,_selectedGroupTemplateDescription])
+                    [Format[localize 'STR_WF_INFO_Funds_Missing',_cost - _funds,_selectedGroupTemplateDescription]] spawn WFCL_fnc_handleMessage;
                 };
 
                 if !(_skip) then {
-                    _hcAllowedGroupAmount = WF_C_HIGH_COMMAND_MIN_GROUP_AMOUNT + (((WF_Client_SideJoined) call WFCO_FNC_GetSideUpgrades) # WF_UP_HC_GROUP_AMOUNT);
+                    _hcAllowedGroupAmount = WF_C_HIGH_COMMAND_MIN_GROUP_AMOUNT + ( (((WF_Client_SideJoined) call WFCO_FNC_GetSideUpgrades) # WF_UP_HC_GROUP_AMOUNT) * 2 );
 
                     _purchasedGroups = [WF_Client_SideJoined] call WFCO_FNC_getHighCommandGroups;
-                    if((count _purchasedGroups) >= _hcAllowedGroupAmount ) then {
+                    if((count _purchasedGroups) + groupQueu >= _hcAllowedGroupAmount ) then {
                         _skip = true;
-                        hint parseText(Format [localize 'STR_WF_INFO_HC_Group_Max', _hcAllowedGroupAmount]);
+                        [Format [localize 'STR_WF_INFO_HC_Group_Max', _hcAllowedGroupAmount]] spawn WFCL_fnc_handleMessage
                     }
                 };
                 if !(_skip) then {
                     _purchasedGroups = [WF_Client_SideJoined] call WFCO_FNC_getHighCommandGroups;
                     if (groupQueu  >= WF_C_HIGH_COMMAND_MAX_QUEUE_ORDER_GROUP_PURCHASE) then {
                         _skip = true;
-                        hint parseText(Format [localize 'STR_WF_INFO_Queu_Max', WF_C_HIGH_COMMAND_MAX_QUEUE_ORDER_GROUP_PURCHASE])
+                        [Format [localize 'STR_WF_INFO_Queu_Max', WF_C_HIGH_COMMAND_MAX_QUEUE_ORDER_GROUP_PURCHASE]] spawn WFCL_fnc_handleMessage;
                     }
                 };
                 if !(_skip) then {
@@ -220,15 +259,15 @@ while {alive player && dialog} do {
                         missionNamespace setVariable [Format["WF_C_GROUP_QUEUE_%1",_type],(missionNamespace getVariable Format["WF_C_GROUP_QUEUE_%1",_type])+1];
 
                         _queu = _closest getVariable 'groupQueu';
-                        _txt = parseText(Format [localize 'STR_WF_INFO_BuyEffective',_selectedGroupTemplateDescription]);
-                        if (!isNil '_queu') then {if (count _queu > 0) then {_txt = parseText(Format [localize 'STR_WF_INFO_Queu',_selectedGroupTemplateDescription])}};
-                        hint _txt;
+                        _txt = Format [localize 'STR_WF_INFO_BuyEffective',_selectedGroupTemplateDescription];
+                        if (!isNil '_queu') then {if (count _queu > 0) then {_txt = Format [localize 'STR_WF_INFO_Queu',_selectedGroupTemplateDescription]}};
+                        [format ["%1", _txt]] spawn WFCL_fnc_handleMessage;
 
                         [_closest,_selectedGroupTemplate,_type,_cpt, _commonTime, _selectedGroupTemplateDescription] Spawn WFCL_FNC_BuildGroup;
                         -(_cost) Call WFCL_FNC_ChangePlayerFunds;
 
                     } else {
-                        hint parseText(Format [localize 'STR_WF_INFO_Queu_Max',missionNamespace getVariable Format["WF_C_GROUP_QUEUE_%1_MAX",_type]]);
+                        [Format [localize 'STR_WF_INFO_Queu_Max',missionNamespace getVariable Format["WF_C_GROUP_QUEUE_%1_MAX",_type]]] spawn WFCL_fnc_handleMessage
                     };
                 };
             };
@@ -278,6 +317,10 @@ while {alive player && dialog} do {
         if (_selectedPurchaseTypeIndex == 0) then {
 
             _listUnits = missionNamespace getVariable Format ['WF_%1%2UNITS',WF_Client_SideJoinedText,_type];
+            if(WF_Client_Logic getVariable ["wf_isFirstOutTeam", false]) then {
+                _listUnits = missionNamespace getVariable Format ['WF_%1%2UNITS', str (call WFCO_fnc_getFriendlySide), _type];
+            };
+
             {
                 _un = _x;
                 if(isNil "_un")then{
@@ -291,7 +334,16 @@ while {alive player && dialog} do {
                 }
             } foreach _listUnits;
 
-            [_listUnits,_type,_listBox,_val] Call WFCL_FNC_fillListBuyUnits;
+            _isPort = false;
+            if (_type == 'Depot') then {
+
+                _sorted = [[vehicle player, missionNamespace getVariable "WF_C_TOWNS_PURCHASE_RANGE"] Call WFCL_FNC_GetClosestDepot];
+
+                _townSpecialities = (_sorted # 0) getVariable ["townSpeciality", []];
+                if (WF_C_PORT in _townSpecialities) then { _isPort = true }
+            };
+
+            [_listUnits, _type, _listBox, _val, _isPort] Call WFCL_FNC_fillListBuyUnits;
         } else {
             [_type,_listBox,_val] Call WFCL_FNC_fillListBuyGroups;
         };
@@ -322,8 +374,13 @@ while {alive player && dialog} do {
 			};
 			//--- Factories
 			default {
-				_buildings = (WF_Client_SideJoined) Call WFCO_FNC_GetSideStructures;
-				_factories = [WF_Client_SideJoined,missionNamespace getVariable Format ['WF_%1%2TYPE',WF_Client_SideJoinedText,_type],_buildings] Call WFCO_FNC_GetFactories;
+				_factories = [];
+                _friendlySides = WF_Client_Logic getVariable ["wf_friendlySides", []];
+				{
+                    _buildings = (_x) Call WFCO_FNC_GetSideStructures;
+                    _factories = _factories + ([_x,missionNamespace getVariable Format ['WF_%1%2TYPE',str _x,_type],_buildings] Call WFCO_FNC_GetFactories);
+				} forEach _friendlySides;
+
 				_sorted = [vehicle player,_factories] Call WFCO_FNC_SortByDistance;
 				_closest = _sorted select 0;
 				_countAlive = count _factories;
@@ -373,23 +430,25 @@ while {alive player && dialog} do {
                 if(_capturedMilitaryBases > 0) then {
                     _currentCost = ceil (_currentCost - (WF_C_MILITARY_BASE_DISCOUNT_PERCENT * _capturedMilitaryBases * _currentCost));
                 };
-                if(_unit in WF_ADV_ARTILLERY) then {
-                    if!(isNil '_selectedRole')then{
-                        if(_selectedRole == WF_ARTY_OPERATOR)then{
-                            _currentCost = ceil (_currentCost - (_currentCost * WF_ADV_ARTY_DISCOUNT));
-                        };
-                    };
+
+                _side = switch (getNumber(configFile >> "CfgVehicles" >> _unit >> "side")) do {case 0: {east}; case 1: {west}; case 2: {resistance}; default {civilian}};
+                if(_side == civilian || _unit in WF_FLY_UAVS) then {
+                    {ctrlShow [_x,false]} forEach (_IDCSVehi);
+                    _driver = false;
+                    _gunner = false;
+                    _commander = false;
+                    _extracrew = false
                 };
 
                 _isInfantry = (_unit isKindOf 'Man');
 
                 //--- Update driver-gunner-commander icons.
-                if (!(_isInfantry)) then {
+                if (!(_isInfantry) && !(_unit in WF_FLY_UAVS)) then {
                     ctrlSetText [12036,"N/A"];
                     ctrlSetText [12037,str (getNumber (configFile >> 'CfgVehicles' >> _unit >> 'transportSoldier'))];
                     ctrlSetText [12038,str (getNumber (configFile >> 'CfgVehicles' >> _unit >> 'maxSpeed'))];
                     ctrlSetText [12039,str (getNumber (configFile >> 'CfgVehicles' >> _unit >> 'armor'))];
-                    if (_type != 'Depot') then {
+                    if (_side != civilian) then {
                         _slots = _currentUnit select QUERYUNITCREW;
                         if (_slots isEqualType []) then {
 
@@ -489,15 +548,18 @@ while {alive player && dialog} do {
                             //--- Set the 'extra' price.
                             _currentCost = _currentCost + ((missionNamespace getVariable "WF_C_UNITS_CREW_COST") * _extra);
                         };
-                    } else {
-                        {ctrlShow [_x,false]} forEach (_IDCSVehi);
-                        _driver = false;
-                        _gunner = false;
-                        _commander = false;
-                        _extracrew = false;
-                    };
+                    }
                 } else {
-                    ctrlSetText [12036,Format ["%1/100",(_currentUnit select QUERYUNITSKILL) * 100]];
+                    //--- calculate skill
+                    _upgrades = (WF_Client_SideJoined) Call WFCO_FNC_GetSideUpgrades;
+                    _current_infantry_upgrade = _upgrades select WF_UP_BARRACKS;
+                    _skill = 0.3;
+                    switch (_current_infantry_upgrade) do {
+                        case 1: { _skill = 0.5 };
+                        case 2: { _skill = 0.7 };
+                        case 3: { _skill = 0.9 };
+                    };
+                    ctrlSetText [12036,Format ["%1/100",_skill * 100]];
                     ctrlSetText [12037,"N/A"];
                     ctrlSetText [12038,"N/A"];
                     ctrlSetText [12039,"N/A"];
@@ -591,7 +653,7 @@ while {alive player && dialog} do {
                 };
 
                 //--- Lock Icon.
-                if !(_isInfantry) then {
+                if (!_isInfantry) then {
                     ctrlShow[_IDCLock,true];
                     _color = if (_isLocked) then {_enabledColor2} else {_disabledColor};
                     _con = _display displayCtrl _IDCLock;
@@ -630,9 +692,6 @@ while {alive player && dialog} do {
             _currentValue = lnbValue[_listBox,[_currentRow,0]];
             _cost = lnbValue[_listBox,[_currentRow,1]];
             _generalSquadCounter = lnbValue[_listBox,[_currentRow,2]];
-            if !(_isInfantry) then {
-
-            };
 
             _generalGroupTemplates = missionNamespace getVariable Format["WF_%1AITEAMTEMPLATES",WF_Client_SideJoined];
             _selectedGroupTemplate = _generalGroupTemplates # _generalSquadCounter;
@@ -642,7 +701,18 @@ while {alive player && dialog} do {
             ctrlSetText [12009,_firstUnitConfig # QUERYUNITPICTURE];
             ctrlSetText [12033,_firstUnitConfig # QUERYUNITFACTION];
             ctrlSetText [12034,Format ["$ %1",_cost]];
-            ctrlSetText [12036,Format ["%1/100",(_firstUnitConfig # QUERYUNITSKILL) * 100]];
+
+            //--- calculate skill
+            _upgrades = (WF_Client_SideJoined) Call WFCO_FNC_GetSideUpgrades;
+            _current_infantry_upgrade = _upgrades select WF_UP_BARRACKS;
+            _skill = 0.3;
+            switch (_current_infantry_upgrade) do {
+                case 1: { _skill = 0.5 };
+                case 2: { _skill = 0.7 };
+                case 3: { _skill = 0.9 };
+            };
+
+            ctrlSetText [12036,Format ["%1/100", _skill * 100]];
 
             _commonTime = 0;
             {
@@ -661,9 +731,11 @@ while {alive player && dialog} do {
                 _firstClassName = _selectedGroupTemplate # _z;
                 _firstUnitConfig = missionNamespace getVariable _firstClassName;
 
-                _txttg = _txttg + "<t color='#eee58b' shadow='2'>" + (_firstUnitConfig # QUERYUNITLABEL) + "</t>";
+                if!(isNil '_firstUnitConfig') then {
+                    _txttg = _txttg + "<t color='#eee58b' shadow='2'>" + (_firstUnitConfig # QUERYUNITLABEL) + "</t>";
 
-                if ((_z+1) < count _selectedGroupTemplate) then {_txttg = _txttg + "<t color='#D3A119' shadow='2'>,</t> "};
+                    if ((_z+1) < count _selectedGroupTemplate) then {_txttg = _txttg + "<t color='#D3A119' shadow='2'>,</t> "}
+                }
             };
 
             _txt = _txt + _txttg;
@@ -683,8 +755,12 @@ while {alive player && dialog} do {
 	_lastCheck = _lastCheck + 0.1;
 	if (_lastCheck > 2 && _type != 'Depot' && _type != 'Airport') then {
 		_lastCheck = 0;
-		_buildings = (WF_Client_SideJoined) Call WFCO_FNC_GetSideStructures;
-		_factories = [WF_Client_SideJoined,missionNamespace getVariable Format ['WF_%1%2TYPE',WF_Client_SideJoinedText,_type],_buildings] Call WFCO_FNC_GetFactories;
+		_factories = [];
+        _friendlySides = WF_Client_Logic getVariable ["wf_friendlySides", []];
+		{
+            _buildings = (_x) Call WFCO_FNC_GetSideStructures;
+            _factories = _factories + [_x,missionNamespace getVariable Format ['WF_%1%2TYPE',str _x,_type],_buildings] Call WFCO_FNC_GetFactories;
+        } forEach _friendlySides;
 		if (count _factories != _countAlive) then {_updateList = true};
 	};
 	

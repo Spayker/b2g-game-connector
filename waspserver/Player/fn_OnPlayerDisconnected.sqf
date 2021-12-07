@@ -29,15 +29,12 @@ _team = grpNull;
 //--Next client with same id must to store other areas array--
 {
     if(_x # 0 == owner _unit) exitWith {
-        ["WF_PLAYERS_FORTIFICATIONS_AREA_LOCKED", missionNamespace] call WFCO_FNC_MutexLock;
-
         private _areas = missionNamespace getVariable ["WF_PLAYERS_FORTIFICATIONS_AREA", []];
         if(count _areas > _forEachIndex) then {
             _areas set [_forEachIndex, [-time - (owner _unit), (_areas # _forEachIndex) # 1]];
         };
 
         missionNamespace setVariable ["WF_PLAYERS_FORTIFICATIONS_AREA", _areas];
-        ["WF_PLAYERS_FORTIFICATIONS_AREA_LOCKED", missionNamespace] call WFCO_FNC_MutexUnlock;
     };
 } forEach (missionNamespace getVariable ["WF_PLAYERS_FORTIFICATIONS_AREA", []]);
 
@@ -45,21 +42,21 @@ _team = grpNull;
 [format ["Player **%1** has left the game :wave:", _name]] call WFDC_FNC_LogContent;
 
 //--Update playing time statistic--
-//if(missionNamespace getVariable[format["wf_cj_%1", _uid], false]) then {
+if(missionNamespace getVariable[format["wf_cj_%1", _uid], true]) then {
     [_uid, _name, missionNamespace getVariable[format["wf_ps_%1", _uid], WF_C_UNKNOWN_ID],
         time - (missionNamespace getVariable [format["wf_pt_%1", _uid], time]),
         time - (missionNamespace getVariable [format["wf_ct_%1", _uid], time])] spawn WFSE_FNC_UpdatePlayingTime;
 	missionNamespace setVariable [format["wf_pt_%1", _uid], nil];
     missionNamespace setVariable [format["wf_ct_%1", _uid], nil];
 	missionNamespace setVariable [format["wf_ps_%1", _uid], nil];
-	//missionNamespace setVariable [format["wf_cj_%1", _uid], nil];
-//};
+	missionNamespace setVariable [format["wf_cj_%1", _uid], nil];
+};
 
 //--Update players global list--
 [1, _uid] spawn WFSE_FNC_updatePlayersList;
 
 //--- Headless Clients disconnection?.
-if (_uid == (missionNamespace getVariable["WF_HEADLESSCLIENT_UID", 0])) then {
+if (_uid == (missionNamespace getVariable["WF_HEADLESSCLIENT_UID", '0'])) then {
 	missionNamespace setVariable ["WF_HEADLESSCLIENT_ID", nil];
 	missionNamespace setVariable ["WF_HEADLESSCLIENT_UID", nil];
 	["INFORMATION", format ["fn_OnPlayerDisconnected.sqf: missionNamespace variable WF_HEADLESSCLIENT_ID [%1]", missionNamespace getVariable["WF_HEADLESSCLIENT_ID", 0]]] call WFCO_FNC_LogContent;
@@ -111,6 +108,39 @@ if (vehicle _unit == _hq) then {_unit action ["EJECT", _hq]};
 	};
 } forEach (units _team);
 
+//--- We attempt to fetch the client old unit, we need to check if it's group is the right one (on the fly group swapping).
+_old_unit = _team getVariable "wf_teamleader";
+if (isNil '_old_unit') then {
+	_old_unit = objNull;
+} else {
+	if !(alive _old_unit) then {_old_unit = objNull};
+};
+
+if (isNull _old_unit) then {
+	_old_unit = leader _team;
+	["INFORMATION", Format ["fn_OnPlayerDisconnected.sqf: Player [%1] [%2] current team leader is dead or nil, using original team leader [%3].", _name, _uid, _team]] Call WFCO_FNC_LogContent;
+};
+_old_unit_group = group _old_unit;
+
+//--- Make sure that our disconnected player group was the same as the original, we simply set him back to his group otherwise).
+if (_old_unit_group != _team) then {
+
+	["INFORMATION", Format ["fn_OnPlayerDisconnected.sqf: Player [%1] [%2] was in team [%3] and has been transfered to it's source team [%4].", _name, _uid, _old_unit_group, _team]] Call WFCO_FNC_LogContent;
+
+	//--- Make sure that the disconnected unit is the leader of it's group now.
+	if (leader _team != _old_unit) then {
+		_team selectLeader _old_unit;
+		["INFORMATION", Format ["Server_PlayerDisconnected.sqf: Player [%1] [%2] has been set as the leader of it's source team [%3].", _name, _uid, _team]] Call WFCO_FNC_LogContent;
+	};
+};
+
+//--- We force the unit out of it's vehicle.
+if !(isNull(assignedVehicle _old_unit)) then {
+	unassignVehicle _old_unit;
+	[_old_unit] orderGetIn false;
+	[_old_unit] allowGetIn false;
+};
+(leader _old_unit) enableSimulationGlobal false;
 
 //--- We save the disconnect client funds.
 _get set [1,_unit getVariable "wf_funds"];

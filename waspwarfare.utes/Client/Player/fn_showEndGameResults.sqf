@@ -1,32 +1,37 @@
 if (!hasInterface || isDedicated) exitWith {};
-params ["_side"];
+params ["_winnerSide"];
 private ['_HQ','_base','_blist','_camShotOrder','_camera','_nvgstate','_position','_secTarget','_track','_vehi'];
 
 WF_GameOver = true;
 
-[_side] spawn WFCL_fnc_displayEndOfGameStats;
+if (dialog) then {closeDialog 0};
+
+[_winnerSide] spawn WFCL_fnc_displayEndOfGameStats;
 
 playMusic "LeadTrack01a_F";
 
+_blist = [];
 _track_hq = [];
 _track = [];
 {
 	if (missionNamespace getVariable Format["WF_%1_PRESENT", _x]) then {
 	    _side = _x;
 		_logik = (_side) Call WFCO_FNC_GetSideLogic;
-		_hqs = _logik getVariable "wf_hq";
+		_hqs = (_side) Call WFCO_FNC_GetSideHQ;
 		{
-		    _track_hq = _track_hq + _x;
+		    if(!isNull  _x) then { _track_hq pushBack _x };
             _track = _track + ([_x, (_side) Call WFCO_FNC_GetSideStructures] Call WFCO_FNC_SortByDistance)
-		} forEach _hqs
+		} forEach _hqs;
 	}
-} forEach ([west,east,resistance] - [_side]);
+} forEach ([west,east] - [_winnerSide]);
 
-_hq = (_side) Call WFCO_FNC_GetSideHQ;
-_blist = [_hq] + _track_hq + ([_hq, (_side) Call WFCO_FNC_GetSideStructures] Call WFCO_FNC_SortByDistance) + _track;
+_mhqs = (_winnerSide) Call WFCO_FNC_GetSideHQ;
+_hq = [player,_mhqs] call WFCO_FNC_GetClosestEntity;
+
+if(!isNull _hq) then { _blist pushBack _hq };
+_blist = _blist + _track_hq + ([_hq, (_winnerSide) Call WFCO_FNC_GetSideStructures] Call WFCO_FNC_SortByDistance) + _track;
 
 //--- Safety Pos.
-_hq = (WF_Client_SideJoined) Call WFCO_FNC_GetSideHQ;
 _vehi = vehicle player;
 if (_vehi != player) then {player action ["EJECT", _vehi];_vehi = player};
 _vehi allowDamage false;
@@ -34,9 +39,9 @@ _vehi setVelocity [0,0,-0.1];
 _vehi setPos ([getPos _hq,20,30] Call WFCO_FNC_GetRandomPosition);
 [_vehi, false] remoteExecCall ["enableSimulationGlobal", 2];
 
-if (!isNil "DeathCamera") then {
-	DeathCamera cameraEffect["TERMINATE","BACK"];
-	camDestroy DeathCamera;
+if (!isNil "WF_DeathCamera") then {
+	WF_DeathCamera cameraEffect["TERMINATE","BACK"];
+	camDestroy WF_DeathCamera;
 	"colorCorrections" ppEffectEnable false;
 	"dynamicBlur" ppEffectEnable false;
 };

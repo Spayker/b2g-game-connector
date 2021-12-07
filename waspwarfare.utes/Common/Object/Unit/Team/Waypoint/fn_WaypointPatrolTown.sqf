@@ -9,21 +9,17 @@
 private ['_camps','_insert','_insertObject','_insertStep','_maxWaypoints','_pos','_rand1','_rand2','_townPos','_type','_update','_usable','_wpcompletionRadius','_wpradius','_wps'];
 params ["_team", "_town", ["_radius", 30]];
 
-if (!(_town isEqualType objNull)) exitWith {};
+if (isNull _town) exitWith {};
 if (isNull _team) exitWith {};
+
 _townPos = getPos _town;
+_camps = _town getVariable ['camps', []];
 
-_camps = _town getVariable 'camps';//wf2
+_usable = [_town];
+if(count _camps > 0) then {  _usable = _usable + _camps };
 
-_usable = [_town] + _camps;
 _maxWaypoints = (missionNamespace getVariable 'WF_C_TOWNS_UNITS_WAYPOINTS') + count(_usable);
 _wps = [];
-
-//--- Randomize the behaviours.
-if (random 100 > 50) then {_team setFormation "DIAMOND"} else {_team setFormation "STAG COLUMN"};
-if (random 100 > 50) then {_team setCombatMode "YELLOW"} else {_team setCombatMode "RED"};
-if (random 100 > 50) then {_team setBehaviour "AWARE"} else {_team setBehaviour "COMBAT"};
-if (random 100 > 50) then {_team setSpeedMode "NORMAL"} else {_team setSpeedMode "LIMITED"};
 
 //--- Dyn insert.
 _insertStep = [-1, floor(_maxWaypoints / count(_usable))] select (count(_usable) != 0);

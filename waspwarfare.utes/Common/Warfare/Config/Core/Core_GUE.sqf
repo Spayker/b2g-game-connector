@@ -5,8 +5,12 @@ _c = [];
 _i = [];
 
 //Infantry
+//// guerilla
 _c pushBack 'CUP_I_GUE_Officer';
 _i pushBack ['','',150,4,-1,0,0,1,'Guerilla',[]];
+
+_c pushBack 'CUP_I_GUE_Commander';
+_i pushBack ['','',175,4,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_AKS74';
 _i pushBack ['','',150,4,-1,0,0,1,'Guerilla',[]];
@@ -17,11 +21,14 @@ _i pushBack ['','',150,4,-1,0,0,1,'Guerilla',[]];
 _c pushBack 'CUP_I_GUE_Soldier_AKSU';
 _i pushBack ['Soldier AKSU','',150,4,-1,0,0,1,'Guerilla',[]];
 
+_c pushBack 'CUP_I_GUE_Soldier_AKM';
+_i pushBack ['Soldier AKM','',150,4,-1,0,0,1,'Guerilla',[]];
+
 _c pushBack 'CUP_I_GUE_Medic';
-_i pushBack ['','',140,4,-1,0,0,1,'Guerilla',[]];
+_i pushBack ['','',200,4,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_GL';
-_i pushBack ['','',170,5,-1,0,0,1,'Guerilla',[]];
+_i pushBack ['','',200,5,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_TK_GUE_Soldier';
 _i pushBack ['','',150,5,-1,0,0,1,'Guerilla',[]];
@@ -30,43 +37,76 @@ _c pushBack 'CUP_I_GUE_Ammobearer';
 _i pushBack ['','',150,5,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Local';
-_i pushBack ['','',165,6,-1,0,0,1,'Guerilla',[]];
+_i pushBack ['','',100,6,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_LAT';
-_i pushBack ['','',170,5,-1,0,0,1,'Guerilla',[]];
+_i pushBack ['','',200,5,-1,0,0,1,'Guerilla',[]];
+
+_c pushBack 'I_C_Soldier_Bandit_2_F';
+_i pushBack ['','',125,5,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Saboteur';
-_i pushBack ['','',255,5,-1,1,0,1,'Guerilla',[]];
+_i pushBack ['','',255,5,-1,2,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_Scout';
 _i pushBack ['','',250,5,-1,2,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_AT';
-_i pushBack ['','',240,5,-1,0,0,1,'Guerilla',[]];
+_i pushBack ['','',225,5,-1,1,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_RACS_Soldier_HAT_Urban';
-_i pushBack ['','',300,5,-1,0,0,1,'Guerilla',[]];
+_i pushBack ['','',300,5,-1,2,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_AR';
-_i pushBack ['','',300,5,-1,0,0,1,'Guerilla',[]];
+_i pushBack ['','',250,5,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_MG';
 _i pushBack ['','',300,5,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_AA2';
-_i pushBack ['Soldier AA','',350,5,-1,1,0,1,'Guerilla',[]];
+_i pushBack ['Soldier AA','',350,5,-1,3,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Soldier_AA';
-_i pushBack ['','',350,5,-1,1,0,1,'Guerilla',[]];
+_i pushBack ['','',350,5,-1,3,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Villager';
-_i pushBack ['','',165,5,-1,1,0,1,'Guerilla',[]];
+_i pushBack ['','',100,5,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Sniper';
+_i pushBack ['Sniper','',175,5,-1,3,0,1,'Guerilla',[]];
+
+_c pushBack 'I_L_Hunter_F';
+_i pushBack ['','',175,5,-1,1,0,1,'Guerilla',[]];
+
+_c pushBack 'I_C_Soldier_Para_1_F';
+_i pushBack ['','',125,5,-1,1,0,1,'Guerilla',[]];
+
+_c pushBack 'I_C_Soldier_Para_2_F';
+_i pushBack ['','',125,5,-1,1,0,1,'Guerilla',[]];
+
+_c pushBack 'I_C_Soldier_Para_3_F';
+_i pushBack ['','',125,5,-1,1,0,1,'Guerilla',[]];
+
+_c pushBack 'I_C_Soldier_Para_4_F';
+_i pushBack ['','',125,5,-1,1,0,1,'Guerilla',[]];
+
+_c pushBack 'I_C_Soldier_Para_6_F';
+_i pushBack ['','',125,5,-1,1,0,1,'Guerilla',[]];
+
+_c pushBack 'I_C_Soldier_Para_8_F';
+_i pushBack ['','',125,5,-1,1,0,1,'Guerilla',[]];
+
+_c pushBack 'CUP_I_PMC_Sniper';
 _i pushBack ['Sniper','',265,5,-1,1,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Forester';
-_i pushBack ['','',165,5,-1,1,0,1,'Guerilla',[]];
+_i pushBack ['','',165,5,-1,0,0,1,'Guerilla',[]];
+
+_c pushBack 'I_L_Looter_SG_F';
+_i pushBack ['','',130,5,-1,0,0,1,'Guerilla',[]];
+
+_c pushBack 'CUP_I_GUE_Woodman';
+_i pushBack ['','',125,5,-1,0,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_GUE_Engineer';
 _i pushBack ['','',185,5,-1,1,0,1,'Guerilla',[]];
@@ -74,16 +114,19 @@ _i pushBack ['','',185,5,-1,1,0,1,'Guerilla',[]];
 _c pushBack 'CUP_I_GUE_Pilot';
 _i pushBack ['','',120,5,-1,1,0,1,'Guerilla',[]];
 
-_c pushBack 'CUP_I_RACS_Pilot';
+_c pushBack 'I_helipilot_F';
 _i pushBack ['','',120,5,-1,1,0,1,'Guerilla',[]];
 
-_c pushBack 'I_helipilot_F';
+_c pushBack 'CUP_I_RACS_Pilot';
 _i pushBack ['','',120,5,-1,1,0,1,'Guerilla',[]];
 
 _c pushBack 'CUP_I_UN_CDF_Crew_MNT';
 _i pushBack ['','',120,4,-1,0,0,0.85,'Guerilla',[]];
 
 _c pushBack 'CUP_I_RACS_Crew';
+_i pushBack ['','',120,4,-1,0,0,0.85,'Guerilla',[]];
+
+_c pushBack 'cwr3_i_soldier_crew';
 _i pushBack ['','',120,4,-1,0,0,0.85,'Guerilla',[]];
 
 _c pushBack 'CUP_I_UN_CDF_Soldier_MNT';
@@ -93,6 +136,12 @@ _c pushBack 'CUP_I_GUE_Crew';
 _i pushBack ['','',120,4,-1,0,0,0.85,'Guerilla',[]];
 
 _c pushBack 'CUP_I_UN_CDF_Crew_DST';
+_i pushBack ['','',120,4,-1,0,0,0.85,'Guerilla',[]];
+
+_c pushBack 'I_G_Soldier_F';
+_i pushBack ['','',120,4,-1,0,0,0.85,'Guerilla',[]];
+
+_c pushBack 'I_C_Soldier_Para_1_F';
 _i pushBack ['','',120,4,-1,0,0,0.85,'Guerilla',[]];
 
 _c pushBack 'I_crew_F';
@@ -156,26 +205,44 @@ _c pushBack 'CUP_I_PMC_Crew';
 _i pushBack ['','',150,4,-1,0,0,0.85,'PMC',[]];
 
 //Light Vehicles
-_c pushBack 'CUP_I_V3S_Rearm_TKG';
-_i pushBack ['','',500,17,-2,0,1,0,'Guerilla',[]];
-
 _c pushBack 'CUP_I_Datsun_PK';
 _i pushBack ['','',250,17,-2,0,1,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_Hilux_M2_TK';
 _i pushBack ['','',300,17,-2,0,1,0,'Guerilla',[]];
 
+_c pushBack 'I_G_Offroad_01_armed_F';
+_i pushBack ['','',300,17,-2,0,1,0,'Guerilla',[]];
+
 _c pushBack 'CUP_I_Hilux_SPG9_TK';
+_i pushBack ['','',350,17,-2,0,1,0,'Guerilla',[]];
+
+_c pushBack 'I_C_Offroad_02_AT_F';
+_i pushBack ['','',350,17,-2,0,1,0,'Guerilla',[]];
+
+_c pushBack 'I_G_Offroad_01_AT_F';
 _i pushBack ['','',350,17,-2,0,1,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_Hilux_DSHKM_TK';
 _i pushBack ['','',325,17,-2,0,1,0,'Guerilla',[]];
 
+_c pushBack 'I_C_Offroad_02_LMG_F';
+_i pushBack ['','',325,17,-2,0,1,0,'Guerilla',[]];
+
 _c pushBack 'CUP_I_Hilux_AGS30_TK';
 _i pushBack ['','',400,17,-2,1,1,0,'Guerilla',[]];
 
+_c pushBack 'CUP_I_Hilux_metis_NAPA';
+_i pushBack ['','',700,17,-2,1,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_LSV_02_AT_ION';
+_i pushBack ['','',700,17,-2,1,1,0,'Guerilla',[]];
+
 _c pushBack 'CUP_I_Hilux_podnos_TK';
 _i pushBack ['','',400,17,-2,1,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_LR_Transport_RACS';
+_i pushBack ['','',400,17,-2,0,1,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_Hilux_MLRS_TK';
 _i pushBack ['','',500,17,-2,1,1,0,'Guerilla',[]];
@@ -188,6 +255,24 @@ _i pushBack ['','',500,17,-2,1,1,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_Hilux_igla_TK';
 _i pushBack ['','',500,17,-2,1,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_LR_Ambulance_RACS';
+_i pushBack ['(AMBU) Land-Rover','',3380,23,-2,2,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_V3S_Open_NAPA';
+_i pushBack ['','',250,21,-2,0,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_V3S_Covered_TKG';
+_i pushBack ['(Salvage Truck) V3S','',300,21,-2,0,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_V3S_Rearm_TKG';
+_i pushBack ['(Ammo Truck) V3S','',1000,21,-2,0,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_V3S_Refuel_TKG';
+_i pushBack ['','',300,21,-2,0,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_V3S_Repair_TKG';
+_i pushBack ['(Repair Truck) V3S','',2880,21,-2,2,1,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_4WD_AT_ION';
 _i pushBack ['','',350,17,-2,1,1,0,'Guerilla',[]];
@@ -205,6 +290,9 @@ _c pushBack 'I_G_Offroad_01_armed_F';
 _i pushBack ['','',550,17,-2,1,1,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_SUV_Armored_ION';
+_i pushBack ['','',750,17,-2,1,1,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_LSV_02_Minigun_ION';
 _i pushBack ['','',750,17,-2,1,1,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_LR_SF_GMG_AAF';
@@ -225,6 +313,9 @@ _i pushBack ['','',250,17,-2,0,1,0,'Guerilla',[],7];
 _c pushBack 'CUP_I_UAZ_SPG9_UN';
 _i pushBack ['','',290,17,-2,0,1,0,'Guerilla',[], 7];
 
+_c pushBack 'CUP_I_BTR40_MG_TKG';
+_i pushBack ['','',800,22,-2,0,1,0,'Guerilla',[]];
+
 _c pushBack 'CUP_I_BTR60_UN';
 _i pushBack ['','',1200,25,-2,3,1,0,'Guerilla',[],5];
 
@@ -237,47 +328,55 @@ _i pushBack ['','',1800,25,-2,3,1,0,'Guerilla',[]];
 _c pushBack 'CUP_I_Ural_ZU23_NAPA';
 _i pushBack ['','',1750,25,-2,2,1,0,'Guerilla',[]];
 
-_c pushBack 'CUP_I_LAV25_RACS';
-_i pushBack ['','',2750,25,-2,2,1,0,'Guerilla',[], 0];
-
-_c pushBack 'CUP_I_LAV25M240_RACS';
-_i pushBack ['','',2950,25,-2,2,1,0,'Guerilla',[], 0];
+_c pushBack 'CUP_I_BRDM2_HQ_NAPA';
+_i pushBack ['Mobile HQ','',25000,23,-2,0,1,0,'Guerilla',[]];
 
 /* Heavy Vehicles */
+_c pushBack 'CUP_I_BMP2_AMB_NAPA';
+_i pushBack ['(AMBU) BMP-2','',3880,23,-2,0,2,0,'Guerilla',[]];
+
+_c pushBack 'cwr3_i_bmp2_zu23';
+_i pushBack ['','',1850,30,-2,0,3,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_M60A3_RACS';
-_i pushBack ['','',2000,30,-2,1,2,0,'Guerilla',[], 1];
-
-_c pushBack 'CUP_I_M60A3_TTS_RACS';
-_i pushBack ['','',2100,30,-2,1,2,0,'Guerilla',[], 1];
+_i pushBack ['','',3900,30,-2,2,3,0,'Guerilla',[], 0];
 
 _c pushBack 'CUP_I_M113_AAF';
-_i pushBack ['','',1600,30,-2,0,2,0,'Guerilla',[], 1];
+_i pushBack ['','',1600,30,-2,0,2,0,'Guerilla',[], 5];
 
 _c pushBack 'CUP_I_M163_AAF';
-_i pushBack ['','',3600,30,-2,2,2,0,'Guerilla',[], 1];
+_i pushBack ['','',3600,30,-2,2,2,0,'Guerilla',[], 4];
 
 _c pushBack 'CUP_I_T34_NAPA';
-_i pushBack ['','',1500,30,-2,1,2,0,'Guerilla',[]];
+_i pushBack ['','',1500,30,-2,0,2,0,'Guerilla',[]];
+
+_c pushBack 'cwr3_i_t55a';
+_i pushBack ['','',3000,30,-2,1,2,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_BMP1_TK_GUE';
 _i pushBack ['','',2100,30,-2,1,2,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_BMP2_NAPA';
-_i pushBack ['','',3400,30,-2,1,2,0,'Guerilla',[]];
-
-_c pushBack 'CUP_I_T55_NAPA';
-_i pushBack ['','',4000,35,-2,2,2,0,'Guerilla',[]];
+_i pushBack ['','',3400,30,-2,2,2,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_T72_NAPA';
-_i pushBack ['','',5500,35,-2,2,2,0,'Guerilla',[]];
+_i pushBack ['','',5500,35,-2,3,2,0,'Guerilla',[]];
+
+_c pushBack 'cwr3_i_t72b1';
+_i pushBack ['','',5750,35,-2,4,2,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_ZSU23_AAF';
-_i pushBack ['','',3500,35,-2,2,2,0,'Guerilla',[], 1];
+_i pushBack ['','',3500,35,-2,3,2,0,'Guerilla',[], 1];
+
+_c pushBack 'cwr3_i_mtlb_sa13';
+_i pushBack ['','',3500,35,-2,4,2,0,'Guerilla',[], 3];
 
 //Air Vehicles
 _c pushBack 'CUP_I_Ka60_GL_Blk_ION';
-_i pushBack ['','',10500,35,-2,2,2,0,'Guerilla',[]];
+_i pushBack ['','',10500,35,-2,1,2,0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_UH1H_TK_GUE';
+_i pushBack ['(AMBU) UH1H','',16000,35,-2,2,2,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_AH6J_RACS';
 _i pushBack ['','',6200,35,-2,2,2,0,'Guerilla',[], 1];
@@ -289,13 +388,13 @@ _c pushBack 'CUP_I_UH1H_gunship_TK_GUE';
 _i pushBack ['','',9700,35,-2,2,2,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_SA330_Puma_HC2_RACS';
-_i pushBack ['','',5000,35,-2,2,2,0,'Guerilla',[]];
+_i pushBack ['','',5000,35,-2,1,2,0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_Wildcat_Green_AAF';
-_i pushBack ['','',10500,35,-2,2,2,0,'Guerilla',[]];
+_i pushBack ['','',10500,35,-2,3,2,0,'Guerilla',[]];
 
-_c pushBack 'CUP_I_Mi24_D_Dynamic_ION';
-_i pushBack ['','',13200,35,-2,2,2,0,'Guerilla',[], 16];
+_c pushBack 'CUP_I_Mi24_D_Dynamic_AAF';
+_i pushBack ['','',38060,35,-2,4,2,0,'Guerilla',[], 16];
 
 _c pushBack 'CUP_I_L39_AAF';
 _i pushBack ['','',29000,55,-2,2,3,0,'Guerilla',[]];
@@ -312,21 +411,33 @@ _i pushBack ['','', 15000,20,-2,2,3,0,'Guerilla',[],0];
 _c pushBack 'CUP_I_Mi17_UN';
 _i pushBack ['','', 7500,20,-2,2,3,0,'Guerilla',[],0];
 
+_c pushBack 'CUP_I_C130J_AAF';
+_i pushBack ['','',14800,43,-2,1,3,0,'Guerilla',[]];
+
 //Static Defenses
+_c pushBack 'CUP_I_D30_TK_GUE';
+_i pushBack ['','',2000,0,1,0,'Defense',0,'Guerilla',[]];
+
+_c pushBack 'CUP_I_2b14_82mm_TK_GUE';
+_i pushBack ['Podnos Mortar','',1000,0,1,0,'Defense',0,'Guerilla',[]];
+
 _c pushBack 'CUP_I_DSHKM_NAPA';
 _i pushBack ['','',300,0,1,0,'Defense',0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_ZU23_NAPA';
 _i pushBack ['','',600,0,1,0,'Defense',0,'Guerilla',[]];
 
+_c pushBack 'CUP_I_AGS_TK_GUE';
+_i pushBack ['','',560,0,1,0,'Defense',0,'Guerilla',[]];
+
+_c pushBack 'CUP_B_RBS70_ACR';
+_i pushBack ['','',900,0,1,0,'Defense',0,'Guerilla',[]];
+
 _c pushBack 'CUP_B_DSHkM_MiniTriPod_NAPA';
 _i pushBack ['','',225,0,1,0,'Defense',0,'Guerilla',[]];
 
 _c pushBack 'CUP_I_SPG9_NAPA';
 _i pushBack ['','',675,0,1,0,'Defense',0,'Guerilla',[]];
-
-_c pushBack 'CUP_I_DSHKM_NAPA';
-_i pushBack ['','',700,0,1,0,'Defense',0,'Guerilla',[]];
 
 _c pushBack'I_HMG_01_high_F';
 _i pushBack['','',300,0,1,0,'Defense',0,'Guerilla',[]];
