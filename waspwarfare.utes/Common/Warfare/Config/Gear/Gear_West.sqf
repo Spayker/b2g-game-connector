@@ -1,7 +1,4 @@
-private ["_faction", "_i", "_p", "_side", "_u"];
-
-_side = _this;
-_faction = "West";
+private ["_i", "_p", "_u"];
 
 _i = [];
 _u = [];
@@ -11,9 +8,41 @@ _i pushBack 'MineDetector';
 _u pushBack 0;
 _p pushBack 75;
 
+_i pushBack 'CUP_NVG_HMNVS_WASP';
+_u pushBack 0;
+_p pushBack 150;
+
+_i pushBack 'CUP_NVG_PVS14_Hide_WASP';
+_u pushBack 0;
+_p pushBack 150;
+
 _i pushBack 'CUP_hgun_Glock17';
 _u pushBack 0;
 _p pushBack 275;
+
+_i pushBack 'CUP_hgun_Glock17_tan';
+_u pushBack 0;
+_p pushBack 275;
+
+_i pushBack 'CUP_hgun_Glock17_blk';
+_u pushBack 0;
+_p pushBack 275;
+
+_i pushBack 'CUP_hgun_M17_Black';
+_u pushBack 0;
+_p pushBack 275;
+
+_i pushBack 'CUP_hgun_M17_Green';
+_u pushBack 0;
+_p pushBack 275;
+
+_i pushBack 'CUP_hgun_Mk23';
+_u pushBack 1;
+_p pushBack 375;
+
+_i pushBack 'CUP_hgun_Deagle';
+_u pushBack 2;
+_p pushBack 400;
 
 _i pushBack 'CUP_hgun_Colt1911';
 _u pushBack 0;
@@ -67,10 +96,6 @@ _i pushBack 'CUP_sgun_M1014';
 _u pushBack 0;
 _p pushBack 400;
 
-_i pushBack 'CUP_sgun_AA12';
-_u pushBack 1;
-_p pushBack 500;
-
 _i pushBack 'CUP_arifle_G3A3_modern_ris';
 _u pushBack 1;
 _p pushBack 600;
@@ -80,6 +105,10 @@ _u pushBack 0;
 _p pushBack 400;
 
 _i pushBack 'CUP_arifle_M4A1_black';
+_u pushBack 0;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_CZ805_A1_coyote';
 _u pushBack 0;
 _p pushBack 400;
 
@@ -103,6 +132,10 @@ _i pushBack 'CUP_arifle_G36C';
 _u pushBack 0;
 _p pushBack 400;
 
+_i pushBack 'CUP_arifle_G36K_KSK_VFG_hex';
+_u pushBack 0;
+_p pushBack 400;
+
 _i pushBack 'CUP_arifle_G36C_camo';
 _u pushBack 0;
 _p pushBack 400;
@@ -115,6 +148,10 @@ _i pushBack 'CUP_arifle_G36K';
 _u pushBack 1;
 _p pushBack 450;
 
+_i pushBack 'CUP_CZ_BREN2_556_11_Grn';
+_u pushBack 1;
+_p pushBack 350;
+
 _i pushBack 'CUP_arifle_G36A_camo';
 _u pushBack 1;
 _p pushBack 450;
@@ -126,6 +163,10 @@ _p pushBack 450;
 _i pushBack 'CUP_arifle_L85A2_G';
 _u pushBack 0;
 _p pushBack 400;
+
+_i pushBack 'CUP_arifle_L85A2_Elcan_Laser';
+_u pushBack 1;
+_p pushBack 450;
 
 _i pushBack 'CUP_arifle_XM8_Railed';
 _u pushBack 0;
@@ -151,6 +192,10 @@ _i pushBack 'CUP_arifle_Mk16_STD_FG';
 _u pushBack 0;
 _p pushBack 400;
 
+_i pushBack 'CUP_arifle_Mk16_STD_FG_woodland';
+_u pushBack 0;
+_p pushBack 400;
+
 _i pushBack 'CUP_arifle_Mk16_CQC_SFG';
 _u pushBack 1;
 _p pushBack 450;
@@ -163,25 +208,41 @@ _i pushBack 'CUP_arifle_Mk16_SV';
 _u pushBack 1;
 _p pushBack 450;
 
-_i pushBack 'CUP_arifle_Mk17_CQC_FG';
-_u pushBack 2;
+_i pushBack 'CUP_arifle_Mk17_CQC_black';
+_u pushBack 3;
 _p pushBack 500;
 
-_i pushBack 'CUP_arifle_Mk17_CQC_EGLM';
-_u pushBack 2;
-_p pushBack 500;
-
-_i pushBack 'CUP_arifle_Mk17_STD';
-_u pushBack 2;
-_p pushBack 500;
-
-_i pushBack 'CUP_arifle_Mk17_STD_EGLM';
-_u pushBack 2;
+_i pushBack 'CUP_arifle_Mk17_STD_black';
+_u pushBack 3;
 _p pushBack 500;
 
 _i pushBack 'CUP_arifle_Mk20';
 _u pushBack 2;
 _p pushBack 500;
+
+_i pushBack 'CUP_arifle_AUG_A1';
+_u pushBack 1;
+_p pushBack 350;
+
+_i pushBack 'CUP_arifle_ACRC_wdl_68';
+_u pushBack 1;
+_p pushBack 350;
+
+_i pushBack 'CUP_arifle_HK417_12_Wood';
+_u pushBack 3;
+_p pushBack 450;
+
+_i pushBack 'CUP_arifle_HK416_Wood';
+_u pushBack 1;
+_p pushBack 350;
+
+_i pushBack 'CUP_Famas_F1_Rail_Wood';
+_u pushBack 1;
+_p pushBack 350;
+
+_i pushBack 'CUP_arifle_Mk17_STD_FG_woodland';
+_u pushBack 3;
+_p pushBack 350;
 
 _i pushBack 'CUP_glaunch_Mk13';
 _u pushBack 1;
@@ -194,6 +255,14 @@ _p pushBack 650;
 _i pushBack 'CUP_launch_MAAWS';
 _u pushBack 1;
 _p pushBack 500;
+
+_i pushBack 'CUP_launch_BF3';
+_u pushBack 0;
+_p pushBack 650;
+
+_i pushBack 'CUP_launch_HCPF3';
+_u pushBack 0;
+_p pushBack 650;
 
 _i pushBack 'CUP_launch_M72A6';
 _u pushBack 1;
@@ -208,16 +277,276 @@ _u pushBack 1;
 _p pushBack 800;
 
 _i pushBack 'CUP_launch_Javelin';
-_u pushBack 3;
+_u pushBack 4;
 _p pushBack 1200;
 
 _i pushBack 'CUP_launch_FIM92Stinger';
 _u pushBack 2;
 _p pushBack 900;
 
+_i pushBack 'CUP_PTFHE_M';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_PTFHC_M';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_M72A6_M';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_arifle_M4A1_BUIS_GL';
+_u pushBack 0;
+_p pushBack 450;
+
+_i pushBack 'CUP_arifle_M4A1_BUIS_desert_GL';
+_u pushBack 1;
+_p pushBack 450;
+
+_i pushBack 'CUP_arifle_M4A1_BUIS_camo_GL';
+_u pushBack 1;
+_p pushBack 450;
+
+_i pushBack 'CUP_arifle_M16A4_GL';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_L85A2_GL';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_XM8_Carbine_GL';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_Mk17_CQC_EGLM_black';
+_u pushBack 3;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_Mk17_STD_EGLM_black';
+_u pushBack 3;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_Mk17_STD_EGLM_woodland';
+_u pushBack 3;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_HK417_12_AG36_Wood';
+_u pushBack 3;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_HK416_CQB_AG36';
+_u pushBack 2;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_HK416_AGL_Wood';
+_u pushBack 2;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_AG36';
+_u pushBack 2;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_HK416_CQB_AG36_Wood';
+_u pushBack 2;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_Mk16_CQC_EGLM_black';
+_u pushBack 2;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_ACR_EGLM_wdl_68';
+_u pushBack 2;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_M4A1_GL_carryhandle';
+_u pushBack 2;
+_p pushBack 200;
+
+_i pushBack 'CUP_arifle_G36A3_AG36_wdl';
+_u pushBack 2;
+_p pushBack 200;
+
+_i pushBack  "CUP_lmg_minimi_railed";
+_u pushBack  0;
+_p pushBack  250;
+
+_i pushBack  "CUP_lmg_M60";
+_u pushBack  0;
+_p pushBack  250;
+
+_i pushBack 'CUP_lmg_M240';
+_u pushBack 2;
+_p pushBack 600;
+
+_i pushBack  "CUP_lmg_L110A1";
+_u pushBack  1;
+_p pushBack  250;
+
+_i pushBack  "CUP_arifle_MG36";
+_u pushBack  1;
+_p pushBack  250;
+
+_i pushBack  "CUP_lmg_m249_SQuantoon";
+_u pushBack  3;
+_p pushBack  450;
+
+_i pushBack "CUP_sgun_SPAS12";
+_u pushBack 1;
+_p pushBack 300;
+
+_i pushBack "CUP_sgun_M1014_Entry_vfg";
+_u pushBack 0;
+_p pushBack 200;
+
+_i pushBack "CUP_sgun_AA12";
+_u pushBack 3;
+_p pushBack 400;
+
+_i pushBack  "CUP_lmg_M60E4_norail";
+_u pushBack  2;
+_p pushBack  280;
+
+_i pushBack 'CUP_lmg_Mk48_des';
+_u pushBack 2;
+_p pushBack 600;
+
+_i pushBack 'CUP_glaunch_M32';
+_u pushBack 2;
+_p pushBack 650;
+
+_i pushBack 'CUP_lmg_Mk48_wdl';
+_u pushBack 2;
+_p pushBack 600;
+
+_i pushBack 'CUP_lmg_M60E4';
+_u pushBack 2;
+_p pushBack 600;
+
+_i pushBack 'CUP_lmg_m249_pip1';
+_u pushBack 1;
+_p pushBack 550;
+
+_i pushBack 'CUP_lmg_m249_pip2';
+_u pushBack 1;
+_p pushBack 550;
+
+_i pushBack 'CUP_arifle_xm8_SAW';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_L86A2';
+_u pushBack 1;
+_p pushBack 450;
+
+_i pushBack 'CUP_arifle_MG36';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_MG36_camo';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_M4A1_BUIS_GL';
+_u pushBack 0;
+_p pushBack 450;
+
+_i pushBack 'CUP_arifle_M4A1_BUIS_desert_GL';
+_u pushBack 1;
+_p pushBack 450;
+
+_i pushBack 'CUP_arifle_M4A1_BUIS_camo_GL';
+_u pushBack 1;
+_p pushBack 450;
+
+_i pushBack 'CUP_arifle_M16A4_GL';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_L85A2_GL';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_XM8_Carbine_GL';
+_u pushBack 1;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_Mk17_CQC_EGLM_black';
+_u pushBack 3;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_HK417_12_AG36_Wood';
+_u pushBack 3;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_HK416_CQB_AG36';
+_u pushBack 2;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_HK416_AGL_Wood';
+_u pushBack 2;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_AG36';
+_u pushBack 2;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_HK416_CQB_AG36_Wood';
+_u pushBack 2;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_Mk16_CQC_EGLM_black';
+_u pushBack 2;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_Mk16_CQC_EGLM_woodland';
+_u pushBack 2;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_ACR_EGLM_wdl_68';
+_u pushBack 2;
+_p pushBack 500;
+
+_i pushBack 'CUP_arifle_M4A1_GL_carryhandle';
+_u pushBack 2;
+_p pushBack 200;
+
+_i pushBack 'CUP_arifle_G36A3_AG36_wdl';
+_u pushBack 2;
+_p pushBack 200;
+
+_i pushBack  "CUP_smg_MP5SD6";
+_u pushBack  1;
+_p pushBack  450;
+
+_i pushBack 'CUP_smg_MP5A5';
+_u pushBack 0;
+_p pushBack 400;
+
+_i pushBack 'CUP_arifle_Fort222';
+_u pushBack 2;
+_p pushBack 450;
+
+_i pushBack  "CUP_smg_PS90_olive";
+_u pushBack  3;
+_p pushBack  500;
+
+_i pushBack  "20Rnd_556x45_UW_mag";
+_u pushBack  0;
+_p pushBack  15;
+
 _i pushBack 'CUP_HandGrenade_M67';
 _u pushBack 0;
 _p pushBack 150;
+
+_i pushBack 'HandGrenade';
+_u pushBack 0;
+_p pushBack 150;
+
+_i pushBack 'MiniGrenade';
+_u pushBack 0;
+_p pushBack 100;
 
 _i pushBack 'SmokeShellBlue';
 _u pushBack 0;
@@ -242,6 +571,18 @@ _p pushBack 100;
 _i pushBack 'CUP_17Rnd_9x19_glock17';
 _u pushBack 0;
 _p pushBack 15;
+
+_i pushBack 'CUP_21Rnd_9x19_M17_Black';
+_u pushBack 0;
+_p pushBack 15;
+
+_i pushBack 'CUP_21Rnd_9x19_M17_Green';
+_u pushBack 0;
+_p pushBack 15;
+
+_i pushBack 'CUP_7Rnd_50AE_Deagle';
+_u pushBack 2;
+_p pushBack 30;
 
 _i pushBack 'CUP_M136_M';
 _u pushBack 0;
@@ -275,9 +616,81 @@ _i pushBack 'CUP_30Rnd_556x45_Stanag_Mk16';
 _u pushBack 0;
 _p pushBack 30;
 
+_i pushBack 'CUP_30Rnd_556x45_Stanag_L85';
+_u pushBack 0;
+_p pushBack 30;
+
+_i pushBack 'CUP_30Rnd_556x45_CZ805';
+_u pushBack 0;
+_p pushBack 30;
+
+_i pushBack 'CUP_20Rnd_B_AA12_HE';
+_u pushBack 3;
+_p pushBack 50;
+
+_i pushBack 'CUP_20Rnd_B_AA12_Buck_00';
+_u pushBack 3;
+_p pushBack 25;
+
+_i pushBack 'CUP_20Rnd_B_AA12_Buck_0';
+_u pushBack 3;
+_p pushBack 25;
+
+_i pushBack 'CUP_20Rnd_B_AA12_Buck_1';
+_u pushBack 3;
+_p pushBack 25;
+
+_i pushBack 'CUP_20Rnd_B_AA12_Buck_2';
+_u pushBack 3;
+_p pushBack 25;
+
+_i pushBack 'CUP_20Rnd_B_AA12_Buck_3';
+_u pushBack 3;
+_p pushBack 25;
+
+_i pushBack 'CUP_20Rnd_B_AA12_Buck_4';
+_u pushBack 3;
+_p pushBack 25;
+
+_i pushBack 'CUP_20Rnd_B_AA12_Bird_4';
+_u pushBack 3;
+_p pushBack 25;
+
+_i pushBack 'CUP_20Rnd_B_AA12_Slug';
+_u pushBack 3;
+_p pushBack 25;
+
+_i pushBack 'CUP_30Rnd_556x45_Stanag_Mk16_woodland';
+_u pushBack 0;
+_p pushBack 30;
+
+_i pushBack 'CUP_20Rnd_762x51_B_SCAR_wdl';
+_u pushBack 3;
+_p pushBack 75;
+
+_i pushBack 'CUP_30Rnd_556x45_PMAG_QP_Tan';
+_u pushBack 0;
+_p pushBack 30;
+
+_i pushBack 'CUP_30Rnd_556x45_PMAG_QP_Olive';
+_u pushBack 0;
+_p pushBack 30;
+
+_i pushBack 'CUP_25Rnd_556x45_Famas';
+_u pushBack 0;
+_p pushBack 30;
+
+_i pushBack '50Rnd_570x28_SMG_03';
+_u pushBack 3;
+_p pushBack 30;
+
 _i pushBack 'CUP_20Rnd_556x45_Stanag';
 _u pushBack 0;
 _p pushBack 20;
+
+_i pushBack 'CUP_30Rnd_556x45_AUG';
+_u pushBack 0;
+_p pushBack 30;
 
 _i pushBack 'CUP_200Rnd_TE4_Green_Tracer_556x45_L110A1';
 _u pushBack 1;
@@ -307,6 +720,14 @@ _i pushBack 'CUP_30Rnd_556x45_G36';
 _u pushBack 0;
 _p pushBack 25;
 
+_i pushBack 'CUP_30Rnd_556x45_G36_wdl';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_30Rnd_556x45_G36_hex';
+_u pushBack 0;
+_p pushBack 25;
+
 _i pushBack 'CUP_30Rnd_TE1_Red_Tracer_556x45_G36';
 _u pushBack 0;
 _p pushBack 25;
@@ -319,57 +740,52 @@ _i pushBack 'CUP_30Rnd_556x45_XM8';
 _u pushBack 1;
 _p pushBack 50;
 
-//--Vests--
-_i pushBack 'CUP_V_CZ_vest20';
-_u pushBack 1;
-_p pushBack 50;
-
-_i pushBack 'V_TacVest_blk';
-_u pushBack 2;
-_p pushBack 100;
-
-_i pushBack 'V_TacVest_oli';
-_u pushBack 2;
-_p pushBack 100;
-
-_i pushBack 'CUP_V_B_MTV';
-_u pushBack 3;
-_p pushBack 150;
-
-_i pushBack 'V_PlateCarrier2_rgr';
-_u pushBack 3;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_USArmy_PilotVest';
-_u pushBack 3;
-_p pushBack 100;
-
-_i pushBack 'V_PlateCarrierSpec_rgr';
-_u pushBack 4;
-_p pushBack 200;
-
-_i pushBack 'V_Rangemaster_belt';
-_u pushBack 0;
-_p pushBack 50;
-
-_i pushBack 'V_BandollierB_blk';
-_u pushBack 0;
-_p pushBack 50;
-
-_i pushBack 'V_TacChestrig_grn_F';
-_u pushBack 0;
-_p pushBack 75;
-
-_i pushBack 'V_TacChestrig_oli_F';
-_u pushBack 0;
-_p pushBack 75;
-
 //--Uniform--
+_i pushBack 'CUP_U_CRYE_G3C_M81_US_V2';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_B_BAF_MTP_UBACSLONGKNEE';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_B_BAF_MTP_UBACSROLLED_Gloves';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_B_BAF_DPM_UBACSLONGKNEE_Gloves';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_B_CZ_WDL_Kneepads';
+_u pushBack 0;
+_p pushBack 25;
+
 _i pushBack 'CUP_U_B_USMC_FROG4_WMARPAT';
 _u pushBack 0;
 _p pushBack 25;
 
-_i pushBack 'U_B_CombatUniform_mcam';
+_i pushBack 'CUP_U_CRYE_G3C_RGR';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_B_GER_Flecktarn_2';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_B_GER_Flecktarn_3';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_B_GER_Fleck_Crye2';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_CRYE_G3C_MC_US';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_U_B_GER_Fleck_Crye';
 _u pushBack 0;
 _p pushBack 25;
 
@@ -382,39 +798,252 @@ _u pushBack 1;
 _p pushBack 35;
 
 _i pushBack 'CUP_U_B_BAF_DPM_UBACSLONGKNEE';
-_u pushBack 2;
+_u pushBack 0;
 _p pushBack 45;
 
 _i pushBack 'CUP_U_B_USMC_MARPAT_WDL_TwoKneepads';
 _u pushBack 3;
 _p pushBack 55;
 
-_i pushBack 'CUP_U_B_GER_Flecktarn_6';
+_i pushBack 'U_B_Wetsuit';
+_u pushBack 0;
+_p pushBack 100;
+
+_i pushBack 'U_B_CBRN_Suit_01_Wdl_F';
+_u pushBack 0;
+_p pushBack 100;
+
+//--Vests--
+_i pushBack 'V_I_G_resistanceLeader_F';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'V_RebreatherB';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_V_B_ALICE';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_V_B_GER_Carrier_Vest';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_V_B_GER_Carrier_Rig_2';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_V_B_RRV_DA2';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_V_B_RRV_TL';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_V_B_RRV_Scout2';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_V_B_BAF_MTP_Osprey_Mk4_Webbing';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'V_TacVest_blk';
+_u pushBack 1;
+_p pushBack 100;
+
+_i pushBack 'V_TacVest_oli';
+_u pushBack 1;
+_p pushBack 100;
+
+_i pushBack 'CUP_V_B_BAF_MTP_Osprey_Mk4_AutomaticRifleman';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_BAF_DPM_Osprey_Mk3_Rifleman';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_GER_PVest_Fleck_RFL_LT';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_CPC_tlbelt_rngr';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_BAF_MTP_Osprey_Mk4_Officer';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_CZ_vest08';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_GER_PVest_Fleck_TL';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_GER_Armatus_Fleck';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_GER_Armatus_BB_Fleck';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_USArmy_PilotVest';
+_u pushBack 2;
+_p pushBack 150;
+
+_i pushBack 'CUP_V_CZ_vest20';
+_u pushBack 2;
+_p pushBack 150;
+
+_i pushBack 'CUP_V_B_MTV';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_IOTV_OEFCP_Grenadier_USArmy';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_Eagle_SPC_GL';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_IOTV_OEFCP_MG_USArmy';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_IOTV_OEFCP_Medic_USArmy';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_IOTV_OEFCP_Rifleman_Deltoid_USArmy';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_IOTV_OEFCP_SAW_USArmy';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_IOTV_OEFCP_SL_USArmy';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'CUP_V_B_IOTV_OEFCP_TL_USArmy';
+_u pushBack 3;
+_p pushBack 200;
+
+_i pushBack 'V_PlateCarrier2_rgr';
 _u pushBack 4;
-_p pushBack 65;
+_p pushBack 250;
+
+_i pushBack 'V_PlateCarrierSpec_rgr';
+_u pushBack 4;
+_p pushBack 300;
 
 //--Helmets--
 _i pushBack 'CUP_H_USMC_ACVC_WDL';
 _u pushBack 1;
-_p pushBack 25;
+_p pushBack 80;
+
+_i pushBack 'CUP_H_USArmy_Helmet_Pro';
+_u pushBack 1;
+_p pushBack 80;
+
+_i pushBack 'CUP_H_USArmy_Helmet_Pro_gog';
+_u pushBack 1;
+_p pushBack 80;
+
+_i pushBack 'CUP_H_CZ_Helmet09';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_BAF_MTP_Mk7';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_BAF_MTP_Mk7_PRR_SCRIM_A';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_BAF_DPM_Mk6_GOGGLES_PRR';
+_u pushBack 2;
+_p pushBack 120;
 
 _i pushBack 'CUP_H_USArmy_Helmet_ECH2_GREEN';
 _u pushBack 2;
-_p pushBack 35;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_CZ_Helmet04';
+_u pushBack 2;
+_p pushBack 120;
 
 _i pushBack 'CUP_H_GER_LWH_Flecktarn';
 _u pushBack 2;
-_p pushBack 35;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_USMC_LWH_WDL';
+_u pushBack 2;
+_p pushBack 120;
 
 _i pushBack 'CUP_H_USMC_Goggles_HelmetWDL';
 _u pushBack 2;
-_p pushBack 35;
+_p pushBack 120;
 
 _i pushBack 'CUP_H_USMC_LWH_ESS_WDL';
 _u pushBack 2;
-_p pushBack 35;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_USArmy_HelmetMICH_earpro_ess';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_USArmy_HelmetMICH_earpro';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_USArmy_HelmetMICH_ESS';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_USArmy_HelmetMICH_headset_ess';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_USArmy_HelmetMICH_headset';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_Ger_M92_Cover';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_USArmy_HelmetMICH';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_OpsCore_Spray_SF';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_OpsCore_Covered_Fleck_SF';
+_u pushBack 2;
+_p pushBack 120;
+
+_i pushBack 'CUP_H_OpsCore_Covered_MCAM_SF';
+_u pushBack 2;
+_p pushBack 120;
 
 _i pushBack 'G_Balaclava_blk';
+_u pushBack 0;
+_p pushBack 5;
+
+_i pushBack 'CUP_G_PMC_Facewrap_Black_Glasses_Dark';
 _u pushBack 0;
 _p pushBack 5;
 
@@ -422,371 +1051,71 @@ _i pushBack 'G_Balaclava_combat';
 _u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'G_Balaclava_lowprofile';
-_u pushBack 10;
-_p pushBack 5;
-
 _i pushBack 'G_Balaclava_oli';
 _u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'G_Bandanna_aviator';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Bandanna_beast';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Bandanna_blk';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Bandanna_gry';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Bandanna_blu';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Bandanna_cbr';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_FR_BandanaGreen';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Bandanna_khk_hs';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Bandanna_khk';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Bandanna_khk';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Bandanna_oli';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Bandanna_sgg';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Bandanna_sand';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Bandanna_shades';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Bandanna_sport';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Bandanna_tan';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_FR_Bandana_Headset';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Watchcap_blk';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Watchcap_cbr';
-_u pushBack 10;
+_i pushBack 'CUP_H_Ger_Boonie_Flecktarn';
+_u pushBack 0;
 _p pushBack 5;
 
 _i pushBack 'H_Watchcap_camo';
 _u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'H_Watchcap_khk';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_FR_BeanieGreen';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Beret_blk';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_USMC_BOONIE_DES';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_USArmy_Boonie';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Booniehat_oli';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Booniehat_tan';
+_i pushBack 'CUP_H_BAF_PARA_PRRUNDER_BERET';
 _u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'H_Cap_blk';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Cap_blu';
-_u pushBack 10;
+_i pushBack 'CUP_H_USA_Cap_MARSOC_DEF';
+_u pushBack 0;
 _p pushBack 5;
 
 _i pushBack 'H_Cap_grn';
 _u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'CUP_H_PMC_Cap_Grey';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_C_MAGA_01';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Cap_oli';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Cap_oli_hs';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Cap_red';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'H_Cap_usblack';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_Back_Grey';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_Back_Tan';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_Back_EP_Grey';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_Back_EP_Tan';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_Back_PRR_Grey';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_Back_PRR_Tan';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_EP_Grey';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_EP_Tan';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_PMC_Cap_PRR_Tan';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Combat';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Combat_Goggles_tna_F';
-_u pushBack 10;
+_i pushBack 'CUP_H_CZ_Cap_Headphones';
+_u pushBack 0;
 _p pushBack 5;
 
 _i pushBack 'G_B_Diving';
 _u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'CUP_H_USArmy_Helmet_ECH2_Black';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_Helmet_ECH1_Black';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_Helmet_ECH2_GREEN';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_Helmet_ECH1_Green';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_Helmet_ECH2_Sand';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_FR_ECH';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_Helmet_ECH1_Sand';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_NAPA_Fedora';
-_u pushBack 10;
+_i pushBack 'G_Bandanna_oli';
+_u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'CUP_H_FR_Headband_Headset';
-_u pushBack 10;
-_p pushBack 5;
+_i pushBack 'G_RegulatorMask_F';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'G_AirPurifyingRespirator_02_sand_F';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'G_AirPurifyingRespirator_02_olive_F';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'G_AirPurifyingRespirator_02_black_F';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'G_AirPurifyingRespirator_01_F';
+_u pushBack 0;
+_p pushBack 50;
 
 _i pushBack 'CUP_H_FR_Headset';
 _u pushBack 0;
 _p pushBack 5;
-
-_i pushBack 'H_CrewHelmetHeli_B';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'H_PilotHelmetHeli_B';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'G_Lady_Blue';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'G_Lowprofile';
-_u pushBack 10;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_USMC_LWH_DES';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_RACS_Helmet_Goggles_DES';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_RACS_Helmet_Headset_DES';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_RACS_Helmet_Goggles_DPAT';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_RACS_Helmet_Headset_DPAT';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_RACS_Helmet_DPAT';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_RACS_Helmet_DES';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_RACS_Helmet_tan';
-_u pushBack 10;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_LWH_ESS_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_LWH_ESS_HS_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_LWH_ESS_LR_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_LWH_NVGMOUNT_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_LWH_NVGMOUNT_ESS_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_LWH_NVGMOUNT_ESS_HS_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_LWH_NVGMOUNT_ESS_LR_DES';
-_u pushBack 0;
-_p pushBack 30;
 
 _i pushBack 'CUP_H_USArmy_Helmet_M1_Olive';
 _u pushBack 0;
 _p pushBack 30;
 
 _i pushBack 'CUP_H_USArmy_Helmet_M1_m81';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_HelmetMICH_earpro_ess';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_HelmetMICH_earpro';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_HelmetMICH_ESS';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_HelmetMICH_headset_ess';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_HelmetMICH_headset';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USArmy_HelmetMICH';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_MICH2000_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_MICH2000_COMM_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_MICH2000_DEF_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_MICH2000_DEF_ESS_DES';
-_u pushBack 0;
-_p pushBack 30;
-
-_i pushBack 'CUP_H_USMC_MICH2000_ESS_COMM_DES';
 _u pushBack 0;
 _p pushBack 30;
 
@@ -802,6 +1131,10 @@ _i pushBack 'CUP_TK_NeckScarf';
 _u pushBack 0;
 _p pushBack 5;
 
+_i pushBack 'CUP_G_Scarf_Face_Grn';
+_u pushBack 0;
+_p pushBack 5;
+
 _i pushBack 'CUP_FR_NeckScarf';
 _u pushBack 0;
 _p pushBack 5;
@@ -810,23 +1143,11 @@ _i pushBack 'CUP_FR_NeckScarf2';
 _u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'CUP_H_USMC_CAP_DES';
-_u pushBack 0;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_USMC_CAP_PRR_DES';
-_u pushBack 0;
-_p pushBack 5;
-
-_i pushBack 'CUP_H_USArmy_Helmet_Pro';
-_u pushBack 0;
-_p pushBack 20;
-
-_i pushBack 'CUP_H_USArmy_Helmet_Pro_gog';
-_u pushBack 0;
-_p pushBack 20;
-
 _i pushBack 'H_Cap_headphones';
+_u pushBack 0;
+_p pushBack 5;
+
+_i pushBack 'H_HelmetB_grass';
 _u pushBack 0;
 _p pushBack 5;
 
@@ -859,6 +1180,10 @@ _u pushBack 0;
 _p pushBack 5;
 
 _i pushBack 'H_ShemagOpen_khk';
+_u pushBack 0;
+_p pushBack 5;
+
+_i pushBack 'CUP_G_ESS_BLK_Scarf_Face_Grn';
 _u pushBack 0;
 _p pushBack 5;
 
@@ -902,11 +1227,11 @@ _i pushBack 'G_Tactical_Black';
 _u pushBack 0;
 _p pushBack 5;
 
-_i pushBack 'CUP_NVG_PVS7';
-_u pushBack 0;
-_p pushBack 5;
-
 _i pushBack 'optic_ACO_grn';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_optic_HensoldtZO_low_RDS_hex';
 _u pushBack 0;
 _p pushBack 50;
 
@@ -915,6 +1240,10 @@ _u pushBack 0;
 _p pushBack 50;
 
 _i pushBack 'optic_ACO_grn_smg';
+_u pushBack 0;
+_p pushBack 50;
+
+_i pushBack 'CUP_optic_G36DualOptics';
 _u pushBack 0;
 _p pushBack 50;
 
@@ -928,6 +1257,10 @@ _p pushBack 50;
 
 _i pushBack 'CUP_acc_ANPEQ_15';
 _u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_acc_mk23_lam_f';
+_u pushBack 1;
 _p pushBack 25;
 
 _i pushBack 'CUP_acc_ANPEQ_2';
@@ -1022,6 +1355,10 @@ _i pushBack 'B_AssaultPack_blk';
 _u pushBack 0;
 _p pushBack 150;
 
+_i pushBack 'CUP_B_USMC_AssaultPack';
+_u pushBack 0;
+_p pushBack 150;
+
 _i pushBack 'B_AssaultPack_cbr';
 _u pushBack 0;
 _p pushBack 150;
@@ -1046,7 +1383,19 @@ _i pushBack 'CUP_T10_Parachute_backpack';
 _u pushBack 0;
 _p pushBack 250;
 
+_i pushBack 'CUP_B_Backpack_SpecOps_Fleck';
+_u pushBack 0;
+_p pushBack 100;
+
+_i pushBack 'B_Bergen_mcamo_F';
+_u pushBack 4;
+_p pushBack 500;
+
 _i pushBack 'CUP_5Rnd_762x51_M24';
+_u pushBack 1;
+_p pushBack 30;
+
+_i pushBack 'CUP_12Rnd_45ACP_mk23';
 _u pushBack 1;
 _p pushBack 30;
 
@@ -1078,6 +1427,10 @@ _i pushBack 'CUP_10Rnd_762x51_CZ750_Tracer';
 _u pushBack 1;
 _p pushBack 30;
 
+_i pushBack 'CUP_30Rnd_680x43_Stanag';
+_u pushBack 1;
+_p pushBack 30;
+
 _i pushBack '16Rnd_9x21_Mag';
 _u pushBack 1;
 _p pushBack 30;
@@ -1091,6 +1444,10 @@ _u pushBack 1;
 _p pushBack 30;
 
 _i pushBack 'CUP_30Rnd_9x19_UZI';
+_u pushBack 2;
+_p pushBack 30;
+
+_i pushBack 'CUP_30Rnd_545x39_Fort224_M';
 _u pushBack 2;
 _p pushBack 30;
 
@@ -1179,10 +1536,18 @@ _u pushBack 1;
 _p pushBack 35;
 
 _i pushBack 'CUP_20Rnd_B_AA12_Pellets';
-_u pushBack 1;
+_u pushBack 3;
 _p pushBack 30;
 
 _i pushBack 'CUP_20Rnd_B_AA12_74Slug';
+_u pushBack 3;
+_p pushBack 30;
+
+_i pushBack 'CUP_6Rnd_12Gauge_Pellets_No00_Buck';
+_u pushBack 0;
+_p pushBack 25;
+
+_i pushBack 'CUP_8Rnd_12Gauge_Pellets_No00_Buck';
 _u pushBack 1;
 _p pushBack 30;
 
@@ -1258,8 +1623,16 @@ _i pushBack 'optic_MRD';
 _u pushBack 1;
 _p pushBack 30;
 
+_i pushBack 'optic_MRD_black';
+_u pushBack 1;
+_p pushBack 30;
+
 _i pushBack  "item_optic_LRPS";
 _u pushBack  2;
+_p pushBack  200;
+
+_i pushBack  "CUP_optic_AIMM_COMPM4_BLK";
+_u pushBack  0;
 _p pushBack  200;
 
 _i pushBack  "Item_optic_DMS";
@@ -1294,9 +1667,25 @@ _i pushBack 'CUP_muzzle_snds_G36_black';
 _u pushBack 1;
 _p pushBack 300;
 
+_i pushBack 'CUP_muzzle_snds_mk23';
+_u pushBack 1;
+_p pushBack 150;
+
 _i pushBack 'CUP_muzzle_snds_G36_desert';
 _u pushBack 1;
 _p pushBack 300;
+
+_i pushBack 'CUP_muzzle_snds_G36_hex';
+_u pushBack 1;
+_p pushBack 300;
+
+_i pushBack 'CUP_muzzle_snds_KZRZP_AK545';
+_u pushBack 2;
+_p pushBack 200;
+
+_i pushBack 'muzzle_snds_570';
+_u pushBack 3;
+_p pushBack 250;
 
 _i pushBack 'CUP_bipod_Harris_1A2_L';
 _u pushBack 1;
@@ -1339,6 +1728,10 @@ _u pushBack 1;
 _p pushBack 200;
 
 _i pushBack 'CUP_optic_ZDDot';
+_u pushBack 1;
+_p pushBack 150;
+
+_i pushBack 'CUP_acc_LLM01_od_F';
 _u pushBack 1;
 _p pushBack 150;
 
@@ -1414,6 +1807,18 @@ _i pushBack 'CUP_optic_RCO';
 _u pushBack 1;
 _p pushBack 150;
 
+_i pushBack 'CUP_optic_AC11704_OD';
+_u pushBack 1;
+_p pushBack 150;
+
+_i pushBack 'CUP_optic_AC11704_Coyote';
+_u pushBack 1;
+_p pushBack 150;
+
+_i pushBack 'CUP_optic_AC11704_Black';
+_u pushBack 1;
+_p pushBack 150;
+
 _i pushBack 'CUP_optic_TrijiconRx01_black';
 _u pushBack 1;
 _p pushBack 150;
@@ -1438,182 +1843,6 @@ _i pushBack 'optic_SOS_khk_F';
 _u pushBack 1;
 _p pushBack 200;
 
-_i pushBack 'CUP_U_B_USMC_FROG1_DMARPAT';
-_u pushBack 1;
-_p pushBack 30;
-
-_i pushBack 'CUP_U_B_USMC_FROG2_DMARPAT';
-_u pushBack 1;
-_p pushBack 30;
-
-_i pushBack 'CUP_U_B_USMC_FROG3_DMARPAT';
-_u pushBack 1;
-_p pushBack 30;
-
-_i pushBack 'CUP_U_B_USMC_FROG4_DMARPAT';
-_u pushBack 1;
-_p pushBack 30;
-
-_i pushBack 'CUP_V_B_IOTV_MG';
-_u pushBack 1;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_IOTV_Medic';
-_u pushBack 1;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_IOTV_AT';
-_u pushBack 1;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_IOTV_saw';
-_u pushBack 1;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_IOTV_SL';
-_u pushBack 1;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_IOTV_tl';
-_u pushBack 1;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_RRV_DA2';
-_u pushBack 1;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_RRV_DA1';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_Pouches';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_PistolBlack';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_Mine';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_LegPouch';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_Marksman';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_MG';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_Patrol';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_noCB';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_MTV_TL';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Crewman';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Empty';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Grenadier';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Medic';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Officer';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Pilot';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Soldier1';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Soldier2';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Sapper';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_BAF_Osprey_Mk2_DDPM_Scout';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_AT';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_AR';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_Corpsman';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_Crew';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_MG';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_DMR';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_Officer';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_Patrol';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_RTO';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_Rifleman';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_Scout';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_SL';
-_u pushBack 10;
-_p pushBack 150;
-
-_i pushBack 'CUP_V_B_Eagle_SPC_TL';
-_u pushBack 10;
-_p pushBack 150;
-
 _i pushBack 'CUP_LRTV';
 _u pushBack 1;
 _p pushBack 300;
@@ -1621,10 +1850,6 @@ _p pushBack 300;
 _i pushBack 'CUP_Vector21Nite';
 _u pushBack 1;
 _p pushBack 300;
-
-_i pushBack 'CUP_NVG_PVS14';
-_u pushBack 1;
-_p pushBack 250;
 
 _i pushBack 'CUP_B_HikingPack_Civ';
 _u pushBack 1;
@@ -1683,8 +1908,8 @@ _u pushBack 2;
 _p pushBack 40;
 
 _i pushBack 'CUP_20Rnd_762x51_B_SCAR';
-_u pushBack 2;
-_p pushBack 40;
+_u pushBack 3;
+_p pushBack 50;
 
 _i pushBack 'CUP_20Rnd_TE1_Red_Tracer_762x51_SCAR';
 _u pushBack 2;
@@ -1723,6 +1948,10 @@ _u pushBack 2;
 _p pushBack 300;
 
 _i pushBack 'optic_KHS_tan';
+_u pushBack 2;
+_p pushBack 300;
+
+_i pushBack 'CUP_optic_LeupoldMk4_25x50_LRT';
 _u pushBack 2;
 _p pushBack 300;
 
@@ -1819,7 +2048,7 @@ _u pushBack 3;
 _p pushBack 200;
 
 _i pushBack 'CUP_Javelin_M';
-_u pushBack 3;
+_u pushBack 4;
 _p pushBack 400;
 
 _i pushBack 'CUP_optic_AN_PAS_13c1';
@@ -1833,22 +2062,6 @@ _p pushBack 650;
 _i pushBack 'CUP_optic_CWS';
 _u pushBack 3;
 _p pushBack 650;
-
-_i pushBack 'U_B_CTRG_Soldier_F';
-_u pushBack 3;
-_p pushBack 400;
-
-_i pushBack 'G_Balaclava_TI_blk_F';
-_u pushBack 3;
-_p pushBack 200;
-
-_i pushBack 'G_Balaclava_TI_G_blk_F';
-_u pushBack 3;
-_p pushBack 200;
-
-_i pushBack 'H_HelmetB_TI_tna_F';
-_u pushBack 3;
-_p pushBack 450;
 
 _i pushBack 'CUP_B_M252_Gun_Bag';
 _u pushBack 3;
@@ -1866,9 +2079,4 @@ _i pushBack 'CUP_B_TOW_Tripod_Bag';
 _u pushBack 3;
 _p pushBack 100;
 
-[_faction, _i, _u, _p] call compile preprocessFileLineNumbers "Common\Warfare\Config\Gear\Gear_Config_Set.sqf";
-
-//--- Templates (Those lines can be generated in the RPT on purchase by uncommenting the diag_log in Events_UI_GearMenu.sqf >> "onPurchase").
-_t = [];
-
-[_faction, _t] call compile preprocessFileLineNumbers "Common\Warfare\Config\Gear\Gear_Template_Set.sqf"; 
+[_i, _u, _p] call compile preprocessFileLineNumbers "Common\Warfare\Config\Gear\Gear_Config_Set.sqf";

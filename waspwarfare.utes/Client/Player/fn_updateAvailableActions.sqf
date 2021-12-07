@@ -8,34 +8,55 @@ _pgr = missionNamespace getVariable "WF_C_UNITS_PURCHASE_GEAR_RANGE";
 _rptr = missionNamespace getVariable "WF_C_UNITS_REPAIR_TRUCK_RANGE";
 _spr = missionNamespace getVariable "WF_C_STRUCTURES_SERVICE_POINT_RANGE";
 _tcr = missionNamespace getVariable "WF_C_TOWNS_CAPTURE_RANGE";
+_ftr = missionNamespace getVariable "WF_C_GAMEPLAY_FAST_TRAVEL_RANGE";
+_uavRange = missionNamespace getVariable "WF_C_GAMEPLAY_DARTER_CONNECT_DISTANCE_LIMITATION";
 _buygearfrom = missionNamespace getVariable "WF_C_TOWNS_GEAR";
 _gear_field_range = missionNamespace getVariable "WF_C_UNITS_PURCHASE_GEAR_MOBILE_RANGE";
 _boundaries_enabled = if ((missionNamespace getVariable "WF_C_GAMEPLAY_BOUNDARIES_ENABLED") > 0) then {true} else {false};
 _typeRepair = missionNamespace getVariable Format['WF_%1REPAIRTRUCKS',WF_Client_SideJoinedText];
-
-//--- Keep actions updated (GUI). - changed-MrNiceGuy 
-12450 cutRsc ["OptionsAvailable","PLAIN",0];
-_icons = [
-	"RSC\Pictures\icon_wf_building_mhq.paa",       //mhq deployable
-	"Rsc\Pictures\icon_wf_building_barracks.paa",  //barracks
-	"RSC\Pictures\icon_wf_building_gear.paa",      //gear avail
-	"RSC\Pictures\icon_wf_building_lvs.paa",       //lvsp
-	"RSC\Pictures\icon_wf_building_hvs.paa",       //hvsp
-	"RSC\Pictures\icon_wf_building_air.paa",       //helipad
-	"RSC\Pictures\icon_wf_building_hangar.paa",    //hangar
-	"RSC\Pictures\icon_wf_building_repair.paa",    //rearm | repair | refuel
-	"RSC\Pictures\icon_wf_building_cc.paa",        //command center
-	"RSC\Pictures\icon_wf_building_aa_radar.paa",  //AA radar
-	"RSC\Pictures\icon_wf_building_am_radar.paa"
-];
+_commandCenter = objNull;
 
 while {!WF_GameOver} do {
 
-	if (time - _lastUpdate > 5 || WF_ForceUpdate) then {
-		_buildings = (WF_Client_SideJoined) Call WFCO_FNC_GetSideStructures;
-        _mhqs = (WF_Client_SideJoined) Call WFCO_FNC_GetSideHQ;
-        _base = [player,_mhqs] call WFCO_FNC_GetClosestEntity;
+		_buildings = [];
+        _friendlySides = WF_Client_Logic getVariable ["wf_friendlySides", []];
+		{
+		    _buildings = _buildings + ((_x) Call WFCO_FNC_GetSideStructures);
+		} forEach _friendlySides;
+
+        _purchaseRange = -1;
+        _checks = ['COMMANDCENTERTYPE',_buildings,_ccr,player] Call WFCO_FNC_BuildingInRange;
+        _commandCenter = _checks;
+        commandInRange = if (isNull _checks) then {false} else {true};
+
+        if!(commandInRange) then {
+                {
+                _location = _x # 0;
+                _locationPos = _x # 1;
+                if(isNull _location) then {
+                    deleteMarkerLocal format["radiotower%1", (_locationPos) # 0];
+                    deleteMarkerLocal format["WF_%1_TowerMarker", (_locationPos) # 1];
+                    WF_C_TAKEN_RADIO_TOWERS deleteAt _forEachIndex;
+                } else {
+                    if(!alive _location) then {
+                        deleteMarkerLocal format["radiotower%1", (_locationPos) # 0];
+                        deleteMarkerLocal format["WF_%1_TowerMarker", (_locationPos) # 1];
+                        WF_C_TAKEN_RADIO_TOWERS deleteAt _forEachIndex;
+                    }
+                }
+            } forEach WF_C_TAKEN_RADIO_TOWERS;
+
+            if(count WF_C_TAKEN_RADIO_TOWERS > 0) then {
+                {
+                    _location = _x # 0;
+                    if ((_location distance player) <= (_ccr/2)) exitWith { commandInRange = true; _ccr = _ccr/2 }
+                } forEach WF_C_TAKEN_RADIO_TOWERS;
+            }
+        };
+
+        if (_purchaseRange == -1) then {
 		_purchaseRange = if (commandInRange) then {_ccr} else {_pur};
+        };
 
 		//--- Boundaries are limited ?
 		if (_boundaries_enabled) then {
@@ -48,13 +69,46 @@ while {!WF_GameOver} do {
 			};
 		};
 
+		//--- UAV distance limitation
+		_currentlyConnectedDrone = getConnectedUAV player;
+        if(!(isNull _currentlyConnectedDrone)) then {
+            if (_currentlyConnectedDrone isKindOf "UAV_01_base_F") then {
+                if((player distance _currentlyConnectedDrone) >= _uavRange) then {
+                    player connectTerminalToUAV objNull;
+                    [Format["<t color='#42b6ff' size='1.2' underline='1' shadow='1'>Information:</t><br /><br /><t>UAV lost signal with you. Max range is (<t color='#BD63F5'>%1</t>) meters.</t>",_uavRange]] spawn WFCL_fnc_handleMessage;
+                };
+            };
+        };
+
+        _mhqs = (WF_Client_SideJoined) Call WFCO_FNC_GetSideHQ;
+        if (count _mhqs > 0) then {
+            _base = [player, _mhqs] call WFCO_FNC_GetClosestEntity;
+
+		//--- Fast Travel.
+        if (commandInRange) then {
+        	_fastTravel = false;
+        	_isDeployed = [WF_Client_SideJoined, _base] Call WFCO_FNC_GetSideHQDeployStatus;
+            if !(isNil '_isDeployed') then {
+            if (player distance _base < _ftr && alive _base && _isDeployed) then {_fastTravel = true} else {
+                _closest = [vehicle player, towns] Call WFCO_FNC_GetClosestEntity;
+                _sideID = _closest getVariable 'sideID';
+                if (player distance _closest < _ftr && _sideID == WF_Client_SideID) then {_fastTravel = true} else {
+                    if (!isNull _commandCenter) then {
+                        if (player distance _commandCenter < _ftr) then {_fastTravel = true}
+                    }
+                }
+            }
+            }
+        };
+
 		//--- HQ.
 		if !(isNull _base) then {
 			hqInRange = if ((player distance _base < _mhqbr) && alive _base  && (side _base in [WF_Client_SideJoined,civilian])) then {true} else {false};
 		};
+        };
 
-		barracksInRange = if (isNull (['BARRACKSTYPE',_buildings,_purchaseRange,WF_Client_SideJoined,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
-		gearInRange = if (isNull (['BARRACKSTYPE',_buildings,_pgr,WF_Client_SideJoined,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
+		barracksInRange = if (isNull (['BARRACKSTYPE',_buildings,_purchaseRange,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
+		gearInRange = if (isNull (['BARRACKSTYPE',_buildings,_pgr,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
 		if !(gearInRange) then {
 			if (_buygearfrom in [1,2,3]) then {
 				_nObject = objNull;
@@ -67,10 +121,10 @@ while {!WF_GameOver} do {
 			};
 		};
 
-		lightInRange = if (isNull (['LIGHTTYPE',_buildings,_purchaseRange,WF_Client_SideJoined,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
-		heavyInRange = if (isNull (['HEAVYTYPE',_buildings,_purchaseRange,WF_Client_SideJoined,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
-		aircraftInRange = if (isNull (['AIRCRAFTTYPE',_buildings,_purchaseRange,WF_Client_SideJoined,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
-		serviceInRange = if (isNull (['SERVICEPOINTTYPE',_buildings,_spr,WF_Client_SideJoined,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
+		lightInRange = if (isNull (['LIGHTTYPE',_buildings,_purchaseRange,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
+		heavyInRange = if (isNull (['HEAVYTYPE',_buildings,_purchaseRange,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
+		aircraftInRange = if (isNull (['AIRCRAFTTYPE',_buildings,_purchaseRange,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
+		serviceInRange = if (isNull (['SERVICEPOINTTYPE',_buildings,_spr,player] Call WFCO_FNC_BuildingInRange)) then {false} else {true};
 
 		if !(serviceInRange) then {
 			_checks = (getPos player) nearEntities[_typeRepair,_rptr];
@@ -87,44 +141,19 @@ while {!WF_GameOver} do {
 		depotInRange = if !(isNull ([vehicle player, _tcr] Call WFCL_FNC_GetClosestDepot)) then {true} else {false};
 		if (depotInRange) then {serviceInRange = true};
 
-		_checks = ['COMMANDCENTERTYPE',_buildings,_ccr,WF_Client_SideJoined,player] Call WFCO_FNC_BuildingInRange;
-		commandInRange = if (isNull _checks) then {false} else {true};
-		if!(commandInRange) then {
-		    _capturedRadars = [WF_Client_SideJoined, WF_C_RADAR, true] call WFCO_fnc_getSpecialLocations;
-		    if(count _capturedRadars > 0) then {
-                {
-                    if ((_x distance player) <= (_ccr/2)) exitWith { commandInRange = true }
-                } forEach _capturedRadars;
-		    }
-		};
-
 		//--- Airport.
 		hangarInRange = if !(isNull ([vehicle player, _pura] Call WFCL_FNC_GetClosestAirport)) then {true} else {false};
-
-		_usable = [hqInRange,barracksInRange,gearInRange,lightInRange,heavyInRange,aircraftInRange,hangarInRange,
-		    serviceInRange,commandInRange,antiAirRadarInRange,antiArtyRadarInRange];
-
-		_c = 0;
-		if (isNull (["currentCutDisplay"] call BIS_FNC_GUIget)) then {12450 cutRsc["OptionsAvailable","PLAIN",0]};
-		{
-			if (_x) then {
-				((["currentCutDisplay"] call BIS_FNC_GUIget) DisplayCtrl (3500 + _c)) ctrlSetText (_icons select _c);
-				((["currentCutDisplay"] call BIS_FNC_GUIget) DisplayCtrl (3500 + _c)) ctrlSetTextColor WF_C_TITLETEXT_COLOR_INT;
-			} else {
-				((["currentCutDisplay"] call BIS_FNC_GUIget) DisplayCtrl (3500 + _c)) CtrlSetText "";
-			};
-			_c = _c + 1;
-		} forEach _usable;
 
 		[] spawn WFCL_fnc_updateCommanderState;
 
 		0 = [] spawn {
-			missionNamespace setVariable ["ASL_Nearby_Vehicles", (call ASL_Find_Nearby_Vehicles)];
+        _rcUnit = missionNamespace getVariable ["AIC_Remote_Control_To_Unit", objNull];
+        if(isNull _rcUnit) then {
+            missionNamespace setVariable ["ASL_Nearby_Vehicles", ([player] call ASL_Find_Nearby_Vehicles)]
+        } else {
+            missionNamespace setVariable ["ASL_Nearby_Vehicles", ([_rcUnit] call ASL_Find_Nearby_Vehicles)]
+        }
 		};
 
-		if (WF_ForceUpdate) then {WF_ForceUpdate  = false}
-	};
-
-	_lastUpdate = time;
-	sleep 5;
+	sleep 1;
 };

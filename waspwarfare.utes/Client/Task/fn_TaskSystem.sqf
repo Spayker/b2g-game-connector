@@ -22,12 +22,14 @@ switch (_type) do {
 			waitUntil {_sideID = _town getVariable 'sideID';!isNil '_sideID'};
 			_sideID = _town getVariable "sideID";
 			_task = player createSimpleTask [Format["TakeTowns_%1",str _town]];
-			if (_sideID != sideID) then {
+
+			if (_sideID != WF_Client_SideID) then {
 				_task setSimpleTaskDescription [Format[localize "STR_WF_TaskTown",_town getVariable "name"], Format [localize "STR_WF_CHAT_TaskTown_Display",_town getVariable "name"], Format [localize "STR_WF_CHAT_TaskTown_Display",_town getVariable "name"]];
 			} else {
 				_task setSimpleTaskDescription [Format[localize "STR_WF_TaskTown_Complete",_town getVariable "name"], Format [localize "STR_WF_CHAT_TaskTown_Display",_town getVariable "name"], Format [localize "STR_WF_CHAT_TaskTown_Display",_town getVariable "name"]];
-				_task setTaskState "Succeeded";
+                        _task setTaskState "Succeeded"
 			};
+
 			_task setSimpleTaskDestination (getPos _town);
                 _town setVariable ['taskLink',_task]
 			}
@@ -57,9 +59,11 @@ switch (_type) do {
 	//--- Update a town's value.
 	case "TownUpdate": {
 		_task = _location getVariable 'taskLink';
-		_sideID = _location getVariable "sideID";
+		_sideID = _location getVariable ["sideID", WF_C_CIV_ID];
+		_side = (_sideID) Call WFCO_FNC_GetSideFromID;
 		if !(isNil '_task') then {
-			if (_sideID == sideID) then {
+            _friendlySides = WF_Client_Logic getVariable ["wf_friendlySides", []];
+			if (_side in _friendlySides) then {
 				_task setTaskState "Succeeded";
 				_task setSimpleTaskDescription [Format[localize "STR_WF_TaskTown_Complete",_location getVariable "name"], Format [localize "STR_WF_CHAT_TaskTown_Display",_location getVariable "name"], Format [localize "STR_WF_CHAT_TaskTown_Display",_location getVariable "name"]];
 			} else {
@@ -74,12 +78,12 @@ switch (_type) do {
 	    player removeSimpleTask _task;
 	};
 
-	//--- Hint for a new town task.
+	//--- Display for a new town task.
 	case "TownHintNew": {
 		["TaskAssigned",[localize "str_taskNew",format [localize "STR_WF_CHAT_TaskTown_Display",_location getVariable "name"]]] call BIS_fnc_showNotification;
 	};
 	
-	//--- Hint for a completed town task.
+	//--- Display for a completed town task.
 	case "TownHintDone": {
 		["TaskSucceeded",[localize "str_taskAccomplished",format [localize "STR_WF_CHAT_TaskTown_Display",_location getVariable "name"]]] call BIS_fnc_showNotification;
 	};

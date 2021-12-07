@@ -151,13 +151,10 @@ class RscTitles {
 		duration = 15000;
 		name = "OptionsAvailable";
 		onLoad = "_this call WFCL_fnc_setCurrentCutDisplay";
-		onUnload = "_this call WFCL_fnc_clearCurrentCutDisplay";
-        controls[] = {"RUBHUD_Background","RUBHUD_Health","RUBHUD_Health_Value","RUBHUD_Uptime","RUBHUD_Uptime_Value","RUBHUD_Money","RUBHUD_Money_Value",
-        "RUBHUD_Income","RUBHUD_Commander","RUBHUD_Commander_Value","RUBHUD_Income_Value","RUBHUD_Supply","RUBHUD_Supply_Value","RUBHUD_SupplyMin",
-        "RUBHUD_SupplyMin_Value","RUBHUD_City","RUBHUD_City_Value","RUBHUD_Server","RUBHUD_Server_Value",
-        "BGHUD","HealthHUD","FlagRedHUD","FlagBlueHUD","FlagBlueValHUD","FlagRedValHUD","MoneyHUD","MoneyValHUD","SupplyHUD","SupplyValHUD","TownsHUD",
+		//onUnload = "_this call WFCL_fnc_clearCurrentCutDisplay";
+        controls[] = {"BGHUD","HealthHUD","SideSlot1","SideSlotValue1","SideSlot3","SideSlot2","SideSlotValue2","RelationMark1","RelationMark2","SideSlotValue3","MoneyHUD","MoneyValHUD","SupplyHUD","SupplyValHUD","TownsHUD",
         "statblue","score_blue","statred","score_red","OptionsIcon0", "OptionsIcon1", "OptionsIcon2", "OptionsIcon3", "OptionsIcon4", "OptionsIcon5", "OptionsIcon6", "OptionsIcon7", "OptionsIcon8",
-        "OptionsIcon9", "OptionsIcon10", "OptionsIcon11", "OptionsIcon12", "OptionsIcon13", "OptionsIcon14", "OptionsIcon15", "OptionsIcon16", "OptionsIcon17"};
+        "OptionsIcon9", "OptionsIcon10", "OptionsIcon11", "OptionsIcon12", "OptionsIcon13", "OptionsIcon14", "OptionsIcon15", "OptionsIcon16"};
 		controlsBackground[] = {};
 
 		class BGHUD: RscStructuredText
@@ -180,42 +177,88 @@ class RscTitles {
 			h = 0.0375 * safezoneH;
 			colorBackground[] = {0,0,0,0};
 		};
-		class FlagBlueHUD: RscStructuredText
+
+		class SideSlot1: RscStructuredText
 		{
-			idc = 1101;
+            idc = 1112;
 			
-			x = 0.9625 * safezoneW + safezoneX;
-			y = 0.905 * safezoneH + safezoneY;
+            x = 0.895 * safezoneW + safezoneX;
+            y = 0.935 * safezoneH + safezoneY;
 			w = 0.0625 * safezoneW;
 			h = 0.04 * safezoneH;
 			colorBackground[] = {0,0,0,0};
 		};
-		class FlagRedHUD: RscStructuredText
+
+        class SideSlotValue1: RscStructuredText
 		{
-			idc = 1102;
+            idc = 1113;
+
+            x = 0.8975 * safezoneW + safezoneX;
+            y = 0.937 * safezoneH + safezoneY;
+            w = 0.035 * safezoneW;
+            h = 0.0375 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+        };
 			
-			x = 0.9625 * safezoneW + safezoneX;
+		class RelationMark1: RscStructuredText
+        {
+            idc = 1111;
+            x = 0.914 * safezoneW + safezoneX;
 			y = 0.935 * safezoneH + safezoneY;
 			w = 0.0625 * safezoneW;
 			h = 0.04 * safezoneH;
 			colorBackground[] = {0,0,0,0};
 		};
-		class FlagBlueValHUD: RscStructuredText
+
+		class SideSlot2: RscStructuredText
+		{
+			idc = 1101;
+			
+			x = 0.9325 * safezoneW + safezoneX;
+			y = 0.935 * safezoneH + safezoneY;
+			w = 0.0625 * safezoneW;
+			h = 0.04 * safezoneH;
+			colorBackground[] = {0,0,0,0};
+		};
+
+		class SideSlotValue2: RscStructuredText
         {
         	idc = 1103;
 
-        	x = 0.975 * safezoneW + safezoneX;
-        	y = 0.903 * safezoneH + safezoneY;
+        	x = 0.935 * safezoneW + safezoneX;
+        	y = 0.937 * safezoneH + safezoneY;
         	w = 0.035 * safezoneW;
         	h = 0.0375 * safezoneH;
         	colorBackground[] = {0,0,0,0};
         };
-        class FlagRedValHUD: RscStructuredText
+
+        class RelationMark2: RscStructuredText
+        {
+            idc = 1110;
+
+            x = 0.953 * safezoneW + safezoneX;
+            y = 0.935 * safezoneH + safezoneY;
+            w = 0.0625 * safezoneW;
+            h = 0.04 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+        };
+
+		class SideSlot3: RscStructuredText
+		{
+			idc = 1102;
+
+			x = 0.9725 * safezoneW + safezoneX;
+			y = 0.935 * safezoneH + safezoneY;
+			w = 0.0625 * safezoneW;
+			h = 0.04 * safezoneH;
+			colorBackground[] = {0,0,0,0};
+		};
+        class SideSlotValue3: RscStructuredText
         {
         	idc = 1104;
 
         	x = 0.975 * safezoneW + safezoneX;
-        	y = 0.933 * safezoneH + safezoneY;
+        	y = 0.937 * safezoneH + safezoneY;
         	w = 0.035 * safezoneW;
         	h = 0.0375 * safezoneH;
         	colorBackground[] = {0,0,0,0};
@@ -271,213 +314,6 @@ class RscTitles {
 			colorBackground[] = {0,0,0,0};
 		};
 
-		//--Old HUD style--
-		class RUBHUD_Background : RscText {
-        	idc = 1345;
-        	x = 0.872584 * safezoneW + safezoneX;
-        	y = 0.2375 * safezoneH + safezoneY;
-        	w = 0.107 * safezoneW;
-        	h = 0.0012 * safezoneH;
-        	colorBackground[] = {0,0,0,0};
-        };
-
-        class RUBHUD_Health : RscText
-        {
-        	idc = 1346;
-        	
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.21626 * safezoneH + safezoneY;
-        	w = 0.7977083 * safezoneW;
-        	h = 0.0228518 * safezoneH;
-        	sizeEx = 0.035;
-        };
-
-        class RUBHUD_Health_Value : RscText
-        {
-        	idc = 1347;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.21626 * safezoneH + safezoneY;
-        	w = 0.7977083 * safezoneW;
-        	h = 0.0228518 * safezoneH;
-        	sizeEx = 0.035;
-        };
-
-        class RUBHUD_Uptime: RscText {
-        	idc = 1348;
-        	
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.23626 * safezoneH + safezoneY;
-        	w = 0.1025 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Uptime_Value: RscText {
-        	idc = 1349;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.23626 * safezoneH + safezoneY;
-        	w = 0.4401041 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Commander: RscText {
-        	idc = 1370;
-
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.256000 * safezoneH + safezoneY;
-        	w = 0.1025 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Commander_Value: RscText {
-        	idc = 1371;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.256000 * safezoneH + safezoneY;
-        	w = 0.4401041 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Money: RscText {
-        	idc = 1350;
-        	
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.276000 * safezoneH + safezoneY;
-        	w = 0.1025 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Money_Value: RscText {
-        	idc = 1351;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.276000 * safezoneH + safezoneY;
-        	w = 0.4401041 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Income: RscText {
-        	idc = 1352;
-        	
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.29600 * safezoneH + safezoneY;
-        	w = 0.1025 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Income_Value: RscText {
-        	idc = 1353;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.29600 * safezoneH + safezoneY;
-        	w = 0.4401041 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Supply: RscText {
-        	idc = 1354;
-        	
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.316000 * safezoneH + safezoneY;
-        	w = 0.1025 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Supply_Value: RscText {
-        	idc = 1355;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.316000 * safezoneH + safezoneY;
-        	w = 0.4401041 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_SupplyMin: RscText {
-        	idc = 1356;
-        	
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.33600 * safezoneH + safezoneY;
-        	w = 0.1025 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_SupplyMin_Value: RscText {
-        	idc = 1357;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.33600 * safezoneH + safezoneY;
-        	w = 0.4401041 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_City: RscText {
-        	idc = 1358;
-        	
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.356000 * safezoneH + safezoneY;
-        	w = 0.1025 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_City_Value: RscText {
-        	idc = 1359;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.356000 * safezoneH + safezoneY;
-        	w = 0.4401041 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-        class RUBHUD_Server: RscText {
-        	idc = 1360;
-        	
-        	x = 0.861708 * safezoneW + safezoneX;
-        	y = 0.37696 * safezoneH + safezoneY;
-        	w = 0.1025 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-
-        class RUBHUD_Server_Value: RscText {
-        	idc = 1361;
-        	
-        	x = 0.921938 * safezoneW + safezoneX;
-        	y = 0.37696 * safezoneH + safezoneY;
-        	w = 0.4401041 * safezoneW;
-        	h = 0.0255556 * safezoneH;
-        	sizeEx = 0.030;
-        	colorText[] = {1,1,1,1};
-        };
-		
 		class statblue:RscPicture
 		{
 			idc=1362;
@@ -528,7 +364,7 @@ class RscTitles {
 		class OptionsIcon0 : OptionsImageAspectRatio {
 			idc = 3500;
 			x = "(SafeZoneW + SafeZoneX) - (0.0392157)";
-			y = 0+(0.0522876*17);
+			y = 0+(0.0510876*20);
 			w = 0.0392157;
 			h = 0.0522876;
 			colorText[] = WF_OA_Icon;
@@ -537,88 +373,95 @@ class RscTitles {
 
 		class OptionsIcon1 : OptionsIcon0 {
 			idc = 3500 + 1;
-			y = 0+(0.0522876*16);
+			y = 0+(0.0510876*19);
 		};
 
 		class OptionsIcon2 : OptionsIcon0 {
 			idc = 3500 + 2;
-			y = 0+(0.0522876*15);
+			y = 0+(0.0510876*18);
 		};
 
 		class OptionsIcon3 : OptionsIcon0 {
 			idc = 3500 + 3;
-			y = 0+(0.0522876*14);
+			y = 0+(0.0510876*17);
 		};
 
 		class OptionsIcon4 : OptionsIcon0 {
 			idc = 3500 + 4;
-			y = 0+(0.0522876*13);
+			y = 0+(0.0510876*16);
 		};
 
 		class OptionsIcon5 : OptionsIcon0 {
 			idc = 3500 + 5;
-			y = 0+(0.0522876*12);
+			y = 0+(0.0510876*15);
 		};
 
 		class OptionsIcon6 : OptionsIcon0 {
 			idc = 3500 + 6;
-			y = 0+(0.0522876*11);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 2)";
+			y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon7 : OptionsIcon0 {
 			idc = 3500 + 7;
-			y = 0+(0.0522876*10);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 3)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon8 : OptionsIcon0 {
 			idc = 3500 + 8;
-			y = 0+(0.0522876*9);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 4)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon9 : OptionsIcon0 {
 			idc = 3500 + 9;
-			y = 0+(0.0522876*8);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 5)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon10 : OptionsIcon0 {
 			idc = 3500 + 10;
-			y = 0+(0.0522876*7);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 6)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon11 : OptionsIcon0 {
 			idc = 3500 + 11;
-			y = 0+(0.0522876*6);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 7)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon12 : OptionsIcon0 {
 			idc = 3500 + 12;
-			y = 0+(0.0522876*5);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 8)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon13 : OptionsIcon0 {
 			idc = 3500 + 13;
-			y = 0+(0.0522876*4);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 9)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon14 : OptionsIcon0 {
 			idc = 3500 + 14;
-			y = 0+(0.0522876*3);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 10)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon15 : OptionsIcon0 {
 			idc = 3500 + 15;
-			y = 0+(0.0522876*2);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 11)";
+            		y = 0+(0.0510876*20);
 		};
 
 		class OptionsIcon16 : OptionsIcon0 {
 			idc = 3500 + 16;
-			y = 0+(0.0522876*1);
+			x = "(SafeZoneW + SafeZoneX) - (0.0392157 * 12)";
+            		y = 0+(0.0510876*20);
 		};
 
-		class OptionsIcon17 : OptionsIcon0 {
-			idc = 3500 + 17;
-			y = 0.0522876;
-		};
 	};
 
 	class EndOfGameStats {
@@ -840,12 +683,7 @@ class RscTitles {
 			class descBackCenter : descBackLeft {
 				idc = 112212;
 				x = "SafezoneX + 0.01 +	0.3";
-				w = "SafeZoneW - 0.02 -	0.3*2";
-			};
-			class descBackRight : descBackLeft {
-				idc = 112213;
-				x = "SafezoneX + SafeZoneW - 0.01 -	0.3";
-				w = 0.3;
+				w = "SafeZoneW - 0.02 -	0.3";
 			};
 
 			class descText : RscStructuredText {
@@ -882,7 +720,15 @@ class RscTitles {
 
 			class autoOptionsText : descText {
                 idc = 112225;
-                x = "SafezoneX + 0.652*2";
+                x = "SafezoneX + 0.102*2";
+                y = "SafezoneY + SafezoneH - 0.13 + 0.02";
+                w = 0.4;
+                h = 0.1;
+            };
+
+            class autoOptionsValueText : descText {
+                idc = 112227;
+                x = "SafezoneX + 0.210*2";
                 y = "SafezoneY + SafezoneH - 0.13 + 0.02";
                 w = 0.4;
                 h = 0.1;
@@ -890,9 +736,25 @@ class RscTitles {
 
 			class defenseText : descText {
                 idc = 112226;
-                x = "SafezoneX + 0.802*2";
+                x = "SafezoneX + 0.270*2";
                 y = "SafezoneY + SafezoneH - 0.13 + 0.02";
                 w = 0.3;
+                h = 0.1;
+            };
+
+            class MoveCameraText : descText {
+                idc = 112228;
+                x = "SafezoneX + 0.420*2";
+                y = "SafezoneY + SafezoneH - 0.13 + 0.02";
+                w = 0.6;
+                h = 0.1;
+            };
+
+            class ConstructionText : descText {
+                idc = 112229;
+                x = "SafezoneX + 0.620*2";
+                y = "SafezoneY + SafezoneH - 0.13 + 0.02";
+                w = 0.6;
                 h = 0.1;
             };
 		};
@@ -924,5 +786,33 @@ class RscTitles {
     			};
     		};
     	};
+    };
+
+    class life_message_hud {
+
+        idd = 245000;
+        name = "life_message_hud";
+        duration = 1e+007;
+        movingEnable = 0;
+        fadein = 0;
+        fadeout = 0;
+
+        onLoad = "uiNamespace setVariable ['life_message_hud', _this select 0]";
+        onUnload = "uiNamespace setVariable ['life_message_hud', nil]";
+
+        class controls {
+
+            class MessageContainer: Life_RscControlsGroupNoScrollbars
+            {
+                idc = 245001;
+
+                x = 0.8020 * safezoneW + safezoneX;
+                y = 0.1560 * safezoneH + safezoneY;
+                w = 0.1700 * safezoneW;
+                h = 0.2375 * safezoneH;
+
+                class controls {};
+            };
+        };
     };
 };

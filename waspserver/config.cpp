@@ -10,65 +10,30 @@ class CfgPatches {
 };
 
 class CfgFunctions {
-    class MySQL_Database {
-        tag = "DB";
-        class MySQL {
-            file = "\waspServer\MySQL";
-            class asyncCall {};
-			class mresString {};
-        };
-    };
-
 	class WF_server {
         tag = "WFSE";
 
         class ServerMain {
             file = "waspServer";
             class initServer {};
-			class broadCastFPS {};
         };
 
         class ServerBase {
             file = "waspServer\Base";
-            class createDefenseTemplate {};
-            class createObjectsFromArray {};
             class processUpgrade {};
             class requestUpgrade {};
             class synchronizeUpgade {};
-            class startBaseAreaProcessing {};
             class CreateDestructionEffect {};
-        };
-
-        class ServerBaseAi {
-            file = "waspServer\Base\Ai";
-            class createBasePatrol {};
-        };
-		
-		class ServerBaseConstruction {
-            file = "waspServer\Base\Construction";
-            class hQSite {};
-            class smallSite {};
-            class stationaryDefense {};
-            class mediumSite {};
-            class mediumSiteObjects {};
-        };
-
-        class ServerBaseEventHandling {
-            file = "waspServer\Base\EventHandling";
-            class buildingDamaged {};
-            class buildingHandleDamage {};
-            class buildingKilled {};
-            class handleDefense {};
-            class handleBuildingRepair {};
+            class CleanTerrainRespawnPoint {};
         };
 
         class ServerBaseRequest {
             file = "waspServer\Base\Request";
             class requestAutoWallConstructinChange {};
             class requestDefense {};
-            class requestDefenseSell {};
             class requestStructure {};
-            class RequestStructureSell {};
+            class requestStructureSell {};
+            class processBaseDefense {};
         };
 
         class ServerCommander {
@@ -95,8 +60,8 @@ class CfgFunctions {
             class requestJoin {};
             class updateTeamLeader {};
             class sideMessage {};
-            class updatePlayerDataDB {};
             class updatePlayersList {};
+            class groupQuery {};
         };
 
         class ServerTeam {
@@ -108,34 +73,8 @@ class CfgFunctions {
 
         class ServerTown {
             file = "waspServer\Warfare\Town";
-            class markTownInactive {};
-            class saveTownSurvivedGroups {};
-            class startTownProcessing {};
 	    class initTowns {};
-        };
-
-        class ServerTownAi {
-            file = "waspServer\Warfare\Town\Ai";
-            class getTownGroups {};
-            class getVehicleTownGroups {};
-            class getTownPatrol {};
-            class manageTownDefenses {};
-            class operateTownDefensesUnits {};
-            class spawnTownDefense {};
-            class spawnTownGroups {};
-            class getTownActiveGroups {};
-            class startTownAiProcessing {};
-        };
-
-        class ServerResBases {
-            file = "waspServer\Base\Res";
-            class CreateBaseComposition {};
-            class processBrBase {};
-            class processLfBase {};
-            class processHfBase {};
-            class processAfBase {};
-            class processResTeam {};
-            class resBuyUnit {};
+	        class updateRadarTower {};
         };
 
         class ServerCamp {
@@ -167,29 +106,14 @@ class CfgFunctions {
             file = "waspServer\Module\AI";
             class aiComUpgrade {};
             class delegateAIHeadless {};
-            class manningOfResBaseDefense {};
         };
 
-        class ServerModuleAiOrders {
-            file = "waspServer\Module\AI\Orders";
-            class aiMoveTo {};
-            class aiPatrol {};
-            class aiTownPatrol {};
-            class aiWPAdd {};
-            class aiWPRemove {};
-        };
-
-        class ServerModuleSupport {
-            file = "waspServer\Module\Support";
-            class paratroopers {};
-            class heliParaTroopers {};
-            class paraVehicles {};
-        };
-
-        class ServerModuleIcbm {
-            file = "waspServer\Module\ICBM";
-            class processIcbmEvent {};
-            class processNukeDamage {};
+        class ServerModuleCruiseMissile {
+            file = "waspServer\Module\CruiseMissile";
+            class processCruiseMissileEvent {};
+            class processChemicalMissileEvent {};
+            class processTacticalNukeMissileEvent {};
+            class processMissileDamage {};
         };
 
         class ServerModuleRole {
@@ -210,32 +134,10 @@ class CfgFunctions {
             class compileAndExecFile {};
         };
 
-        class GearTemplates {
-            file = "\waspServer\GearTemplates";
-            class getGearTemplates {};
-            class saveGearTemplate {};
-            class deleteGearTemplate {};
-        };
-
-        class ServerTaskDirector {
-            file = "\waspServer\Task";
-            class initTaskDirector {};
-        };
-
         class ServerEnvironment {
             file = "\waspServer\Environment";
             class startEmptyVehiclesCollector {};
-            class startGarbageCollector {};
-            class startEndGameConditionProcessing {};
-        };
-
-        class ServerStatistic {
-            file = "waspServer\Warfare\Statistic";
-            class UpdatePlayingTime {};
-            class InitGameInfo {};
-            class FinishGameInfo {};
-            class InsertStructureKilled {};
-            class ShowPlayerStats {};
+            class startCommonLogicProcessing {};
         };
     };
 };

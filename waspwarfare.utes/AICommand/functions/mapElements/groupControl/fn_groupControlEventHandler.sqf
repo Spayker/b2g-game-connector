@@ -98,15 +98,23 @@ if(isNil "_groupControlId") then {
 		
 		private ["_waypointIcons","_waypointIconCount","_waypoints","_currentWpRevision","_waypointsArray", "_waypointIconIndex","_color"];
 		
-		_waypointIcons = AIC_fnc_getGroupControlWaypointIcons(_groupControlId);
 
+		_waypointIcons = AIC_fnc_getGroupControlWaypointIcons(_groupControlId);
 		_waypointIconCount = count _waypointIcons;
-		
 		_waypoints = [_group] call AIC_fnc_getAllActiveWaypoints;
+
 		_color = AIC_fnc_getGroupControlColor(_groupControlId);
 
 		_currentWpRevision = _waypoints select 0;
 		_waypointsArray = _waypoints select 1;
+		
+		_isInfantry = _group getVariable ["isHighCommandInfantry", false];
+        if(_isInfantry) then {
+            _group setBehaviour "SAFE";
+            _group setCombatMode  "RED";
+
+            { _x setWaypointBehaviour 'AWARE' } forEach (waypoints _group)
+        };
 		
 		_waypointIconIndex = 0;
 
@@ -141,7 +149,6 @@ if(isNil "_groupControlId") then {
 				AIC_fnc_setInteractiveIconIconSet(_interactiveIconId,_waypointIconSet);
 				_eventHandlerScriptParams = [_groupControlId,_x select 0];
 				AIC_fnc_setInteractiveIconEventHandlerScriptParams(_interactiveIconId, _eventHandlerScriptParams);
-				//diag_log format ["Setting Waypoints: %1, %2, %3", _x, _interactiveIconId, _eventHandlerScriptParams];
 				_waypointIcons set [_waypointIconIndex,_waypointIcon];
 			};
 			
@@ -149,6 +156,20 @@ if(isNil "_groupControlId") then {
 			
 		} forEach _waypointsArray;
 	
+            {
+                    _crewVehicle = vehicle _x;
+            if(_crewVehicle != _x) then {
+                if ((speed _crewVehicle)  == 0 && canMove _crewVehicle) then {
+                    if(_x == driver _crewVehicle) then {
+                        if(vehicle (leader _group) != leader _group) then {
+                            _x doWatch objNull;
+                            _x doFollow (leader _group)
+                        };
+                    }
+                }
+                        }
+            } forEach (units _group);
+
 		if(_waypointIconIndex < _waypointIconCount) then {
 			for "_i" from _waypointIconIndex to (_waypointIconCount-1) do
 			{

@@ -4,7 +4,7 @@ _fog_forecast=-10000;
 _overcast_forecast=-10000;
 
 if (WF_C_ENVIRONMENT_WEATHER_OVERCAST ==-1) then {
-	_overcast_setting = (random [10, 30, 49]) / 100
+	_overcast_setting = (random [10, 25, 45]) / 100
 } else { 
 	_overcast_setting = WF_C_ENVIRONMENT_WEATHER_OVERCAST / 100
 };
@@ -34,23 +34,8 @@ _nexttime setFog [_fog_setting, 0.01 + random (0.04), random(10)];
 _nexttime setWindStr _wind_setting;
 _nexttime setWaves _waves_setting;
 
-_fog_forecast = fogForecast;
-_overcast_forecast = overcastForecast;
+0 setRain 0;
+forceWeatherChange;
+999999 setRain 0;
 
 setWind [random [-10,0,10], random [-10,0,10], true];
-
-waitUntil {_overcast_forecast != overcastForecast || _fog_forecast != fogForecast};
-
-while {!WF_GameOver} do {
-	_nexttime=random(nextWeatherChange-100);
-	_nexttime setOvercast _overcast_setting;
-	_nexttime setFog [_fog_setting, 0.01 + random (0.04), random(10)];
-	_nexttime setWaves _waves_setting;
-	_fog_forecast = fogForecast;
-	_overcast_forecast = overcastForecast;
-
-		sleep WF_C_ENVIRONMENT_WEATHER_TRANSITION;
-
-		setWind [random [-10,0,10], random [-10,0,10], true];
-		_nexttime setWindStr _wind_setting;
-	}

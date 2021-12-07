@@ -161,94 +161,6 @@ class AICommand
 			description="";
 		};
 	};
-	class RemoteCamera
-	{
-		file="AICommand\functions\remoteCamera";
-		class disable3rdPersonCamera
-		{
-			description="";
-		};
-		class enable3rdPersonCamera
-		{
-			description="";
-		};
-		class cameraMouseMoveHandler
-		{
-			description="";
-		};
-		class cameraMouseZoomHandler
-		{
-			description="";
-		};
-		class cameraUpdatePosition
-		{
-			description="";
-		};
-	};
-	class CR
-	{
-		file="AICommand\functions\cr";
-		class createCommandRadio
-		{
-			description="";
-		};
-		class commandRadioSyncLoop
-		{
-			description="";
-		};
-		class enableCommandRadioTask
-		{
-			description="";
-		};
-		class takeCommandRadio
-		{
-			description="";
-		};
-		class setRadioOwner
-		{
-			description="";
-		};
-		class getRadioOwner
-		{
-			description="";
-		};
-		class getRadioOwners
-		{
-			description="";
-		};
-		class getOwnerRadio
-		{
-			description="";
-		};
-		class isRadioOwner
-		{
-			description="";
-		};
-		class taskDropRadio
-		{
-			description="";
-		};
-		class syncCommandRadioTasksLocal
-		{
-			description="";
-		};
-		class showCommandRadioMenu
-		{
-			description="";
-		};
-		class showCommandRadioMenuLocal
-		{
-			description="";
-		};
-		class setPublicVariable
-		{
-			description="";
-		};
-		class getPublicVariable
-		{
-			description="";
-		};
-	};
 	class VehicleIcon
 	{
 		file="AICommand\functions\vehicleIcon";
@@ -385,10 +297,6 @@ class AICommand
 			description="";
 		};
 		class showGroupReport
-		{
-			description="";
-		};
-		class showGroupWaypointReport
 		{
 			description="";
 		};

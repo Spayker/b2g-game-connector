@@ -10,15 +10,14 @@ class WF_Client {
         file = "Client\Player\Map";
         class arRadarMarkerUpdate {};
         class getStructureMarkerLabel {};
-        class markerAnim {};
         class isOnMap {};
         class handleOnMap {};
         class initMarkers {};
         class initGlobalMarkingMonitorFunctions {};
-        class updateTeamsMarkers {};
         class updateTownMarkers {};
         class IconVehicle {};
         class UpdateRadarMarker {};
+        class updateFriendlyMarkers {};
     };
 
     class Warfare {
@@ -38,7 +37,9 @@ class WF_Client {
         class getClosestCamp {};
         class allCampsCaptured {};
         class campCaptured {};
-        class getNearestCamp {};
+        class checkObjectsAround {};
+        class getNearestRadioTower {};
+        class takeCamp {};
     };
 
     class Base {
@@ -46,7 +47,6 @@ class WF_Client {
         class initConstructionModule {};
         class callConstructionInterface {};
         class requestBaseArea {};
-        class setMHQLock {};
         class handleHQAction {};
         class initBaseStructure {};
         class showUpgradeStartedMessage {};
@@ -77,11 +77,19 @@ class WF_Client {
         class localizeMessage {};
     };
 
+    class Notification {
+        file = "Client\Player\Notification";
+        class createMessage {};
+        class deleteMessage {};
+        class handleMessage {};
+        class initMessageHUD {};
+        class insertElement {};
+    };
+
     class Skill {
         file = "Client\Player\Skill";
         class applySkill {};
         class initSkill {};
-        class processArtyStrikeAction {};
         class processEngineerAction {};
         class processLiteRepairAction {};
         class processSniperAction {};
@@ -105,6 +113,8 @@ class WF_Client {
         class missionIntro {};
         class showEndGameResults {};
         class updateCanJoinFlag {};
+        class updateLostTeamWithFriendlyData {};
+        class setFriendlyChannelData {};
         class updateAvailableActions {};
     };
 
@@ -131,9 +141,18 @@ class WF_Client {
 		class doJump {};
 	};
 
-    class Icbm {
+	class Icbm {
         file = "Client\Module\Nuke";
         class initIcbmStrike {};
+        class nuke {};
+        class nukeincoming {};
+    };
+
+    class CruiseMissile {
+        file = "Client\Module\CruiseMissile";
+        class CruiseMissileIncoming {};
+        class ChemicalMissileIncoming {};
+        class ProcessChemicalDamage {};
     };
 
     class Gui {
@@ -173,57 +192,6 @@ class WF_Client {
     class GuiFundsMenu {
         file = "Client\Player\GUI\FundsMenu";
         class displayTransferMenu {};
-    };
-
-    class GuiGearMenu {
-        file = "Client\Player\GUI\GearMenu";
-        class displayGearMenu {};
-        class displayWarfareGearMenu {};
-        class displayInventoryVehicle {};
-        class loadAvailableUnits {};
-        class displayShoppingItems {};
-        class getTotalMass {};
-        class updateContainerProgress {};
-        class updatePrice {};
-        class displayInventory {};
-        class getVehicleLoad {};
-        class enableVehicleOverlay {};
-        class updateVehicleContainerProgress {};
-        class addItem {};
-        class addVehicleItem {};
-        class equipTemplate {};
-        class equipVehicleCargo {};
-        class onShoppingItemDrag {};
-        class onShoppingItemDrop {};
-        class updateLinkedItems {};
-        class displayContainerItems {};
-        class replaceContainer {};
-        class replaceWeapon {};
-        class updateMass {};
-        class updateVehicleLoad {};
-        class changeCurrentMagazine {};
-        class highlightTab {};
-        class tryContainerAddItem {};
-        class tryEquipAccessory {};
-        class addContainerItem {};
-        class canAddItemWithMass {};
-        class checkAccessories {};
-        class checkMagazines {};
-        class getGearCostDelta {};
-        class changeCurrentGrenade {};
-        class getItemConfigType {};
-        class getItemAllowedSlots {};
-        class getGenericItemMass {};
-        class getContainerMassCapacity {};
-        class getItemsMass {};
-        class getContainerMass {};
-    };
-
-    class GuiGearTemplates {
-        file = "Client\Player\GUI\GearMenu\Templates";
-        class getGearTemplates {};
-        class saveGearTemplate {};
-        class deleteGearTemplate {};
     };
 
     class GuiHelpMenu {
@@ -274,15 +242,18 @@ class WF_Client {
         class startRepair {};
     };
 
+    class GuiSquadMenu {
+        file = "Client\Player\GUI\SquadMenu";
+        class displaySquadMenu {};
+        class squads {};
+    };
+
     class GuiTacticalMenu {
         file = "Client\Player\GUI\TacticalMenu";
         class displayTacticalMenu {};
         class setControlFadeAnim {};
         class setControlFadeAnimStop {};
         class RequestFireMission {};
-        class uav {};
-        class uav_interface {};
-        class uav_spotter {};
     };
 
     class GuiTankMagsMenu {
@@ -299,7 +270,10 @@ class WF_Client {
         file = "Client\Player\GUI\UnitCameraMenu";
         class displayUnitCameraMenu {};
         class getUnitVehicle {};
-        class abortRemoteControl {};
+        class processUnitsCamera {};
+        class mouseMoveKeyHandler {};
+        class mouseButtonUpKeyHandler {};
+        class mouseButtonDownKeyHandler {};
     };
 
     class GuiUpgradeMenu {
@@ -330,11 +304,25 @@ class WF_Client {
         file = "WASP\TaskDirector\tasks\saveTourists";
         class svTrstTsk {};
     };
+
 };
 
-class WFDC {
-	class Log {
-		class LogContent { file = "Common\Logging\fn_LogContentDiscord.sqf"; };
+class TER
+{
+	class VASS
+	{
+		file = "Client\Player\GUI\GearMenu\fnc";
+		class shop {
+			preInit = 1;
+			postInit = 1;
+		};
+		class getItemValues {};
+		class VASShandler {};
+		class addShopCargo {};
+		class addShop {};
+		class callShop {};
+		class resetTimer {};
+		class cleanGearData {};
 	};
 };
 
@@ -354,13 +342,12 @@ class WF_Common {
         class arrayShift {};
         class arrayShuffle {};
         class arrayToLower {};
-        class multiArrayToSimple {};
     };
 
     class Base {
         file = "Common\Base";
         class buildingInRange {};
-        class cleanResBaseArea {};
+        class cleanTerrainObjects {};
         class getClosestStructure {};
         class getFactories {};
         class getSideHQ {};
@@ -388,9 +375,9 @@ class WF_Common {
 
     class Map {
         file = "Common\Map";
-        class markerUpdate {};
         class trackAirTargets {};
         class initBoundaries {};
+        class performAirVehicleTracking {};
     };
 
     class ModuleCipher {
@@ -401,6 +388,15 @@ class WF_Common {
         class sortArrayIndex {};
         class sortUpgradeLabels {};
         class swapArray {};
+    };
+
+    class ModuleAiOrders {
+        file = "Common\Module\AI\Orders";
+        class aiMoveTo {};
+        class aiPatrol {};
+        class aiTownPatrol {};
+        class aiWPAdd {};
+        class aiWPRemove {};
     };
 
     class ModuleKbFunctions {
@@ -414,10 +410,19 @@ class WF_Common {
         class roleList {};
     };
 
+    class ModuleSupport {
+        file = "Common\Module\Support";
+        class paratroopers {};
+        class heliParaTroopers {};
+        class paraVehicles {};
+        class casRequest {};
+    };
+
     class Object {
         file = "Common\Object";
         class trashObject {};
         class getSideFromID {};
+        class getFriendlySide {};
         class getSideID {};
         class getSideLogic {};
         class getHighCommandGroups {};
@@ -436,11 +441,8 @@ class WF_Common {
 
     class ObjectUnit {
         file = "Common\Object\Unit";
-        class createTownUnits {};
         class createUnit {};
-        class CreateHighCommandGroup {};
         class createUnitForStaticDefence {};
-        class createUnitsForResBases {};
         class equipUnit {};
         class initUnit {};
         class initManUnit {};
@@ -448,6 +450,7 @@ class WF_Common {
         class killStaticDefenseCrew {};
         class onUnitHit {};
         class onUnitKilled {};
+        class processCommanderBounty {};
         class requip_AI {};
         class revealArea {};
         class getLiveUnits {};
@@ -465,11 +468,11 @@ class WF_Common {
         class getCommanderTeam {};
         class saveProfile {};
         class setProfileVariable {};
+        class changeUnitGroup {};
     };
 
     class ObjectUnitTeam {
         file = "Common\Object\Unit\Team";
-        class createTeam {};
         class getTeamArtillery {};
         class getTeamMoveMode {};
         class getTeamMovePos {};
@@ -507,9 +510,8 @@ class WF_Common {
         class clearVehicleCargo {};
         class createVehicle {};
         class findTurretsRecursive {};
-        class handleAAMissiles {};
-        class handleBombs {};
         class handleIncomingMissile {};
+        class GetNearestVehicle {};
         class placeSafe {};
         class rearmVehicle {};
         class requip_AIR_VEH {};
@@ -550,14 +552,6 @@ class WF_Common {
         class getUnitConfigGear {};
     };
 
-    class UtilMutex {
-        file = "Common\Utils\Mutex";
-        class IsMutexLocked {};
-        class MutexLock {};
-        class MutexTryLock {};
-        class MutexUnlock {};
-    };
-
     class UtilDate {
         file = "Common\Utils\Date";
         class dateToString {};
@@ -590,6 +584,5 @@ class WF_Common {
         class getSideFLAG {};
         class getTotalCamps {};
         class getTotalCampsOnSide {};
-        class updateCampsInTown {};
      };	
 };

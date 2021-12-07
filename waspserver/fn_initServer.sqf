@@ -7,49 +7,13 @@ if (!isServer || time > 30) exitWith {
 ["INITIALIZATION", Format ["fn_initServer.sqf: Server initialization begins at [%1]", time]] Call WFCO_FNC_LogContent;
 
 //--- Allow resistance and civilian group to be spawned without a placeholder.
-createCenter resistance;
 createCenter civilian;
 
 //--- MAke res forces not friendly to all playable sides.
 resistance setFriend [west,0];
 resistance setFriend [east,0];
-resistance setFriend [civilian,1];
-civilian setFriend [west, 0];
-civilian setFriend [east, 0];
-civilian setFriend [resistance, 1];
-
-// Prepare extDB before starting the initialization process for the server.
-private _extDBNotLoaded = "";
-extDBOpened = false;
-private _dbresult = "extDB3" callExtension "9:VERSION";
-if (_dbresult == "") then {
-	["INITIALIZATION", "fn_initServer.sqf: extDB3 Failed to Load!"] Call WFCO_FNC_LogContent;
-} else {
-	if (isNil {uiNamespace getVariable "wasp_sql_id"}) then {
-		wasp_sql_id = round(random(9999));
-		CONSTVAR(wasp_sql_id);
-		uiNamespace setVariable ["wasp_sql_id", wasp_sql_id];
-		try {
-			_result = EXTDB format ["9:ADD_DATABASE:%1",EXTDB_SETTING(getText,"DatabaseName")];
-			if (!(_result isEqualTo "[1]")) then {throw "extDB3: Error with Database Connection"};
-			_result = EXTDB format ["9:ADD_DATABASE_PROTOCOL:%2:SQL:%1:TEXT2",FETCH_CONST(wasp_sql_id),EXTDB_SETTING(getText,"DatabaseName")];
-			if (!(_result isEqualTo "[1]")) then {throw "extDB3: Error with Database Connection"};
-		} catch {
-			diag_log _exception;
-			_extDBNotLoaded = [true, _exception];
-		};
-		if (_extDBNotLoaded isEqualType []) exitWith {};
-		
-		EXTDB "9:LOCK";
-		diag_log "extDB3: Connected to Database";
-		extDBOpened = true;
-	} else {
-		wasp_sql_id = uiNamespace getVariable "wasp_sql_id";
-		CONSTVAR(wasp_sql_id);
-		diag_log "extDB3: Still Connected to Database";
-		extDBOpened = true;
-	};
-};
+west setFriend [resistance, 0];
+east setFriend [resistance, 0];
 
 //--- Server Init is now complete.
 serverInitComplete = true;
@@ -80,6 +44,11 @@ _present_res = missionNamespace getVariable "WF_GUER_PRESENT";
 	(missionNamespace getVariable Format ["WF_%1_DefenseTeam", _x]) setVariable ["wf_persistent", true];
 } forEach [west,east,resistance];
 
+//--- hq price penalty.
+missionNamespace setVariable [format ["wf_%1_hq_penalty", west], 0, true];
+missionNamespace setVariable [format ["wf_%1_hq_penalty", east], 0, true];
+missionNamespace setVariable [format ["wf_%1_hq_penalty", resistance], 0, true];
+
 //--- Select whether the spawn restriction is enabled or not.
 _locationLogics = [];
 if ((missionNamespace getVariable "WF_C_BASE_START_TOWN") > 0) then {
@@ -101,8 +70,10 @@ _maxAttempts = 2000;
 _minDist = missionNamespace getVariable 'WF_C_BASE_STARTING_DISTANCE';
 _startW = [0,0,0];
 _startE = [0,0,0];
+_startG = [0,0,0];
 _rPosW = [0,0,0];
 _rPosE = [0,0,0];
+_rPosG = [0,0,0];
 _setWest = if (_present_west) then {true} else {false};
 _setEast = if (_present_east) then {true} else {false};
 _setGuer = if (_present_res) then {true} else {false};
@@ -115,6 +86,7 @@ _spawn_south = objNull;
 _spawn_central = objNull;
 _skip_w = false;
 _skip_e = false;
+_skip_g = false;
 {
 	if (!isNil {_x getVariable "wf_spawn"}) then {
 		switch (_x getVariable "wf_spawn") do {
@@ -133,6 +105,7 @@ switch (missionNamespace getVariable "WF_C_BASE_STARTING_MODE") do {
 		} else {
 			_startE = _spawn_south;
 			_startW = _spawn_north;
+			_startG = _spawn_central;
 		};
 	};
 	case 1: {
@@ -142,6 +115,7 @@ switch (missionNamespace getVariable "WF_C_BASE_STARTING_MODE") do {
 		} else {
 			_startE = _spawn_north;
 			_startW = _spawn_south;
+			_startG = _spawn_central;
 		};
 	};
 	case 2: {
@@ -156,42 +130,41 @@ if (_use_random) then {
 		//--- Determine west starting location if necessary.
 		if (_setWest) then {
 			_rPosW = _locationLogics # floor(random _total);
-			if (_rPosW distance _startE > _minDist) then {_startW = _rPosW; _setWest = false;};
+			if (_rPosW distance _startE > _minDist && _rPosW distance _startG > (_minDist / 2)) then {_startW = _rPosW; _setWest = false};
 		};
 
-		// --- Determine west starting location if necessary.
+		// --- Determine east starting location if necessary.
 		if (_setEast) then {
 			_rPosE = _locationLogics # floor(random _total);
-			if (_rPosE distance _startW > _minDist) then {_startE = _rPosE; _setEast = false;};
+			if (_rPosE distance _startW > _minDist && _rPosE distance _startG > (_minDist / 2)) then {_startE = _rPosE; _setEast = false};
+		};
+
+		if (_setGuer) then {
+            _rPosG = _locationLogics # floor(random _total);
+            if (_rPosG distance _startW > (_minDist / 2) && _rPosG distance _startE > (_minDist / 2)) then {_startG = _rPosG; _setGuer = false};
 		};
 
 		_i = _i + 1;
 
 		if (_i >= _maxAttempts) exitWith {
 			//--- Get the default locations.
-			Private ["_eastDefault", "_westDefault"];
+			Private ["_eastDefault", "_westDefault", "_guerDefault"];
 			_eastDefault = objNull;
 			_westDefault = objNull;
-
-			{
-				if (!isNil {_x getVariable "wf_default"}) then {
-					switch (_x getVariable "wf_default") do {
-						case west: {_westDefault = _x;};
-						case east: {_eastDefault = _x;};
-					};
-				};
-			} forEach startingLocations;
+			_guerDefault = objNull;
 
 			// --- Ensure that everything is set, otherwise we randomly set the spawn.
-			if (isNull _eastDefault || isNull _westDefault) then {
+			if (isNull _eastDefault || isNull _westDefault || isNull _guerDefault) then {
 				Private ["_tempWork"];
-				_tempWork = +(startingLocations) - [_westDefault, _eastDefault];
-				if (isNull _eastDefault && _present_east) then {_eastDefault = _tempWork # floor(random _total); _tempWork = _tempWork - [_eastDefault];};
-				if (isNull _westDefault && _present_west) then {_westDefault = _tempWork # floor(random _total); _tempWork = _tempWork - [_westDefault];};
+				_tempWork = +(startingLocations) - [_westDefault, _eastDefault, _guerDefault];
+				if (isNull _eastDefault && _present_east) then {_eastDefault = _tempWork # floor(random _total); _tempWork = _tempWork - [_eastDefault]};
+				if (isNull _westDefault && _present_west) then {_westDefault = _tempWork # floor(random _total); _tempWork = _tempWork - [_westDefault]};
+				if (isNull _guerDefault && _present_res) then {_guerDefault = _tempWork # floor(random _total); _tempWork = _tempWork - [_guerDefault]};
 			};
 
-			if (_present_east && !_skip_e) then {_startE = _eastDefault;};
-			if (_present_west && !_skip_w) then {_startW = _westDefault;};
+			if (_present_east && !_skip_e) then {_startE = _eastDefault};
+			if (_present_west && !_skip_w) then {_startW = _westDefault};
+			if (_present_res && !_skip_g) then {_startG = _guerDefault};
 
 			["INITIALIZATION", "fn_initServer.sqf : All sides were placed by force after that the attempts limit was reached."] Call WFCO_FNC_LogContent;
 		};
@@ -214,14 +187,6 @@ if (_use_random) then {
 		_logik = (_side) Call WFCO_FNC_GetSideLogic;
 		_sideID = (_side) Call WFCO_FNC_GetSideID;
 
-		//--- HQ init.
-		_safePos = [_pos, 1, 5, 4, 0, 20, 0] call BIS_fnc_findSafePos;
-		_hq = [missionNamespace getVariable Format["WF_%1MHQNAME", _side], _safePos, _sideID, getDir _pos, true, false, true] Call WFCO_FNC_CreateVehicle;
-		if(damage _hq > 0) then { _hq setDamage 0; };
-       
-		//--- HQ Friendly Fire handler.
-		//_hq addEventHandler ['handleDamage',{[_this select 0,_this select 2,_this select 3] Call WFSE_fnc_BuildingHandleDamage}];
-
 		//--- Get upgrade clearance for side.
 		_clearance = missionNamespace getVariable "WF_C_GAMEPLAY_UPGRADES_CLEARANCE";
 		_upgrades = false;
@@ -243,6 +208,8 @@ if (_use_random) then {
 
 		//--- Logic init.
 		_logik setVariable ["wf_commander", objNull, true];
+		_logik setVariable ["wf_friendlySides", [_side], true];
+		_logik setVariable ["wf_isFirstOutTeam", false, true];
 
 		_logik setVariable ["wf_startpos", _pos, true];
 		_logik setVariable ["wf_structure_lasthit", 0];
@@ -271,6 +238,17 @@ if (_use_random) then {
 		for '_i' from 0 to count(missionNamespace getVariable Format["WF_%1STRUCTURES",_side])-2 do {_str set [_i, 0]};
 		_logik setVariable ["wf_structures_live", _str, true];
 
+		//--- start base
+		missionNamespace setVariable ["WF_HEADLESSCLIENT_ID", 0];
+		[_side, _pos] spawn {
+		    Params ['_side', '_pos'];
+		waitUntil{(missionNamespace getVariable "WF_HEADLESSCLIENT_ID") != 0};
+		_hc = missionNamespace getVariable "WF_HEADLESSCLIENT_ID";
+		if(_hc > 0) then {
+            [_side, _pos, missionNamespace getVariable format ["WF_NEURODEF_%1_BASE", _side]] remoteExecCall ["WFHC_FNC_CreateStartupBase", _hc]
+            }
+        };
+
 		//--- Radio: Initialize the announcers entities.
 		_radio_hq1 = (createGroup sideLogic) createUnit ["Logic",[0,0,0],[],0,"NONE"];
 		_radio_hq2 = (createGroup sideLogic) createUnit ["Logic",[0,0,0],[],0,"NONE"];
@@ -292,32 +270,6 @@ if (_use_random) then {
 		_radio_hq1 setGroupId ["HQ"];
 		_radio_hq1 kbAddTopic [_radio_hq_id, "Common\Module\Kb\hq.bikb","Common\Module\Kb\hq.fsm", {call WFCO_fnc_initHq}];
 		_logik setVariable ["wf_radio_hq_id", _radio_hq_id, true];
-
-		//--- Starting vehicles.
-		{
-			_pos = getPosATL _hq;
-			_safePos = [_pos, 15, 15, 4, 0, 20, 0] call BIS_fnc_findSafePos;
-			_vehicle = [_x, _pos, _sideID, 0, false] Call WFCO_FNC_CreateVehicle;
-			(_vehicle) call WFCO_FNC_ClearVehicleCargo;
-		} forEach (missionNamespace getVariable Format ['WF_%1STARTINGVEHICLES', _side]);
-
-		//--- spawn of additional vehicles
-		switch _side do{
-			case west: {
-				call WFCO_fnc_respawnStartVeh;
-				_tVeh = WEST_StartVeh # floor(random (count WEST_StartVeh));
-				_pos = getPosATL _hq;
-				_safePos = [_pos, 1, 25, 4, 0, 20, 0] call BIS_fnc_findSafePos;
-				_vehicle = [_tVeh,_safePos, west, 0, false] Call WFCO_FNC_CreateVehicle;
-			};
-			case east:{
-				call WFCO_fnc_respawnStartVeh;
-				_tVeh = EAST_StartVeh # floor(random (count EAST_StartVeh));
-				_pos = getPosATL _hq;
-				_safePos = [_pos, 1, 25, 4, 0, 20, 0] call BIS_fnc_findSafePos;
-				_vehicle = [_tVeh, _safePos, east, 0, false] Call WFCO_FNC_CreateVehicle;
-			};
-		};
 
 		//--- Groups init.
 		_teams = [];
@@ -345,7 +297,7 @@ if (_use_random) then {
 		_logik setVariable ["wf_teams", _teams, true];
 		_logik setVariable ["wf_teams_count", count _teams];
 	};
-} forEach [[_present_east, east, _startE],[_present_west, west, _startW]];
+} forEach [[_present_east, east, _startE],[_present_west, west, _startW], [_present_res, resistance, _startG]];
 
 _selected_pos_array = [];
 _start_position_array = [];
@@ -356,75 +308,33 @@ if((missionNamespace getVariable "WF_DEBUG_DISABLE_TOWN_INIT") == 0) then {
 	waitUntil{count towns == totalTowns};
 };
 
-// run one global server town script to process supply updates in each town
-[] spawn WFSE_fnc_startTownProcessing;
-
-[] spawn {
-	if ((missionNamespace getVariable "WF_C_TOWNS_DEFENDER") > 0 || (missionNamespace getVariable "WF_C_TOWNS_OCCUPATION") > 0) then {
-		[] spawn WFSE_fnc_startTownAiProcessing; // for occupation forces (spawn/despawn mode)
-	};
-};
-
-if ((missionNamespace getVariable "WF_C_TOWNS_STARTING_MODE") != 0) then {
 	[] spawn WFSE_fnc_initTowns;
-} else {
-	townInitServer = true;
-};
-
-//--- Don't pause the server init script.
-[] spawn {
-	waitUntil {townInit};
-		[] spawn WFSE_fnc_startEndGameConditionProcessing;
-		["INITIALIZATION", "fn_initServer.sqf: Victory Condition FSM is initialized."] Call WFCO_FNC_LogContent;
-
-	[] spawn WFSE_fnc_updateResources;
-	["INITIALIZATION", "fn_initServer.sqf: Resources FSM is initialized."] Call WFCO_FNC_LogContent;
-
-	[] spawn WFCO_FNC_updateCampsInTown;
-	["INITIALIZATION", "fn_initServer.sqf: camps update script is initialized."] Call WFCO_FNC_LogContent;
-};
-
-[] spawn WFSE_fnc_startGarbageCollector;
-["INITIALIZATION", "fn_initServer.sqf: Garbage Collector is defined."] Call WFCO_FNC_LogContent;
-
-//--- Base Area (grouped base)
-if ((missionNamespace getVariable "WF_C_BASE_AREA") > 0) then {[] spawn WFSE_fnc_startBaseAreaProcessing};
-
-//--WASP MODULES: start TaskDirector--
-["INITIALIZATION", Format ["fn_initServer.sqf: Server start TaskDirector at [%1]", time]] Call WFCO_FNC_LogContent;
-[] spawn WFSE_fnc_initTaskDirector;
 
 //--- Waiting until that the game is launched.
 waitUntil { time > 0 };
-
-//--Start broadcast FPS  of the server--
-[] spawn WFSE_FNC_broadCastFPS;
 
 //--Update players global list--
 if(isMultiplayer && !isDedicated)then{
     [0] spawn WFSE_FNC_updatePlayersList;
 };
 
-//--- Base Area (grouped base)
-if ((missionNamespace getVariable "WFBE_C_BASE_AREA") > 0) then {[] execVM "\waspServer\FSM\basearea.sqf"};
-
-//--- Resistance base spawning
-emptyQueu = [];
-_startLocationPositions = [];
-{
-    _startLocationPositions pushBack (getPosAtl _x);
-    deleteVehicle _x
-} forEach ([0,0,0] nearEntities [["LocationOutpost_F"], 100000]);
-
-[0, _startLocationPositions] spawn WFSE_FNC_CreateBaseComposition;
-
 //--- Voting process init
 ["INITIALIZATION", Format ["fn_initServer.sqf: Server start autovoting at [%1]", time]] Call WFCO_FNC_LogContent;
 {_x spawn WFSE_FNC_VoteForCommander} forEach WF_PRESENTSIDES;
 
-[worldName, missionNamespace getVariable ["WF_MISSIONNAME", ""]] spawn WFSE_FNC_InitGameInfo;
+["GAME IS STARTED", 1] call WFDC_FNC_LogContent;
 
 [format [":regional_indicator_g: :regional_indicator_a: :regional_indicator_m: :regional_indicator_e:   :regional_indicator_s: :regional_indicator_t: :regional_indicator_a: :regional_indicator_r: :regional_indicator_t: :regional_indicator_e: :regional_indicator_d:   :point_right:   **%1**", missionNamespace getVariable "WF_MISSIONNAME"]] Call WFDC_FNC_LogContent;
+
+//--- Don't pause the server init script.
+[] spawn {
+	sleep 30;
+    [] spawn WFSE_fnc_startCommonLogicProcessing;
+    ["INITIALIZATION", "fn_initServer.sqf: Victory Condition FSM is initialized."] Call WFCO_FNC_LogContent;
+
+	[] spawn WFSE_fnc_updateResources;
+	["INITIALIZATION", "fn_initServer.sqf: Resources FSM is initialized."] Call WFCO_FNC_LogContent;
+};
 
 ["INITIALIZATION", Format ["fn_initServer.sqf: Server initialization ended at [%1]", time]] Call WFCO_FNC_LogContent;
 [format ["Server initialization ended at [%1]", time]] Call WFDC_FNC_LogContent;

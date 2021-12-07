@@ -1,8 +1,12 @@
 uiNamespace setVariable ["wf_display_respawn", _this select 0];
 
+_map =  (_this select 0) displayCtrl 511001;
+_drawMarkerId = _map ctrlAddEventHandler ["Draw", WF_C_MAP_MARKER_HANDLER];
+
 //--- Focus on the player death location.
-((uiNamespace getVariable "wf_display_respawn") displayCtrl 511001) ctrlMapAnimAdd [0, .095, WF_DeathLocation];
+_map ctrlMapAnimAdd [0, .095, WF_DeathLocation];
 ctrlMapAnimCommit ((uiNamespace getVariable "wf_display_respawn") displayCtrl 511001);
+
 
 //--- Recall the last gear mode.
 ctrlSetText [511004, if (WF_RespawnDefaultGear) then {localize "STR_WF_RESPAWN_GearDefault"} else {localize "STR_WF_RESPAWN_GearCurrent"}];
@@ -44,7 +48,7 @@ while {WF_RespawnTime > 0 && dialog && alive player && !WF_GameOver} do
 		_spawn_last_get = time;
 		
 		//--- Return the available spawn locations
-		_spawn_locations = [WF_Client_SideJoined, WF_DeathLocation] Call WFCL_FNC_GetRespawnAvailable;
+		_spawn_locations = [WF_DeathLocation] Call WFCL_FNC_GetRespawnAvailable;
 
 		//---No spawn available at frist? get one!
 		if (isNull _spawn_at_current) then {
@@ -134,7 +138,10 @@ if(WF_GameOver) then {
 	{deleteMarkerLocal _x} forEach _spawn_markers;
 
 	//--- Close dialog if opened.
-	if (dialog) then {closeDialog 0};
+	if (dialog) then {
+	    _map ctrlRemoveEventHandler ["Draw", _drawMarkerId];
+	    closeDialog 0
+	};
 	
 	//--- Release the UI.
 	uiNamespace setVariable ["wf_display_respawn", nil];
@@ -156,7 +163,7 @@ if(WF_GameOver) then {
 					WF_RespawnTime = nil;
 					
 					//--- Execute actions on respawn.
-					[player,_this] Call WFCL_FNC_onRespawnHandler;
+					[_this] Call WFCL_FNC_onRespawnHandler;
 					
 					//--- Destroy the camera.
 					if !(isNil 'WF_DeathCamera') then {
@@ -179,7 +186,7 @@ if(WF_GameOver) then {
 			WF_RespawnTime = nil;
 			
 			//--- Execute actions on respawn.
-			[player,_spawn_at_current] Call WFCL_FNC_onRespawnHandler;
+			[_spawn_at_current] Call WFCL_FNC_onRespawnHandler;
 			
 			//--- Destroy the camera.
 			if !(isNil 'WF_DeathCamera') then {
@@ -217,7 +224,10 @@ if(WF_GameOver) then {
 	{deleteMarkerLocal _x} forEach _spawn_markers;
 
 	//--- Close dialog if opened.
-	if (dialog) then {closeDialog 0};
+	if (dialog) then {
+	    _map ctrlRemoveEventHandler ["Draw", _drawMarkerId];
+	    closeDialog 0
+	};
 
 	//--- Release the UI.
 	uiNamespace setVariable ["wf_display_respawn", nil];

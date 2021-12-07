@@ -1,4 +1,4 @@
-params ["_town", "_townName", "_townDubbingName", "_townStartSV", "_townMaxSV", "_townRange", "_town_type", ["_townSpecialities", []]];
+params ["_town", "_townName", "_townDubbingName", "_townStartSV", "_townMaxSV", "_townRange", ["_townSpecialities", []], ["_townServices", []], ["_townDefendersSpeciality", []]];
 private ['_marker'];
 
 if ((missionNamespace getVariable "WF_DEBUG_DISABLE_TOWN_INIT") == 1) exitWith {
@@ -8,31 +8,27 @@ if ((missionNamespace getVariable "WF_DEBUG_DISABLE_TOWN_INIT") == 1) exitWith {
 //--- Prevent the isServer bug on the client.
 sleep (1.2 + random 0.2);
 
-if (isNull _town || (_town getVariable "wf_inactive")) exitWith {};
-
-//--- town speciality set up
+//--- setup of town speciality
 _town setVariable ["townSpeciality", _townSpecialities];
 
+//--- setup of common data
 _town setVariable ["name",_townName];
 _town setVariable ["range",_townRange];
+
+//--- setup town supply related data
 if (count _townSpecialities > 0) then {
     _town setVariable ["startingSupplyValue",_townMaxSV]
 } else {
     _town setVariable ["startingSupplyValue",_townStartSV]
 };
-
 _town setVariable ["maxSupplyValue",_townMaxSV];
 _town setVariable ["initialMaxSupplyValue",_townMaxSV];
 _town setVariable ["initialStartSupplyValue",_townStartSV];
 
-
-//--- If the town type is an array rather than a single value, pick a random template (see Server_GetTownGroups.sqf).
-if (_town_type isEqualType []) then {_town_type = _town_type # floor(random count _town_type)};
-_town setVariable ["wf_town_type", _town_type];
-
+waitUntil {!isNil "commonInitComplete"};
 waitUntil {commonInitComplete};
 
-_camps = nearestObjects [_town, [WF_C_CAMP], _townRange];
+_camps = nearestObjects [_town, WF_C_CAMP_SEARCH_ARRAY, _townRange];
 _camps = _camps select { (_x getVariable ["WF_CAMP_TOWN", ""]) == _townName };
 
 if (isServer) then {
@@ -40,26 +36,33 @@ if (isServer) then {
     _town setVariable ["camps", _camps, true];
     ["INITIALIZATION",Format ["Init_Town.sqf : Found [%1] camps in [%2].", count _camps, _town getVariable "name"]] call WFCO_FNC_LogContent;
 
+    //--- Setup town defense speciality
+    if(count _townDefendersSpeciality > 0) then { _town setVariable ["townDefendersSpeciality", _townDefendersSpeciality, true] };
+
 _defenseLocations = [];
 {
     _kind = _x getVariable "wf_defense_kind";
+
     if !(isNil "_kind") then {
-        _defenseLocations pushBack [_kind, (getPosATL _x), getDir _x, nil];
-            // deleteVehicle _x
+            if(count _kind > 1) then {
+                _townBelongName = _kind # 1;
+                if(_townBelongName == _townName) then { _defenseLocations pushBack [_kind, (getPosATL _x), getDir _x, nil] }
+            } else {
+                _defenseLocations pushBack [_kind, (getPosATL _x), getDir _x, nil]
+            }
     }
 } forEach (_town nearEntities[["Logic"], _townRange]);
-    _town setVariable ["wf_town_defenses", _defenseLocations];
+    _town setVariable ["wf_town_defenses", _defenseLocations, true];
 
     _townDubbingName = switch (_townDubbingName) do {
         case "+": {_townName};//--- Copy the name.
         case "": {"Town"};//--- Unknown name, apply Town dubbing.
         default {_townDubbingName};//--- Input name.
     };
-    _town setVariable ["wf_town_dubbing", _townDubbingName];
+    _town setVariable ["wf_town_dubbing", _townDubbingName, true];
 
-    [_town,_camps,_townStartSV, _townMaxSV, _townSpecialities, _townRange] spawn {
-        params ["_town", "_camps","_townStartSV", "_townMaxSV", "_townSpecialities", "_townRange"];
-        if (isNil {_town getVariable "sideID"}) then {_town setVariable ["sideID",WF_DEFENDER_ID,true]};
+    [_town,_camps,_townStartSV, _townMaxSV, _townSpecialities, _townRange, _townServices] spawn {
+        params ["_town", "_camps","_townStartSV", "_townMaxSV", "_townSpecialities", "_townRange", "_townServices"];
         if (count _townSpecialities > 0) then {
             _town setVariable ["supplyValue",_townMaxSV,true]
         } else {
@@ -68,31 +71,9 @@ _defenseLocations = [];
 
 
         waitUntil {serverInitComplete};
-        _town_camp_flags    = [];
-        {
-            Private ["_flag"];
-            //--- Create a flag near the camp location & position it.
-			_flag = createVehicle [missionNamespace getVariable "WF_C_CAMP_FLAG", [0,0,0]];
-			_flag enableSimulationGlobal false;
-			_flag setPosATL (getPosATL _x);
-            _flag setPosATL (_x modelToWorld (missionNamespace getVariable "WF_C_CAMP_FLAG_POS"));
-			_flagPos = getPosATL _flag;			
-			_flagPos set [2, -0.37];			
-            _flag setPosATL _flagPos;
 
-            _x setVariable ["wf_flag", _flag, true];
-            //--- Initialize the camp.
-            if (isNil {_x getVariable "sideID"}) then {_x setVariable ["sideID",WF_DEFENDER_ID,true]};
-            if (isNil {_x getVariable "supplyValue"}) then {
-                waitUntil {!isNil {_town getVariable "supplyValue"}};
-                _x setVariable ["supplyValue", _town getVariable "supplyValue", true]
-            };
-
-            _town_camp_flags pushBack _flag;
-            ["INITIALIZATION",Format ["Init_Town.sqf : Initialized Camp in [%1].", _town getVariable "name"]] call WFCO_FNC_LogContent
-        } forEach _camps;
-        _town setVariable ["flags", _town_camp_flags];
-
+        //--- setup town service related data
+        _town setVariable ["townServices", _townServices, true];
         if(WF_C_MILITARY_BASE in _townSpecialities || WF_C_AIR_BASE in _townSpecialities) then {
             _respVehPositions = [];
             {
@@ -102,7 +83,7 @@ _defenseLocations = [];
                _respVehPositions pushBack (_respVehDetails);
                deleteVehicle _x
             } forEach (_town nearEntities[["LocationRespawnPoint_F"], _townRange]);
-            _town setVariable ["respVehPositions", _respVehPositions]
+            _town setVariable ["respVehPositions", _respVehPositions, true]
         }
     }
 };

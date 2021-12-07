@@ -131,7 +131,7 @@ class RscMenu_Team {
             x = 0.202364;
             y = 0.512681;
             w = 0.279999;
-            text = "Squad (Coming Soon)";
+            text = $STR_WF_SQUAD;
             action = "WF_MenuAction = 111";
         };
 
@@ -156,8 +156,8 @@ class RscMenu_Team {
 			y = 0.465;
 			w = 0.279999;
 			text = $STR_WF_TEAM_DisbandButton;
-			colorBackground[] = {0.768627451, 1, 0.137254902, 0.7};
-            colorBackgroundActive[] = {0.668627451, 0.9, 0.037254902, 1};
+			colorBackground[] = {0.09,0.65,0.23,1};
+            colorBackgroundActive[] = {0.1,0.72,0.25,1};
             colorFocused[] = {0.768627451, 1, 0.137254902, 1};
             colorShadow[] = {0,0,0,1};
             colorBorder[] = {0,0,0,1};
@@ -170,16 +170,6 @@ class RscMenu_Team {
             action = "WF_MenuAction = 113";
             x = 0.203;
             y = 0.599632;
-            w = 0.275;
-            sizeEx = 0.030;
-        };
-
-        class HUD_STYLE_BUTTON: RscButton
-        {
-            idc = 13021;
-            action = "WF_MenuAction = 114";
-            x = 0.514313;
-            y = 0.65;
             w = 0.275;
             sizeEx = 0.030;
         };

@@ -50,14 +50,14 @@ _o pushBack 1100;
 _t pushBack "Defense";
 _k pushBack "";
 
-_c pushBack 'CUP_B_M119_US';
+_c pushBack 'CUP_B_D30_CDF';
 _n pushBack '';
 _o pushBack 1800;
 _t pushBack "Defense";
 _k pushBack "Artillery";
 
 //--- Defenses management for towns.
-if (isServer) then {[_side, _c, _k] Call Compile preprocessFile "Common\Warfare\Config\Config_Defenses_Towns.sqf"};
+if (isServer || isHeadLessClient) then {[_side, _c, _k] Call Compile preprocessFile "Common\Warfare\Config\Config_Defenses_Towns.sqf"};
 
 //--- Fortitications and rest.
 

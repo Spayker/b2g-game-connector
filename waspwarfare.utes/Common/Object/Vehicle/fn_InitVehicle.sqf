@@ -1,5 +1,5 @@
 params ["_vehicle", "_sideId", "_locked", ["_bounty", true], ["_global", true], ["_skin", -1]];
-private ["_side", "_vehicle"];
+private ["_side", "_vehicle", "_isHQ"];
 
 _side = (_sideId) Call WFCO_FNC_GetSideFromID;
 
@@ -7,69 +7,90 @@ if (_locked) then {_vehicle lock _locked};
 
 _vehicle spawn WFCO_FNC_ClearVehicleCargo;
 
+_isHQ = (typeOf _vehicle == (missionNamespace getVariable [Format["WF_%1MHQNAME", _side], ""]));
+
 //-- Init HQ
-if(typeOf _vehicle == (missionNamespace getVariable [Format["WF_%1MHQNAME", _side], ""])) then {
-    _vehicle setVariable ["wf_side", _side];
-    _vehicle setVariable ["wf_trashable", false];
-    _vehicle setVariable ["wf_structure_type", "Headquarters"];
+if(_isHQ) then {
+    _vehicle setVariable ["wf_side", _side, true];
+    _vehicle setVariable ["wf_trashable", false, true];
+    _vehicle setVariable ["wf_structure_type", "Headquarters", true];
     _vehicle setVariable ["wf_hq_deployed", false, true];
+    _vehicle addMPEventHandler ["MPHit",{
+        params ["_unit", "_causedBy", "_damage", "_instigator"];
+
+        if(WF_C_BASE_ALLOW_TEAM_DAMMAGE <= 0 && ((side _causedBy) == (_unit getVariable "wf_side"))) then {
+            _unit setDammage ((getDammage _unit) - _damage)
+        } else {
+            if(isHeadLessClient)then{
+                [_unit] call WFHC_FNC_BuildingDamaged
+                }
+            }
+    }];
+
+    _vehicle addMPEventHandler ["MPKilled", {
+    	params ["_unit", "_killer", "_instigator", "_useEffects"];
+    	if(isHeadLessClient)then{
+            [_unit, _killer] call WFHC_FNC_OnHQKilled
+        }
+    }];
 
 	_logik = (_side) Call WFCO_FNC_GetSideLogic;
-    _hqs = (_side) call WFCO_FNC_GetSideHQ;
 	_hqs = _logik getVariable ["wf_hq", []];
 	_hqs = _hqs - [objNull];
 	_hqs pushBack _vehicle;
+
 	_logik setVariable ["wf_hq", _hqs, true];
-    if(count (_logik getVariable ["wf_hq", []]) > 1) then { [_vehicle] remoteExec ["WFSE_FNC_addEmptyVehicleToQueue", 2] };
+	_hqs = _logik getVariable ["wf_hq", []];
 } else {
+    if (typeOf _vehicle != WF_MOBILE_TACTICAL_MISSILE_LAUNCHER_TYPE) then {
     [_vehicle] remoteExec ["WFSE_FNC_addEmptyVehicleToQueue", 2]
+    }
 };
 
-[_vehicle, _bounty, _sideId, _global, _skin] spawn {
-    params ["_vehicle", "_bounty", "_sideId", "_global", "_skin"];
+[_vehicle, _bounty, _side, _global, _skin, _ishq] spawn {
+    params ["_vehicle", "_bounty", "_side", "_global", "_skin", "_ishq"];
+
 
     if (_global) then {
-    	if (_sideId != WF_DEFENDER_ID) then {
-    		[_vehicle, _sideId] remoteExec ["WFCO_FNC_initUnit",0,true];
-    	};
+            if (_vehicle isKindOf "Air") then { //--- Air units.
+            if(_side == west) then {
+                [_vehicle, _side] remoteExec ["WFCO_FNC_performAirVehicleTracking", east, true];
+                [_vehicle, _side] remoteExec ["WFCO_FNC_performAirVehicleTracking", resistance, true]
+            };
+
+            if(_side == east) then {
+                [_vehicle, _side] remoteExec ["WFCO_FNC_performAirVehicleTracking", west, true];
+                [_vehicle, _side] remoteExec ["WFCO_FNC_performAirVehicleTracking", resistance, true]
+            };
+
+            if(_side == resistance) then {
+                [_vehicle, _side] remoteExec ["WFCO_FNC_performAirVehicleTracking", east, true];
+                [_vehicle, _side] remoteExec ["WFCO_FNC_performAirVehicleTracking", west, true]
+            };
+        }
     };
 
-    if(typeOf _vehicle == (missionNamespace getVariable [Format["WF_%1SUPPLY_TRUCK", _sideId], ""])) then {
+    if(typeOf _vehicle == (missionNamespace getVariable [Format["WF_%1SUPPLY_TRUCK", _side], ""])) then {
+
+        _vehicle addEventHandler ["GetIn", {
+            params ["_vehicle", "_role", "_unit", "_turret"];
+            _isSupplyVehicle = _vehicle getVariable ['isSupplyVehicle', false];
+            if(_isSupplyVehicle && _role == "driver") then {
+                (localize "STR_WF_CHAT_Commander_Supply_Truck_Move_Order") remoteExecCall ["WFCL_FNC_GroupChatMessage", _unit]
+            }
+
+         }];
+
         _vehicle addEventHandler ["GetOut", {
         	params ["_vehicle", "_role", "_unit", "_turret"];
         	if(_role == "driver") then { [_vehicle, group (_unit)] call WFCO_fnc_SellSupplyTruck }
         }]
     };
 
-	if (_bounty) then {
-		_vehicle addEventHandler ["killed", format ['[_this # 0,_this # 1,%1] spawn WFCO_FNC_OnUnitKilled', _sideId]];
-		_vehicle addEventHandler ["hit", {_this spawn WFCO_FNC_OnUnitHit}];
-		if(!isHostedServer) then {
-			[_vehicle, ["killed", format ['params ["_unit", "_killer"]; if(local _unit) then { [_unit, _killer, %1] spawn WFCO_FNC_OnUnitKilled; };', _sideId]]] remoteExec ["addEventHandler", 2];
-			[_vehicle, ["hit", {params ["_unit"]; if(local _unit) then { _this spawn WFCO_FNC_OnUnitHit; };}]] remoteExec ["addEventHandler", 2];
-		};
+	if (_bounty && !_isHQ) then {
+		_vehicle addMPEventHandler ['MPKilled', {[_this # 0,_this # 1] call WFCO_FNC_OnUnitKilled}];
+		_vehicle addMPEventHandler ["MPHit",{_this call WFCO_FNC_OnUnitHit}];
 	};
-
-	if(typeOf _vehicle in ['CUP_O_2S6M_RU','CUP_B_M6LineBacker_USA_W','RHS_M6']) then {
-		_vehicle addeventhandler ['Fired',{_this spawn HandleAAMissiles;}];
-	};
-
-	if(typeOf _vehicle in WF_C_COMBAT_JETS_WITH_BOMBS) then {
-		_vehicle addeventhandler ['Fired',{_this spawn WFCO_FNC_HandleBombs}];
-	};
-	
-	//--Check if vehicle is arty vehicle and add EH--	
-	{	        
-	    if(typeOf _vehicle == (_x # 0)) exitWith {				
-			[_vehicle, ["Fired", {
-            	params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile", "_gunner"];
-				
-				if(isPlayer _gunner) then {
-					deleteVehicle _projectile;
-				};
-            }]] remoteExec ["addEventHandler", -2, true];
-	    };
-	} forEach (missionNamespace getVariable [format['WF_%1_ARTILLERY_CLASSNAMES', _sideId], []]);
 
 	_vehicle addEventHandler ["GetOut", {
 		private _vehicle = param [0, objNull, [objNull]];
@@ -87,6 +108,18 @@ if(typeOf _vehicle == (missionNamespace getVariable [Format["WF_%1MHQNAME", _sid
 			};
 		};
 	}];
+
+    if!(_isHQ) then {
+	if(_vehicle isKindOf "Car" || _vehicle isKindOf "Apc" || _vehicle isKindOf "Motorcycle") then {
+        _vehicle addEventHandler ["HandleDamage", {
+        if ((_this # 1) find "wheel" != -1) then {
+            (_this # 2) * 0.8
+        } else {
+            (_this # 2)
+        }
+        }]
+        }
+	};
 
 	if(_skin > -1) then {
 		_type = typeOf _vehicle;

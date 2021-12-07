@@ -13,12 +13,6 @@ class Params {
 		texts[] = {"$STR_WF_Disabled","$STR_WF_PARAMETER_Long","$STR_WF_PARAMETER_Medium","$STR_WF_PARAMETER_Short"};
 		default = 2;
 	};
-	class WF_C_AI_COMMANDER_ENABLED {
-		title = "$STR_WF_PARAMETER_AICommander";
-		values[] = {0,1};
-		texts[] = {"$STR_WF_PARAMETER_No","$STR_WF_PARAMETER_Yes"};
-		default = 0;
-	};
 	class WF_C_BASE_AREA {
 		title = "$STR_WF_PARAMETER_BaseArea";
 		values[] = {0,1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24};
@@ -101,26 +95,38 @@ class Params {
 		title = "$STR_WF_PARAMETER_Funds_East";
 		values[] = {800,1600,2400,3200,4000,4800,6400,8000,12800,25600,51200,102400,204800,409600,819200};
 		texts[] = {"$ 800","$ 1600","$ 2400","$ 3200","$ 4000","$ 4800","$ 6400","$ 8000","$ 12800","$ 25600","$ 51200","$ 102400","$ 204800","$ 409600","$ 819200"};
-		default = 12800;
+		default = 25600;
 	};
 	class WF_C_ECONOMY_FUNDS_START_WEST {
 		title = "$STR_WF_PARAMETER_Funds_West";
 		values[] = {800,1600,2400,3200,4000,4800,6400,8000,12800,25600,51200,102400,204800,409600,819200};
 		texts[] = {"$ 800","$ 1600","$ 2400","$ 3200","$ 4000","$ 4800","$ 6400","$ 8000","$ 12800","$ 25600","$ 51200","$ 102400","$ 204800","$ 409600","$ 819200"};
-		default = 12800;
+		default = 25600;
 	};
+	class WF_C_ECONOMY_FUNDS_START_GUER {
+        title = "$STR_WF_PARAMETER_Funds_Guer";
+        values[] = {800,1600,2400,3200,4000,4800,6400,8000,12800,25600,51200,102400,204800,409600,819200};
+        texts[] = {"$ 800","$ 1600","$ 2400","$ 3200","$ 4000","$ 4800","$ 6400","$ 8000","$ 12800","$ 25600","$ 51200","$ 102400","$ 204800","$ 409600","$ 819200"};
+        default = 25600;
+    };
 	class WF_C_ECONOMY_SUPPLY_START_EAST {
 		title = "$STR_WF_PARAMETER_Supply_East";
 		values[] = {1200,2400,3600,4800,6000,7200,8400,9600,19200,38400,76800};
 		texts[] = {"S 1200","S 2400","S 3600","S 4800","S 6000","S 7200","S 8400","S 9600","S 19200","S 38400","S 76800"};
-		default = 4800;
+		default = 9600;
 	};
 	class WF_C_ECONOMY_SUPPLY_START_WEST {
 		title = "$STR_WF_PARAMETER_Supply_West";
 		values[] = {1200,2400,3600,4800,6000,7200,8400,9600,19200,38400,76800};
 		texts[] = {"S 1200","S 2400","S 3600","S 4800","S 6000","S 7200","S 8400","S 9600","S 19200","S 38400","S 76800"};
-		default = 4800;
+		default = 9600;
 	};
+	class WF_C_ECONOMY_SUPPLY_START_GUER {
+        title = "$STR_WF_PARAMETER_Supply_Guer";
+        values[] = {1200,2400,3600,4800,6000,7200,8400,9600,19200,38400,76800};
+        texts[] = {"S 1200","S 2400","S 3600","S 4800","S 6000","S 7200","S 8400","S 9600","S 19200","S 38400","S 76800"};
+        default = 9600;
+    };
 
 	class WF_C_MAX_ECONOMY_SUPPLY_LIMIT {
 		title = "$STR_WF_PARAMETER_Max_Supply_Limit";
@@ -166,6 +172,18 @@ class Params {
 		texts[] = {"Random","Clear","Light","Medium","High","Max"};
 		default = -1;
 	};
+	class WF_C_ENVIRONMENT_DAY_FAST_TIME {
+        title = "$STR_WF_PARAMETER_FastTime_DAY";
+        values[] = {1,5,10,15,20,25,30,35,40,45,50,55,60,80,90,100,110,120};
+        texts[] = {"1x (1game min. = 1real min.)","5x","10x","15x","20x","25x","30x (1game min. = 2real sec.)","35x","40x","45x","50x","55x","60x","80x","90x","100x","110x","120x"};
+        default = 15;
+    };
+    class WF_C_ENVIRONMENT_NIGHT_FAST_TIME {
+        title = "$STR_WF_PARAMETER_FastTime_NIGHT";
+        values[] = {1,5,10,15,20,25,30,35,40,45,50,55,60,80,90,100,110,120};
+        texts[] = {"1x (1game min. = 1real min.)","5x","10x","15x","20x","25x","30x (1game min. = 2real sec.)","35x","40x","45x","50x","55x","60x","80x","90x","100x","110x","120x"};
+        default = 30;
+    };
 	class WF_C_UNITS_CLEAN_TIMEOUT {
 		title = "$STR_WF_PARAMETER_BodiesTimeout";
 		values[] = {60,120,180,240,300,600,900,1200,1800,2400,3000,3600};
@@ -176,7 +194,7 @@ class Params {
 		title = "$STR_WF_PARAMETER_VehicleDelay";
 		values[] = {60,120,180,240,300,600,900,1200,1800,2400,3000,3600};
 		texts[] = {"1 Minute","2 Minutes","3 Minutes","4 Minutes","5 Minutes","10 Minutes","15 Minutes","20 Minutes","30 Minutes","40 Minutes","50 Minutes","1 Hour"};
-		default = 600;
+		default = 900;
 	};
 	class WF_C_ENVIRONMENT_MAX_CLUTTER {
 		title = "$STR_WF_PARAMETER_Grass";
@@ -196,17 +214,11 @@ class Params {
 		texts[] = {"$STR_WF_Disabled","$STR_WF_Enabled"};
 		default = 0;
 	};
-	class WF_C_PARAMETER_COLORATION {
-		title = "$STR_WF_PARAMETER_Coloration";
-		values[] = {1, 2};
-		texts[] = {"Classic","WASP"};
-		default = 1;
-	};
 	class WF_C_GAMEPLAY_MISSILES_RANGE {
 		title = "$STR_WF_PARAMETER_MissileRange";
 		values[] = {0,250,500,1000,1500,2000,2500,3000,3500,4000,4500,5000,5500,6000,6500,7000,7500,8000,8500,9000,9500,10000};
 		texts[] = {"$STR_WF_Disabled","250m","500m","1000m","1500m","2000m","2500m","3000m","3500m","4000m","4500m","5000m","5500m","6000m","6500m","7000m","7500m","8000m","8500m","9000m","9500m","10000m"};
-		default = 3500;
+		default = 4000;
 	};
     class WF_C_GAMEPLAY_TEAMSTACKING_CHECK {
     	title = "$STR_WF_PARAMETER_TEAMSTACKING_CHECK";
@@ -238,18 +250,6 @@ class Params {
 		texts[] = {"$STR_WF_Disabled","$STR_WF_Enabled"};
 		default = 1;
 	};
-	class WF_C_UNITS_BALANCING {
-		title = "$STR_WF_PARAMETER_Balance";
-		values[] = {0,1};
-		texts[] = {"$STR_WF_Disabled","$STR_WF_Enabled"};
-		default = 1;
-	};
-	class WF_C_GAMEPLAY_VICTORY_CONDITION {
-		title = "$STR_WF_PARAMETER_VictoryCondition";
-		values[] = {0,1,2,3};
-		texts[] = {"$STR_WF_PARAMETER_Victory_Annihilation","$STR_WF_PARAMETER_Victory_Assassination","$STR_WF_PARAMETER_Victory_Supremacy","$STR_WF_PARAMETER_Victory_Towns"};
-		default = 2;
-	};
 	class WF_C_ENVIRONMENT_MAX_VIEW {
 		title = "$STR_WF_PARAMETER_ViewDistance";
 		values[] = {200,500,800,1000,1500,2000,2500,3000,3500,4000,4500,5000};
@@ -262,17 +262,11 @@ class Params {
 		texts[] = {"$STR_WF_Disabled","$STR_WF_Enabled"};
 		default = 1;
 	};
-	class WF_C_MODULE_WF_ICBM {
-		title = "$STR_WF_PARAMETER_ICBM";
+	class WF_C_MODULE_WF_CRUISE_MISSILE {
+		title = "$STR_WF_PARAMETER_CRUISE_MISSILE";
 		values[] = {0,1};
 		texts[] = {"$STR_WF_Disabled","$STR_WF_Enabled"};
 		default = 1;
-	};
-	class WF_C_INCOME_TIME_OF_ICBM {
-		title = "$STR_WF_PARAMETER_ICBM_TIMEOUT";
-		values[] = {5,180,300,420,600};
-		texts[] = {"5","180","300","420","600"};
-		default = 600;
 	};
 	class WF_C_RESPAWN_CAMPS_MODE {
 		title = "$STR_WF_PARAMETER_Camp";
@@ -282,8 +276,8 @@ class Params {
 	};
 	class WF_C_RESPAWN_CAMPS_RULE_MODE {
 		title = "$STR_WF_PARAMETER_CampRespawnRule";
-		values[] = {0,1,2};
-		texts[] = {"$STR_WF_Disabled","$STR_WF_PARAMETER_Respawn_CampsRule_WestEast","$STR_WF_PARAMETER_Respawn_CampsRule_WestEastRes"};
+		values[] = {0,1};
+		texts[] = {"$STR_WF_Disabled","$STR_WF_PARAMETER_Respawn_CampsRule_WestEastRes"};
 		default = 1;
 	};
 	class WF_C_RESPAWN_DELAY {
@@ -295,8 +289,8 @@ class Params {
 	};
 	class WF_C_RESPAWN_MOBILE {
 		title = "$STR_WF_PARAMETER_MobileRespawn";
-		values[] = {0,1,2};
-		texts[] = {"$STR_WF_Disabled","$STR_WF_Enabled","$STR_WF_Enabled_DefaultGear"};
+		values[] = {0,1};
+		texts[] = {"$STR_WF_Disabled","$STR_WF_Enabled"};
 		default = 1;
 	};
 	class WF_C_RESPAWN_PENALTY {
@@ -311,30 +305,12 @@ class Params {
 		texts[] = {"50m","100m","150m","200m","250m","300m","350m","400m","450m","500m","550m","600m","650m","700m","750m","800m","850m","900m","950m","1000m","1500m","2000m","2500m","3000m","3500m","4000m"};
 		default = 400;
 	};
-	class WF_C_TOWNS_AMOUNT {
-		title = "$STR_WF_PARAMETER_TownsAmount";
-		values[] = {0,1,2,3,4,5,6,7};
-		texts[] = {"$STR_WF_PARAMETER_Extra_Small","$STR_WF_PARAMETER_Small","$STR_WF_PARAMETER_Medium","$STR_WF_PARAMETER_Large","$STR_WF_PARAMETER_Full","$STR_WF_PARAMETER_RemovedBigTowns","$STR_WF_PARAMETER_RemovedCentralLine","$STR_WF_PARAMETER_RemovedSmallTowns"};
-		default = 4;
-	};
-	class WF_C_TOWNS_CAPTURE_MODE {
-		title = "$STR_WF_PARAMETER_TownsCaptureMode";
-		values[] = {0,1,2};
-		texts[] = {"$STR_WF_PARAMETER_Classic","$STR_WF_PARAMETER_TownsCaptureMode_Threshold","$STR_WF_PARAMETER_TownsCaptureMode_AllCamps"};
-		default = 2;
-	};
 	class WF_C_TOWNS_DEFENDER {
 		title = "$STR_WF_PARAMETER_Defender";
 		values[] = {0,1,2,3,4};
 		texts[] = {"$STR_WF_Disabled","$STR_WF_PARAMETER_Light","$STR_WF_PARAMETER_Medium","$STR_WF_PARAMETER_Hard","$STR_WF_PARAMETER_Impossible"};
 		default = 2;
 	};
-	class WF_C_TOWNS_DEFENDER_AIM_SKILL {
-        title = "$STR_WF_PARAMETER_Defender_AIM_SKILL";
-        values[] = {1,2,3,4,5,6,7,8,9,10};
-        texts[] = {"10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"};
-        default = 6;
-    };
 	class WF_C_UNITS_FACTION_GUER {
 		title = "$STR_WF_PARAMETER_Reinforcement_Type";
 		values[] = {0};
@@ -365,13 +341,6 @@ class Params {
 		texts[] = {"United States"};
 		default = 0;
 	};
-	
-	class WF_C_TOWNS_BUILD_PROTECTION_RANGE {
-		title = "$STR_WF_PARAMETER_TownProtectionRange";
-		values[] = {0,50,100,150,200,250,300,350,400,450,500};
-		texts[] = {"0m","50m","100m","150m","200m","250m","300m","350m","400m","450m","500m"};
-		default = 100;
-	};
 	class WF_C_UNITS_TOWN_PURCHASE {
 		title = "$STR_WF_PARAMETER_TownsPurchaseMilita";
 		values[] = {0,1};
@@ -382,12 +351,6 @@ class Params {
 		title = "$STR_WF_PARAMETER_Resistance_VehLock";
 		values[] = {0,1};
 		texts[] = {"$STR_WF_Disabled","$STR_WF_Enabled"};
-		default = 0;
-	};
-	class WF_C_TOWNS_STARTING_MODE {
-		title = "$STR_WF_PARAMETER_StartingMode";
-		values[] = {0,1,2,3};
-		texts[] = {"$STR_WF_PARAMETER_None","$STR_WF_PARAMETER_Divided_Towns","$STR_WF_PARAMETER_Nearby_Town","$STR_WF_PARAMETER_StartingLocations_Random"};
 		default = 0;
 	};
 };

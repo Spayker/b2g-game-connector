@@ -1,49 +1,50 @@
-WF_AutoWallConstructingEnabled = true;
+//-- construction menu
+WF_AutoWallConstructingEnabled = false;
 
 //--Required addons list here. Push addon class name from config.bin in array--
 WF_REQ_ADDONS = 	[
-						["@AdWaspLite", ["wasp_vehicle_fix"]],
 						["@CBA_A3", ["cba_xeh", "cba_help"]], 
-						["@Enhanced Movement", ["BaBe_core"]],
 						["@CUP Units", ["CUP_Creatures_People_Civil_Chernarus", "CUP_Creatures_People_Core"]],
 						["@CUP Vehicles", ["CUP_AirVehicles_Core", "CUP_TrackedVehicles_Core"]],
 						["@CUP Weapons", ["CUP_BaseData", "CUP_Weapons_AK"]]
 				];
 
-WF_C_GARBAGE_OBJECTS = ['Land_HBarrier_large','Land_HBarrier5','Land_GarbageWashingMachine_F','Land_GarbageBags_F',
-                        	                            'Land_Garbage_square5_F','Land_BagFence_End_F','Land_Wreck_Skodovka_F','Land_GarbagePallet_F',
-                        	                                'Land_Wreck_BMP2_F','Land_HelipadCircle_F', 'Land_HBarrier_1_F', 'Land_HBarrier_5_F', 'Land_HBarrier_3_F',
-                        	                                    'Land_fort_bagfence_long','Land_fort_bagfence_round','Land_HBarrier1','Land_HBarrier3',
-                        	                                        'Land_BagFence_Long_F','Land_BagFence_Round_F'];
+WF_C_GARBAGE_OBJECTS = ['Land_HBarrier_large','Land_HBarrier5','Base_WarfareBBarrier10xTall', 'Land_BagBunker_Small_F',
+'Land_BagBunker_01_small_green_F', 'Land_HBarrier_01_wall_6_green_F', 'Land_HBarrier_01_wall_corner_green_F', 'Land_fort_artillery_nest',
+'Land_fort_rampart', 'Hedgehog', 'Land_Razorwire_F', 'Wire', 'Hhedgehog_concreteBig', 'Concrete_Wall_EP1', 'Land_CamoConcreteWall_01_l_4m_v2_F',
+'Land_Vez_svetla', 'Land_HBarrier_large', 'Land_fort_bagfence_long','Land_fort_bagfence_round',  'CamoNet_INDP_F',
+'CamoNet_INDP_open_F', 'CamoNet_INDP_big_F', 'CamoNet_BLUFOR_F', 'CamoNet_BLUFOR_open_F', 'CamoNet_BLUFOR_big_F', 'Land_StoneWall_01_s_d_F','Fort_Barricade_EP1','Land_Barricade_01_10m_F'];
 
-WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS = ['CUP_I_DSHKM_NAPA', 'CUP_I_2b14_82mm_TK_GUE'];
+WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS = ['CUP_I_DSHKM_NAPA', 'CUP_I_2b14_82mm_TK_GUE', 'CUP_I_ZU23_NAPA'];
 
-WF_C_UNITS_TO_BALANCE = ['CUP_B_AH1Z_Dynamic_USMC'];
+WF_C_INFANTRY_TO_REQUIP = [
+    ['CUP_O_MVD_Soldier_MG', ['PKP'], ['7.62mm 100Rnd PKM (Green TE4) Box x4']],
+    ['CUP_B_USMC_Soldier_MG_FROG_WDL', ['M240G'], ['7.62mm 100Rnd M240 (White TE4) Box x4']],
+    ['CUP_B_USMC_Soldier_AR_FROG_WDL', ['M249 PIP'], ['5.56mm 200Rnd M249 (Red TE4) Box x4']],
+    ['CUP_I_RACS_Soldier_HAT_Urban', ['M16A2'], ['30Rnd_556x45 x6', 'Smoke GR x1', 'Dragon Launcher x1']]
 
-WF_C_INFANTRY_TO_REQUIP = []; //--Example: ['rhs_vdv_des_at', ['AK-74M', '9M131'], ['7H10 30 AK-74 x8', 'RGN x1', '9M131 x1']]
-
-WF_C_COMBAT_JETS_WITH_BOMBS = ['CUP_O_SU34_RU','CUP_O_L39_TK','CUP_B_L39_CZ','CUP_B_F35B_BAF','CUP_B_F35B_Stealth_BAF',
-    'CUP_B_AV8B_DYN_USMC','CUP_B_A10_DYN_USA','CUP_O_Su25_Dyn_TKA'];
-
-WF_C_BOMBS_TO_DISABLE_AUTOGUIDE = ["CUP_FAB250", "CUP_Mk_82", "CUP_Bo_GBU12_LGB", "CUP_Bo_KAB250_LGB",
-    "CUP_PylonPod_1Rnd_GBU12_M","CUP_PylonPod_2Rnd_GBU12_M","CUP_PylonPod_3Rnd_GBU12_M",
-	"CUP_Triple_Bomb_Rack_Dummy", "CUP_Dual_Bomb_Rack_Dummy"];
+]; //--Example: ['rhs_vdv_des_at', ['AK-74M', '9M131'], ['7H10 30 AK-74 x8', 'RGN x1', '9M131 x1']]
 
 WF_C_ADV_AIR_DEFENCE = [
-							["B_SAM_System_02_F", "B_SAM_System_03_F", "O_SAM_System_04_F", "B_Radar_System_01_F", "O_Radar_System_02_F"], //--Weapons--
-							[                 10,					0,					 0,						0,					   0]	//--Reload time--
+							["B_SAM_System_02_F", "B_SAM_System_03_F", "O_SAM_System_04_F", "B_Radar_System_01_F", "O_Radar_System_02_F", "CUP_WV_B_CRAM", "CUP_WV_B_CRAM_OPFOR"], //--Weapons--
+							[                 10,					0,					 0,						0,					   0,               0,                     0]	//--Reload time--
 						];
-WF_C_ADV_MISSILES_FOR_HANDLING = ["ammo_Missile_mim145", "ammo_Missile_s750", "ammo_Missile_rim162", "M_S400_AA"];
 
 WF_VEHICLES_WITH_EXTRA_SLOT_ISSUE = [
-    // classname                        com,  gun,  not turret seats, turret seats
-    ["CUP_B_Jackal2_GMG_GB_W",         [true, true, 0,                  0]],
-    ["CUP_B_Jackal2_GMG_GB_D",         [true, true, 0,                  0]],
-    ["CUP_B_BAF_Coyote_GMG_W",         [true, true, 0,                  0]],
-    ["CUP_B_BAF_Coyote_GMG_D",         [true, true, 0,                  0]],
-    ["CUP_B_M1A2_TUSK_MG_US_Army",     [true, true, 0,                  1]],
-    ["CUP_B_M1A2_TUSK_MG_DES_US_Army", [true, true, 0,                  1]],
-    ["CUP_O_Ka52_RU",                  [false,true, 0,                  0]]
+    // classname                        		com,  gun,  not turret seats, turret seats
+    ["CUP_B_Jackal2_GMG_GB_W",         		[true, true, 0,                  0]],
+    ["CUP_B_Jackal2_GMG_GB_D",         		[true, true, 0,                  0]],
+    ["CUP_B_BAF_Coyote_GMG_W",         		[true, true, 0,                  0]],
+    ["CUP_B_BAF_Coyote_GMG_D",         		[true, true, 0,                  0]],
+    ["CUP_B_M1A2_TUSK_MG_US_Army_WASP",     [true, true, 0,                  1]],
+    ["CUP_B_M1A2_TUSK_MG_DES_US_Army_WASP", [true, true, 0,                  1]],
+    ["CUP_B_Leopard2A6_GER",           		[true, true, 0,                  1]],
+    ["CUP_B_Leopard2A6DST_GER",        		[true, true, 0,                  1]],
+    ["CUP_O_BTR80_TK",                 		[false, true, 0,                 0]],
+    ["CUP_O_BTR80A_TK",                		[false, true, 0,                 0]],
+    ["CUP_O_BTR80_GREEN_RU",                [false, true, 0,            0]],
+    ["CUP_O_BTR80A_CAMO_RU",                [false, true, 0,            0]],
+    ["CUP_O_Ka52_RU",                  		[false,true, 0,                  0]]
 ];
 
 //--Parameters: 1 - pylon num, 2 - ammo class name, 3 - pylot direction, 4 - turret num, 5 - count--
@@ -90,5 +91,11 @@ WF_C_AIR_VEHICLE_TO_REQUIP = [
 	]
 ];
 
-WF_STATIC_ARTILLERY = ['CUP_O_D30_RU', 'CUP_O_2b14_82mm_RU', 'CUP_B_M252_USMC', 'CUP_B_M119_US'];
-WF_ADV_ARTILLERY = ['CUP_O_BM21_RU','CUP_B_M270_HE_USMC','CUP_B_M270_HE_USA','CUP_B_RM70_CZ'];
+WF_AR2_UAVS = ['O_UAV_01_F', 'B_UAV_01_F', 'I_UAV_01_F'];
+WF_FLY_UAVS = ['CUP_O_Pchela1T_RU', 'O_UAV_02_dynamicLoadout_F', 'O_T_UAV_04_CAS_F', 'CUP_B_USMC_DYN_MQ9', 'B_UAV_05_F', 'B_UAV_02_dynamicLoadout_F', 'B_UGV_01_rcws_F', 'O_UGV_01_rcws_F'];
+
+WF_STATIC_ARTILLERY = ['CUP_O_D30_RU', 'CUP_O_2b14_82mm_RU', 'CUP_B_M252_USMC', 'CUP_B_M252_US','CUP_B_M119_US', 'CUP_B_D30_CDF', 'CUP_I_2b14_82mm_NAPA', 'CUP_I_2b14_82mm_TK_GUE', 'CUP_I_D30_TK_GUE'];
+WF_ADV_ARTILLERY = ['CUP_O_BM21_RU','CUP_B_M270_HE_USMC','CUP_B_M270_HE_USA','CUP_B_RM70_CZ','CUP_I_Hilux_MLRS_TK'];
+WF_ARTY_SHELL_TYPES = ['ammo_Missile_CruiseBase','CUP_Sh_122_AT','CUP_Sh_122_HE','CUP_Sh_122_ILLUM','CUP_Sh_122_LASER','CUP_Sh_122_SMOKE','CUP_Sh_122_WP','Sh_82mm_AMOS','Sh_82mm_AMOS_guided','Sh_82mm_AMOS_LG','M_Mo_230mm_AT','M_Mo_230mm_AT_LG','R_230mm_fly','R_80mm_HE'];
+
+WF_MOBILE_TACTICAL_MISSILE_LAUNCHER_TYPE = 'cwr3_o_scud';

@@ -1,7 +1,4 @@
-private ["_faction", "_i", "_p", "_side", "_u"];
-
-_side = _this;
-_faction = "West";
+private ["_i", "_p", "_u"];
 
 _i = [];
 _u = [];
@@ -39,6 +36,10 @@ _i pushBack  "Chemlight_blue";
 _u pushBack  0;
 _p pushBack  2;
 
+_i pushBack  "ChemicalDetector_01_watch_F";
+_u pushBack  0;
+_p pushBack  75;
+
 _i pushBack  "DemoCharge_Remote_Mag";
 _u pushBack  1;
 _p pushBack  150;
@@ -62,6 +63,26 @@ _p pushBack  250;
 _i pushBack  "B_Kitbag_sgg";
 _u pushBack  3;
 _p pushBack  250;
+
+_i pushBack 'B_ViperHarness_blk_F';
+_u pushBack 2;
+_p pushBack 350;
+
+_i pushBack 'B_ViperHarness_khk_F';
+_u pushBack 2;
+_p pushBack 350;
+
+_i pushBack 'B_ViperHarness_oli_F';
+_u pushBack 2;
+_p pushBack 350;
+
+_i pushBack  "hgun_Pistol_heavy_02_F";
+_u pushBack  2;
+_p pushBack  250;
+
+_i pushBack  "6Rnd_45ACP_Cylinder";
+_u pushBack  2;
+_p pushBack  15;
 
 _i pushBack  "B_Carryall_mcamo";
 _u pushBack  4;
@@ -91,6 +112,14 @@ _i pushBack  "Laserdesignator";
 _u pushBack  4;
 _p pushBack  260;
 
+_i pushBack  "Item_Laserdesignator_02";
+_u pushBack  4;
+_p pushBack  280;
+
+_i pushBack  "Laserdesignator_02_ghex_F";
+_u pushBack  4;
+_p pushBack  300;
+
 _i pushBack  "Laserdesignator_01_khk_F";
 _u pushBack  4;
 _p pushBack  260;
@@ -114,14 +143,6 @@ _p pushBack  15;
 _i pushBack  "ItemGPS";
 _u pushBack  1;
 _p pushBack  200;
-
-_i pushBack  "NVGoggles";
-_u pushBack  0;
-_p pushBack  50;
-
-_i pushBack  "NVGogglesB_blk_F";
-_u pushBack  5;
-_p pushBack  750;
 
 _i pushBack  "ToolKit";
 _u pushBack  0;
@@ -180,8 +201,16 @@ _u pushBack  0;
 _p pushBack  60;
 
 _i pushBack  "muzzle_snds_B";
-_u pushBack  4;
-_p pushBack  200;
+_u pushBack  1;
+_p pushBack  100;
+
+_i pushBack  "optic_Arco_lush_F";
+_u pushBack  3;
+_p pushBack  150;
+
+_i pushBack  "muzzle_snds_B_lush_F";
+_u pushBack  3;
+_p pushBack  100;
 
 _i pushBack  "muzzle_snds_338_black";
 _u pushBack  4;
@@ -191,9 +220,8 @@ _i pushBack  "bipod_01_F_mtp";
 _u pushBack  3;
 _p pushBack  50;
 
-[_faction, _i, _u, _p] call compile preprocessFileLineNumbers "Common\Warfare\Config\Gear\Gear_Config_Set.sqf";
+_i pushBack  "B_CombinationUnitRespirator_01_F";
+_u pushBack  0;
+_p pushBack  150;
 
-//--- Templates (Those lines can be generated in the RPT on purchase by uncommenting the diag_log in Events_UI_GearMenu.sqf >> "onPurchase").
-_t = [];
-
-[_faction, _t] call compile preprocessFileLineNumbers "Common\Warfare\Config\Gear\Gear_Template_Set.sqf"; 
+[_i, _u, _p] call compile preprocessFileLineNumbers "Common\Warfare\Config\Gear\Gear_Config_Set.sqf";

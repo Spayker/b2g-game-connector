@@ -15,7 +15,7 @@ if !(isNull _object) then {
 
 	_delay = missionNamespace getVariable ["WF_C_UNITS_CLEAN_TIMEOUT", 120];
 
-	uiSleep _delay;
+	sleep _delay;
 
     if !(isNull _object) then {
         ["INFORMATION", Format["fn_TrashObject.sqf: Deleting [%1], it has been [%2] seconds.", _object, _delay]] Call WFCO_FNC_LogContent;
@@ -34,9 +34,6 @@ if !(isNull _object) then {
             _crew = crew _object;
             if (count _crew > 0) then {
                 {
-                    _x removeAllEventHandlers "killed";
-                    _x removeAllEventHandlers "hit";
-					_x removeAllEventHandlers "Fired";
                     ["INFORMATION", Format["fn_TrashObject.sqf: Deleting crew unit [%1] of trashed object [%2].", _x, _object]] Call WFCO_FNC_LogContent;
                     _object deleteVehicleCrew _x;
                 } forEach _crew;

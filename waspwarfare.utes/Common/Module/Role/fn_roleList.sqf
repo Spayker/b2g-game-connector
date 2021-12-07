@@ -6,26 +6,27 @@ _availableRoles = missionNamespace getVariable Format["WF_%1AvailableRoles",str 
 if(isNil '_availableRoles')then{
     _availableRoles = [];
     _availableRoles pushBack [
-        WF_SNIPER,
-        WF_SNIPER,
-        "Sniper role with special abilities: <br/>" +
+        WF_RECON,
+        WF_RECON,
+        "Recon role with special abilities: <br/>" +
          "- leaves marks on map by aiming<br/>" +
-         "- can request arty strikes",
+         "- can laser tag targets on map<br/>" +
+         "- can purchase sniper rifles <br/>",
         [],
-        5000,
+        2500,
         [],
         3, // max limit of the role in team
         0 // current occupied amount
     ];
 
     _availableRoles pushBack [
-        WF_SOLDIER,
-        WF_SOLDIER,
+        WF_ASSAULT,
+        WF_ASSAULT,
         "Assault role for town taking. Abilities: <br/>"+
-        "- handles more bots in team <br/>"+
-        "- repairs camps",
+        "- have access to assault rifles<br/>"+
+        "- can repair camps",
         [],
-        5000,
+        2500,
         [],
         12, // max limit of the role in team
         0 // current occupied amount
@@ -34,10 +35,11 @@ if(isNil '_availableRoles')then{
         WF_ENGINEER,
         WF_ENGINEER,
         "Support role on battlefield. Abilities: <br/>" +
-        "- Repairs vehicles without toolsets <br/>"+
-        "- Repairs camps",
+        "- can repair vehicles without toolsets <br/>"+
+        "- can destroy camps<br/>"+
+        "- can repair camps",
         [],
-        7500,
+        5000,
         [],
         6, // max limit of the role in team
         0 // current occupied amount
@@ -46,35 +48,35 @@ if(isNil '_availableRoles')then{
         WF_SPECOPS,
         WF_SPECOPS,
         "Support role on battlefield. Abilities: <br/>"+
-        "- hi-jacks enemy locked vehicles <br/>" +
-        "- light vehicle repair ability <br/>" +
-        "- steals info from enemy CC (not yet implemented)",
+        "- can hi-jack enemy locked vehicles <br/>" +
+        "- can hack radio towers <br/>",
         [],
-        7500,
+        5000,
         [],
         3, // max limit of the role in team
         0 // current occupied amount
     ];
     _availableRoles pushBack [
-        WF_ARTY_OPERATOR,
-        WF_ARTY_OPERATOR,
+        WF_MEDIC,
+        WF_MEDIC,
         "Support role on battlefield. Abilities: <br/>"+
-        "- access to advanced artillery<br/>"+
-        "- lower price for all kinds of arty",
+        "- can do full heal<br/>" +
+        "- can heal with medkit package <br/>",
         [],
-        7500,
+        5000,
         [],
         3, // max limit of the role in team
         0 // current occupied amount
     ];
     _availableRoles pushBack [
-        WF_UAV_OPERATOR,
-        WF_UAV_OPERATOR,
+        WF_SUPPORT,
+        WF_SUPPORT,
         "Support role on battlefield. Features: <br/>"+
-        "- access to backpacks with UAVs<br/>"+
-        "- lower price for UAV in tactical menu",
+        "- access to backpacks with UAVs<br/>" +
+        "- can buy UAV vehicles<br/>" +
+        "- can buy advanced rocket artillery<br/>",
         [],
-        7500,
+        5000,
         [],
         3, // max limit of the role in team
         0 // current occupied amount

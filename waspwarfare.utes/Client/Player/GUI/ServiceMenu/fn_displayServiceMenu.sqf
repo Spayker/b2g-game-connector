@@ -1,6 +1,11 @@
 WF_MenuAction = -1;
 
 _vehi = [group player,false] Call WFCO_FNC_GetTeamVehicles;
+_playerUav = getConnectedUAV player;
+_friendlySides = WF_Client_Logic getVariable ["wf_friendlySides", []];
+
+if!(isNull _playerUav) then { _vehi pushBack _playerUav };
+
 if (!isNull(commanderTeam)) then {
     if (commanderTeam == Group player) then {
         _hcGroups = [WF_Client_SideJoined] call WFCO_FNC_getHighCommandGroups;
@@ -8,8 +13,8 @@ if (!isNull(commanderTeam)) then {
             {
                 _vehi = _vehi + ([_x, false] Call WFCO_FNC_GetTeamVehicles);
             } forEach _hcGroups;
-        };
-    };
+        }
+    }
 };
 
 _alives = (units group player) Call WFCO_FNC_GetLiveUnits;
@@ -26,13 +31,22 @@ if (!isNull(commanderTeam)) then {
         _areas = _logik getVariable "wf_basearea";
         {
             _areaPos = getPosATL _x;
-            _alives = _alives + (_areaPos nearEntities [WF_STATIC_ARTILLERY, WF_C_BASE_AREA_RANGE])
-        } forEach _areas;
-    };
+            _foundArtyEntities = _areaPos nearEntities [WF_STATIC_ARTILLERY, WF_C_BASE_AREA_RANGE];
+            {
+                if(!isNull (gunner _x)) then { _alives pushBackUnique _x }
+            } forEach _foundArtyEntities;
+        } forEach _areas
+    }
 };
-{if (vehicle _x == _x) then {_vehi pushBack _x}} forEach _alives;
+
+{if (vehicle _x == _x) then {_vehi pushBackUnique _x}} forEach _alives;
+
 _lastUse = 0;
-_typeRepair = missionNamespace getVariable Format['WF_%1REPAIRTRUCKS',WF_Client_SideJoinedText];
+_typeRepair = [];
+{
+    _side = _x;
+    _typeRepair pushBack (missionNamespace getVariable Format['WF_%1REPAIRTRUCKS', str _side])
+} forEach _friendlySides;
 
 _healPrice = 0;
 _repairPrice = 0;
@@ -43,11 +57,16 @@ _lastDmg = 0;
 _lastFue = 0;
 
 _currentUpgrades = (WF_Client_SideJoined) Call WFCO_FNC_GetSideUpgrades;
-_buildings = (WF_Client_SideJoined) Call WFCO_FNC_GetSideStructures;
 
 //--- Service Point.
 _csp = objNull;
-_sp = [WF_Client_SideJoined, missionNamespace getVariable Format ["WF_%1SERVICEPOINTTYPE",WF_Client_SideJoinedText],_buildings] Call WFCO_FNC_GetFactories;
+_sp = [];
+{
+    _side = _x;
+    _buildings = (_side) Call WFCO_FNC_GetSideStructures;
+    _sp = _sp + [_side, missionNamespace getVariable Format ["WF_%1SERVICEPOINTTYPE", str _side], _buildings] Call WFCO_FNC_GetFactories
+} forEach _friendlySides;
+
 if (count _sp > 0) then {
 	_csp = [vehicle player,_sp] Call WFCO_FNC_GetClosestEntity;
 };
@@ -57,7 +76,8 @@ if ((missionNamespace getVariable "WF_C_MODULE_WF_EASA") > 0) then {
 	_easaLevel = _currentUpgrades select WF_UP_EASA;
 	if (!(isNull _csp) && _easaLevel > 0) then {
 		if (player distance _csp < (missionNamespace getVariable "WF_C_UNITS_SUPPORT_RANGE")) then {
-				if ((vehicle player isKindOf 'Air') && driver (vehicle player) == player) then { _enable = true; };
+				if (((vehicle player isKindOf 'Air') && driver (vehicle player) == player)) then { _enable = true };
+				if(!(_enable) && !isNull _playerUav) then { _enable = true }
 		};
 	};
 	ctrlEnable [20010,_enable];
@@ -69,11 +89,11 @@ _effective = [];
 _nearSupport = [];
 _spType = missionNamespace getVariable Format ["%1SP",WF_Client_SideJoinedText];
 _i = 0;
-_townSpeciality = [];
+_foundClosestSP = objNull;
+_foundRepairTruck = objNull;
 {
-	_closestSP = objNull;
 	_add = false;
-
+	_closestSP = objNull;
 	_nearSupport set [_i, []];
 
 	//--- Service Point.
@@ -83,13 +103,13 @@ _townSpeciality = [];
 			if (_x distance _closestSP < (missionNamespace getVariable "WF_C_UNITS_SUPPORT_RANGE")) then {
 				_add = true;
 				_nearSupport set [_i,(_nearSupport select _i) + [_closestSP]];
+				_foundClosestSP = _closestSP;
 			};
 		};
 	};
 
 	//--- Depots.
 	_nObject = [_x, (missionNamespace getVariable "WF_C_UNITS_SUPPORT_RANGE")] Call WFCL_FNC_GetClosestDepot;
-    _townSpeciality = _nObject getVariable ["townSpeciality", []];
 
 	if !(isNull _nObject) then {
 		_add = true;
@@ -97,10 +117,11 @@ _townSpeciality = [];
 	};
 
 	//--- Repairs Trucks.
-	_checks = (getPos _x) nearEntities[_typeRepair, missionNamespace getVariable "WF_C_UNITS_REPAIR_TRUCK_RANGE"];
-	if (count _checks > 0) then {
+	_repairTrucks = (getPos _x) nearEntities[_typeRepair, missionNamespace getVariable "WF_C_UNITS_REPAIR_TRUCK_RANGE"];
+	if (count _repairTrucks > 0) then {
 		_add = true;
-		_nearSupport set [_i,(_nearSupport select _i) + _checks];
+		_nearSupport set [_i,(_nearSupport select _i) + _repairTrucks];
+		_foundRepairTruck = _repairTrucks # 0
 	};
 
 	//--- Add the vehicle ?
@@ -142,25 +163,14 @@ _townSpeciality = [];
 	};
 } forEach _vehi;
 
-//--Enable/Disable TANK MAGZ MENU--
-_tanksRearmEnabled = false;
-_currentLevelHeavyMagz = _currentUpgrades select WF_UP_HEAVY_MAGZ;
-if(_currentLevelHeavyMagz > 0 && (player distance _csp < (missionNamespace getVariable "WF_C_UNITS_SUPPORT_RANGE") ||
-    !isNull([player, (missionNamespace getVariable "WF_C_UNITS_SUPPORT_RANGE")] call WFCL_FNC_GetClosestDepot))) then {
-    if(driver (vehicle player) == player && (vehicle player isKindOf 'Tank' ||
-        vehicle player isKindOf 'Wheeled_APC_F' || vehicle player isKindOf 'StaticWeapon')) then {
-        _tanksRearmEnabled = true;
-	};
-};
-ctrlEnable [20018, _tanksRearmEnabled];
-
-_checks = (getPos player) nearEntities[_typeRepair, missionNamespace getVariable "WF_C_UNITS_REPAIR_TRUCK_RANGE"];
-if (count _checks > 0) then {
-	_repair = _checks select 0;
-	_vehi = ((getPos _repair) nearEntities[["Car","Motorcycle","Tank","Air","Ship","StaticWeapon"],100]) - [_repair];
+_repairTrucks = (getPos player) nearEntities[_typeRepair, missionNamespace getVariable "WF_C_UNITS_REPAIR_TRUCK_RANGE"];
+if (count _repairTrucks > 0) then {
+	_repair = _repairTrucks select 0;
+	_foundRepairTruck = _repair;
+	_vehi = ((getPos _repair) nearEntities[WF_C_ALL_VEHICLE_KINDS,100]) - [_repair];
 	{
 		if !(_x in _effective) then {
-			_effective = _effective + [_x];
+			_effective pushBackUnique _x;
 			_nearSupport set [_i,[_repair]];
 			_descVehi = [typeOf (vehicle _x), 'displayName'] Call WFCO_FNC_GetConfigInfo;
 			lbAdd[20002,_descVehi];
@@ -176,21 +186,53 @@ _colorConfigs = [];
 
 ctrlSetText [20016, localize 'STR_WF_SKIN'];
 
-while {true} do {
+while {dialog && alive player && !WF_GameOver} do {
 	sleep 0.1;
 
 	if (Side player != WF_Client_SideJoined) exitWith {closeDialog 0};
 	if (!dialog) exitWith {};
 	_curSel = lbCurSel(20002);
 
+	//--Enable/Disable TANK MAGZ MENU--
+    _tanksRearmEnabled = false;
+    _currentLevelHeavyMagz = _currentUpgrades select WF_UP_HEAVY_MAGZ;
+    if(_currentLevelHeavyMagz > 0 && (player distance _csp < (missionNamespace getVariable "WF_C_UNITS_SUPPORT_RANGE"))) then {
+        if(driver (vehicle player) == player && (vehicle player isKindOf 'Tank' ||
+            vehicle player isKindOf 'Wheeled_APC_F' || vehicle player isKindOf 'StaticWeapon')) then {
+            _tanksRearmEnabled = true;
+    	};
+    };
+
 	if (_curSel != -1) then {
 		_veh = (vehicle (_effective select _curSel));
 		_funds = Call WFCL_FNC_GetPlayerFunds;
+		ctrlEnable [20003,false];
+        ctrlEnable [20004,false];
+        ctrlEnable [20005,false];
+        ctrlEnable [20008,false];
+        ctrlEnable [1608, false];
+        ctrlEnable [1609, false];
+        ctrlEnable [1610, false];
+        ctrlEnable [1611, false];
+        ctrlEnable [20018, false];
+
+        //--- Depots.
+        _nObject = [_veh, (missionNamespace getVariable "WF_C_UNITS_SUPPORT_RANGE")] Call WFCL_FNC_GetClosestDepot;
 
 		if (_veh isKindOf "Man") then {
-			{ctrlEnable [_x,false]} forEach [20003,20004,20005];
+		    if (isNull _nObject) then {
 			_enabled = if (_funds >= _healPrice) then {true} else {false};
 			ctrlEnable [20008,_enabled];
+			ctrlEnable [1611, _enabled];
+		    } else {
+		        _townServices = _nObject getVariable ["townServices", []];
+		        _healServiceExists = false;
+                if(WF_C_TOWNS_SERVICE_HEAL in _townServices  || !(isNull _foundClosestSP) || !(isNull _foundRepairTruck)) then { _healServiceExists = true };
+                _enabled = if (_healServiceExists && _funds >= _healPrice) then {true} else {false};
+                ctrlEnable [20008, _enabled];
+                ctrlEnable [1611, _enabled]
+		    };
+
 			//--- Healing.
 			_healPrice = round((getDammage _veh)*(missionNamespace getVariable "WF_C_UNITS_SUPPORT_HEAL_PRICE"));
 			ctrlSetText [20011,"$0"];
@@ -200,14 +242,66 @@ while {true} do {
 		} else {
 			//--- Prevent on the air re-supply.
 			_canBeUsed = if ((getPos _veh) select 2 <= 2 && speed _veh <= 20) then {true} else {false};
+
+            if (isNull _nObject) then {
 			_enabled = if (_canBeUsed && _funds >= _rearmPrice) then {true} else {false};
 			ctrlEnable [20003,_enabled];
+                ctrlEnable [1608, _enabled];
+                ctrlEnable [20018, _enabled && _tanksRearmEnabled];
+
 			_enabled = if (_canBeUsed && _funds >= _repairPrice) then {true} else {false};
 			ctrlEnable [20004,_enabled];
+                ctrlEnable [1610, _enabled];
+
 			_enabled = if (_canBeUsed && _funds >= _refuelPrice) then {true} else {false};
 			ctrlEnable [20005,_enabled];
+                ctrlEnable [1609, _enabled];
+
 			_enabled = if (_canBeUsed && _funds >= _healPrice) then {true} else {false};
 			ctrlEnable [20008,_enabled];
+                ctrlEnable [1611, _enabled];
+            } else {
+                _townServices = _nObject getVariable ["townServices", []];
+
+                _rearmServiceExists = false;
+                _repairServiceExists = false;
+                _fuelServiceExists = false;
+                _healServiceExists = false;
+                if(count _townServices > 0) then {
+                    if(WF_C_TOWNS_SERVICE_REARM in _townServices) then { _rearmServiceExists = true };
+                    if(WF_C_TOWNS_SERVICE_REPAIRING in _townServices) then { _repairServiceExists = true };
+                    if(WF_C_TOWNS_SERVICE_FUEL in _townServices) then { _fuelServiceExists = true };
+                    if(WF_C_TOWNS_SERVICE_HEAL in _townServices) then { _healServiceExists = true }
+                } else {
+                    if(!(isNull _foundClosestSP) || !(isNull _foundRepairTruck)) then {
+                        _rearmServiceExists = true;
+                        _repairServiceExists = true;
+                        _fuelServiceExists = true;
+                        _healServiceExists = true;
+                    }
+                };
+
+                    _enabled = if (_canBeUsed && _rearmServiceExists && _funds >= _rearmPrice) then {true} else {false};
+                    ctrlEnable [20003, _enabled];
+                    ctrlEnable [1608, _enabled];
+                    ctrlEnable [20018, if (_enabled && _tanksRearmEnabled) then {true} else {false}];
+
+
+                    _enabled = if (_canBeUsed && _repairServiceExists && _funds >= _repairPrice) then {true} else {false};
+                    ctrlEnable [20004, _enabled];
+                    ctrlEnable [1610, _enabled];
+
+
+                    _enabled = if (_canBeUsed && _fuelServiceExists && _funds >= _refuelPrice) then {true} else {false};
+                    ctrlEnable [20005, _enabled];
+                    ctrlEnable [1609, _enabled];
+
+
+                    _enabled = if (_canBeUsed && _healServiceExists && _funds >= _healPrice) then {true} else {false};
+                    ctrlEnable [20008, _enabled];
+                    ctrlEnable [1611, _enabled];
+
+            };
 			//--- Healing.
 			_healPrice = 0;
 			{
@@ -266,8 +360,6 @@ while {true} do {
 		};
 
 		_lastVeh = _veh;
-		_isAirBase = false;
-        if (WF_C_AIR_BASE in _townSpeciality) then { _isAirBase = true };
 
 		//--- Rearm.
 		if (WF_MenuAction == 1) then {
@@ -275,7 +367,7 @@ while {true} do {
 			-_rearmPrice Call WFCL_FNC_ChangePlayerFunds;
 
 			//--- Spawn a Rearm thread.
-			[_veh,_nearSupport select _curSel,_typeRepair,_spType, _isAirBase] Spawn WFCL_fnc_startRearm;
+			[_veh,_nearSupport select _curSel,_typeRepair,_spType] Spawn WFCL_fnc_startRearm;
 		};
 
 		//--- Rearm ALL.
@@ -309,14 +401,14 @@ while {true} do {
 			} forEach _vehi;
 
 			if(_funds < _fullPrice) then {
-				hint parseText(Format[localize 'STR_WF_INFO_Funds_Missing_Service', _fullPrice - _funds]);
+				[Format[localize 'STR_WF_INFO_Funds_Missing_Service', _fullPrice - _funds]] spawn WFCL_fnc_handleMessage;
 			} else {
 				-_fullPrice Call WFCL_FNC_ChangePlayerFunds;
 
 				//--- Spawn a Rearm thread.
 				{
 					if ((_x distance ((_nearSupport # _curSel ) # 0)) < (missionNamespace getVariable "WF_C_UNITS_SUPPORT_RANGE") && !(_x isKindOf "Man")) then {
-						[_x, _nearSupport select _curSel,_typeRepair,_spType, _isAirBase] Spawn WFCL_fnc_startRearm;
+						[_x, _nearSupport select _curSel,_typeRepair,_spType] Spawn WFCL_fnc_startRearm;
 						uiSleep 0.5;
 					};
 				} forEach _vehi;
@@ -365,7 +457,7 @@ while {true} do {
 			} forEach _vehi;
 
 			if(_funds < _fullPrice) then {
-				hint parseText(Format[localize 'STR_WF_INFO_Funds_Missing_Service', _fullPrice - _funds]);
+				[Format[localize 'STR_WF_INFO_Funds_Missing_Service', _fullPrice - _funds]] spawn WFCL_fnc_handleMessage
 			} else {
 				-_fullPrice Call WFCL_FNC_ChangePlayerFunds;
 
@@ -415,7 +507,7 @@ while {true} do {
 			} forEach _vehi;
 
 			if(_funds < _fullPrice) then {
-				hint parseText(Format[localize 'STR_WF_INFO_Funds_Missing_Service', _fullPrice - _funds]);
+				[Format[localize 'STR_WF_INFO_Funds_Missing_Service', _fullPrice - _funds]] spawn WFCL_fnc_handleMessage
 			} else {
 				-_fullPrice Call WFCL_FNC_ChangePlayerFunds;
 
@@ -463,7 +555,7 @@ while {true} do {
 			} forEach _vehi;
 
 			if(_funds < _fullPrice) then {
-				hint parseText(Format[localize 'STR_WF_INFO_Funds_Missing_Service', _fullPrice - _funds]);
+				[Format[localize 'STR_WF_INFO_Funds_Missing_Service', _fullPrice - _funds]] spawn WFCL_fnc_handleMessage
 			} else {
 				-_fullPrice Call WFCL_FNC_ChangePlayerFunds;
 
@@ -517,7 +609,7 @@ while {true} do {
 			};
 		};
 	} else {
-		{ctrlEnable[_x,false]} forEach [20003,20004,20005,20008];
+		{ctrlEnable[_x,false]} forEach [20003,20004,20005,20008,20018];
 	};
 
 	//--- EASA. TBD: Add dialog;

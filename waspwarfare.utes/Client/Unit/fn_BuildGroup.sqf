@@ -19,11 +19,8 @@ _unitlogo = _currentUnit # 1;
 _type = typeOf _building;
 _index = (missionNamespace getVariable Format ["WF_%1STRUCTURENAMES",WF_Client_SideJoinedText]) find _type;
 if (_index != -1) then {
-	_distance = (missionNamespace getVariable Format ["WF_%1STRUCTUREDISTANCES",WF_Client_SideJoinedText]) # _index;
-	_direction = (missionNamespace getVariable Format ["WF_%1STRUCTUREDIRECTIONS",WF_Client_SideJoinedText]) # _index;
 	_factoryType = (missionNamespace getVariable Format ["WF_%1STRUCTURES",WF_Client_SideJoinedText]) # _index;
-	_position = _building modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
-	_position set [2, .5];
+	_position = _building getVariable 'respawnPoint';
 	_longest = missionNamespace getVariable Format ["WF_LONGEST%1BUILDTIME",_factoryType];
 } else {
 	if (_type in WF_Logic_Depot) then {
@@ -37,8 +34,7 @@ if (_index != -1) then {
 		_factoryType = "Airport";
 	};
 
-	_position = _building modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
-	_position set [2, .5];
+	_position = _building getVariable 'respawnPoint';
 	_longest = missionNamespace getVariable Format ["WF_LONGEST%1BUILDTIME",_factoryType];
 };
 
@@ -47,6 +43,7 @@ varGroupQueu = time + random 10000 - random 500 + diag_frameno;
 _queu = _building getVariable "groupQueu";
 if (isNil "_queu") then {_queu = []};
 _queu pushBack _unique;
+
 _building setVariable ["groupQueu",_queu,true];
 
 _ret = 0;
@@ -76,9 +73,17 @@ while {_unique != _queu # 0 && alive _building && !isNull _building} do {
 	};
 };
 
-if (_show) then {hint(parseText(Format [localize "STR_WF_INFO_BuyEffective",_unitdescription]))};
+if (_show) then { [Format [localize "STR_WF_INFO_BuyEffective",_unitdescription]] spawn WFCL_fnc_handleMessage };
+
+_position = [_position, 30] call WFCO_fnc_getEmptyPosition;
+_factoryPosition = getPos _building;
+_direction = -((((_position # 1) - (_factoryPosition # 1)) atan2 ((_position # 0) - (_factoryPosition # 0))) - 90);
+[side player, _selectedGroupTemplate, _position, _direction] remoteExecCall ["WFSE_fnc_buyGroup", 2];
+
+sleep _commonTime;
 
 _queu = _building getVariable "groupQueu";
+
 _queu = _queu - [_unique];
 _building setVariable ["groupQueu",_queu,true];
 
@@ -87,12 +92,7 @@ if (!alive _building || isNull _building) exitWith {
 	missionNamespace setVariable [Format["WF_C_GROUP_QUEUE_%1",_factory],(missionNamespace getVariable Format["WF_C_GROUP_QUEUE_%1",_factory])-1];
 };
 
-
-_position = [_position, 0, 15, 4, 0, 0, 0] call BIS_fnc_findSafePos;
-[player,_selectedGroupTemplate, _position, _direction] remoteExecCall ["WFSE_fnc_buyGroup", 2];
-
-sleep _commonTime;
 groupQueu = groupQueu - _cpt;
 
 missionNamespace setVariable [Format["WF_C_GROUP_QUEUE_%1",_factory],(missionNamespace getVariable Format["WF_C_GROUP_QUEUE_%1",_factory])-1];
-hint parseText(Format [localize "STR_WF_INFO_Build_Complete",_selectedGroupTemplateDescription, _unitlogo]);
+[Format [localize "STR_WF_INFO_Build_Complete",_selectedGroupTemplateDescription, _unitlogo]] spawn WFCL_fnc_handleMessage

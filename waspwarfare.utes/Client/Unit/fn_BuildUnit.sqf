@@ -23,21 +23,28 @@ _unitlogo = _currentUnit # 1;
 
 _type = typeOf _building;
 _index = (missionNamespace getVariable Format ["WF_%1STRUCTURENAMES",WF_Client_SideJoinedText]) find _type;
+_position = _building getVariable 'respawnPoint';
+
 if (_index != -1) then {
-	_distance = (missionNamespace getVariable Format ["WF_%1STRUCTUREDISTANCES",WF_Client_SideJoinedText]) # _index;
-	_direction = (missionNamespace getVariable Format ["WF_%1STRUCTUREDIRECTIONS",WF_Client_SideJoinedText]) # _index;
+    if (isNil '_position') then {
+        _distance = (missionNamespace getVariable Format ["WF_%1STRUCTUREDISTANCES",WF_Client_SideJoinedText]) # _index;
+        _direction = (missionNamespace getVariable Format ["WF_%1STRUCTUREDIRECTIONS",WF_Client_SideJoinedText]) # _index;
+        _position = _building modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
+        _position set [2, .5]
+    };
+
 	_factoryType = (missionNamespace getVariable Format ["WF_%1STRUCTURES",WF_Client_SideJoinedText]) # _index;
-	_position = _building modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
-	_position set [2, .5];
 	_longest = missionNamespace getVariable Format ["WF_LONGEST%1BUILDTIME",_factoryType];
 } else {
 	if (_type in WF_Logic_Depot) then {
 		_distance = missionNamespace getVariable "WF_C_DEPOT_BUY_DISTANCE";
 		_direction = missionNamespace getVariable "WF_C_DEPOT_BUY_DIR";
 		_factoryType = "Depot";
-
 	};
-	_position = _building modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
+
+	if (isNil '_position') then {
+	    _position = _building modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
+	};
 
 	if (_type == WF_Logic_Airfield) then {
 		_distance = missionNamespace getVariable "WF_C_HANGAR_BUY_DISTANCE";
@@ -55,6 +62,7 @@ varQueu = time + random 10000 - random 500 + diag_frameno;
 _queu = _building getVariable "queu";
 if (isNil "_queu") then {_queu = []};
 _queu pushBack _unique;
+
 _building setVariable ["queu",_queu,true];
 
 _ret = 0;
@@ -84,7 +92,7 @@ while {_unique != _queu # 0 && alive _building && !isNull _building} do {
 	};
 };
 
-if (_show) then {hint(parseText(Format [localize "STR_WF_INFO_BuyEffective",_unitdescription]))};
+if (_show) then { [Format [localize "STR_WF_INFO_BuyEffective",_unitdescription]] spawn WFCL_fnc_handleMessage };
 
 sleep _waitTime;
 
@@ -95,7 +103,11 @@ _building setVariable ["queu",_queu,true];
 _group = WF_Client_Team;
 if (!alive _building || isNull _building) exitWith {
 	unitQueu = unitQueu - _cpt;
+	if(_unit == missionNamespace getVariable Format["WF_%1MHQNAME", WF_Client_SideJoined]) then {
+	    missionNamespace setVariable [Format["WF_C_QUEUE_HQ_%1",_factory],(missionNamespace getVariable Format["WF_C_QUEUE_HQ_%1",_factory])-1];
+	} else {
 	missionNamespace setVariable [Format["WF_C_QUEUE_%1",_factory],(missionNamespace getVariable Format["WF_C_QUEUE_%1",_factory])-1];
+	}
 };
 
 if (_isMan) then {
@@ -123,11 +135,19 @@ if (_isMan) then {
 
 	_factoryPosition = getPos _building;
     _position = [_position, 30] call WFCO_fnc_getEmptyPosition;
+	if(_unit isKindOf 'Ship') then { _position = [_position, 2, 75, 5, 2, 0, 1] call BIS_fnc_findSafePos };
+
 	_direction = -((((_position # 1) - (_factoryPosition # 1)) atan2 ((_position # 0) - (_factoryPosition # 0))) - 90);//--- model to world that later on.
-    _vehicle = [_unit, _position, sideID, _direction, _locked, nil, nil, nil, _unitdescription] Call WFCO_FNC_CreateVehicle;
+    _vehicle = [_unit, _position, WF_Client_SideID, _direction, _locked, nil, nil, nil, _unitdescription] Call WFCO_FNC_CreateVehicle;
     WF_Client_Team reveal _vehicle;
     createVehicleCrew _vehicle;
 
+    {
+        _crew = _x;
+        _isMajorCrewMember = false;
+        if(_crew isEqualTo driver objectParent _crew ||
+            _crew isEqualTo gunner objectParent _crew ||
+                _crew isEqualTo commander objectParent _crew) then {
     //--- Driver.
     if (!_driver) then { _vehicle deleteVehicleCrew (driver _vehicle) };
 	
@@ -139,6 +159,8 @@ if (_isMan) then {
         //--- Commander.
         if (!_commander) then { _vehicle deleteVehicleCrew (commander _vehicle) };
     };
+            _isMajorCrewMember = true
+        };
 
     if (_extracrew) then {
         _turrets = _currentUnit # QUERYUNITTURRETS;
@@ -151,14 +173,24 @@ if (_isMan) then {
         		_soldier moveInTurret [_vehicle, _x];
         	};
         } forEach _turrets;
+            _isMajorCrewMember = true
     };
 	
+        if!(_isMajorCrewMember) then {
+            _vehicle deleteVehicleCrew _crew
+        }
+    } forEach crew _vehicle;
+
+	if (typeOf _vehicle in WF_FLY_UAVS) then {
+	    createVehicleCrew _vehicle;
+	    _vehicle setVariable ['uavOwnerGroup', WF_Client_Team, true];
+	} else {
     {
         [_x, typeOf _x,_group,_position,WF_Client_SideID] spawn WFCO_FNC_InitManUnit;
 
-        private _classLoadout = missionNamespace getVariable Format ['WF_%1WHEELEDCREW',WF_Client_SideJoined];
+            private _classLoadout = missionNamespace getVariable Format ['WF_%1ENGINEER', WF_Client_SideJoined];
         if(_vehicle isKindOf "Tank") then {
-            _classLoadout = missionNamespace getVariable Format ['WF_%1TRACKEDCREW',WF_Client_SideJoined];
+                _classLoadout = missionNamespace getVariable Format ['WF_%1ENGINEER',WF_Client_SideJoined];
         };
         if(_vehicle isKindOf "Air") then {
             _classLoadout = missionNamespace getVariable Format ['WF_%1PILOT',WF_Client_SideJoined];
@@ -168,6 +200,7 @@ if (_isMan) then {
         _x setUnitTrait ["Engineer",true];
     } forEach crew _vehicle;
     (crew _vehicle) join (leader WF_Client_Team);
+	};
 
 	//--- Clear the vehicle.	
 	_vehicle call WFCO_FNC_ClearVehicleCargo;
@@ -206,5 +239,9 @@ if (_isMan) then {
 
 unitQueu = unitQueu - _cpt;
 
-missionNamespace setVariable [Format["WF_C_QUEUE_%1",_factory],(missionNamespace getVariable Format["WF_C_QUEUE_%1",_factory])-1];
-hint parseText(Format [localize "STR_WF_INFO_Build_Complete",_unitdescription, _unitlogo]);
+if(_unit == missionNamespace getVariable Format["WF_%1MHQNAME", WF_Client_SideJoined]) then {
+    missionNamespace setVariable [Format["WF_C_QUEUE_HQ_%1",_factory],(missionNamespace getVariable Format["WF_C_QUEUE_HQ_%1",_factory])-1]
+} else {
+    missionNamespace setVariable [Format["WF_C_QUEUE_%1",_factory],(missionNamespace getVariable Format["WF_C_QUEUE_%1",_factory])-1]
+};
+[Format [localize "STR_WF_INFO_Build_Complete",_unitdescription]] spawn WFCL_fnc_handleMessage

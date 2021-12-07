@@ -29,20 +29,19 @@ diag_log format ["fn_calculateArtyDamage.sqf: before loop _isArtyStrikeFinished 
     while {!([_units] call _isArtyStrikeFinished)} do { sleep 240 };
 
     _halfTownRange = (_nearest getVariable "range")/2;
-    _initialTownMaxSupplyValue = _nearest getVariable "initialMaxSupplyValue";
+    _initialTownMaxSupplyValue = _nearest getVariable ["initialMaxSupplyValue", 50];
     _townRuins = count (nearestObjects [_nearest, ["Ruins"], _halfTownRange]);
     _newTownMaxSV = floor (_initialTownMaxSupplyValue - ((_initialTownMaxSupplyValue/100)*_townRuins));
     _initialStartingSupplyValue = _nearest getVariable "initialStartSupplyValue";
 
-    if (_newTownMaxSV < _initialStartingSupplyValue) then {
+    if (_newTownMaxSV < _initialStartingSupplyValue / 10) then {
         towns = towns - [_nearest];
         missionNamespace setVariable ["totalTowns", count towns, true];
         [_nearest getVariable "name", _nearest getVariable "camps"] remoteExecCall ["WFCL_FNC_TownRemoved"];
         ["TownCanceled", _nearest] remoteExecCall ["WFCL_FNC_TaskSystem"];
         sleep 3;
         _camps = _nearest getVariable ["camps", []];
-        _flags = _nearest getVariable ["flags", []];
-        { deleteVehicle _x } forEach _camps + _flags;
+        { deleteVehicle _x } forEach _camps;
 
         deleteVehicle _nearest
     } else {

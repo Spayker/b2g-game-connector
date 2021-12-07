@@ -189,6 +189,12 @@ class RscButton {
     soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick.wss",0.07,1};
     soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape.wss",0.09,1};
 };
+class RscButton_Main : RscButton {
+	colorBackground[] = WF_Menu_Button_Color;
+	colorBackgroundActive[] = WF_Menu_Button_Color;
+	colorFocused[] = WF_Menu_Button_Focused_Color;
+	colorText[] = WF_Menu_Button_Text_Color;
+};
 class RscButton_Back : RscButton {
 	w = 0.04;
 	h = 0.04;
@@ -212,7 +218,6 @@ class RscButton_Exit : RscButton {
 	colorBackgroundActive[] = {0.9, 0, 0, 1};
 	colorFocused[] = {0.5020, 0, 0, 1};
 };
-
 /* RscShortcutButton */
 class RscShortcutButton {
 	type = 16;
@@ -552,7 +557,7 @@ class RscStructuredTextGear {
 };
 
 class RscButton_LesserGear : RscButtonGear {
-	colorBackground[] = {0.768627451, 1, 0.137254902, 0.7};
+	colorBackground[] = {0.09,0.65,0.23,1};
 	colorBackgroundActive[] = {0.768627451, 1, 0.137254902, 1};
 	colorFocused[] = {0.768627451, 1, 0.137254902, 1};
 };
