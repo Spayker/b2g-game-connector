@@ -10,6 +10,13 @@ Reasons of that choice are next:
 2) Full access to server side where game can be run and tested
 3) Full control of database - game communication. Game can be configured to fetch data from a local database where processed data will be stored
 
+## Mission design
+
+Sample mission must look as easy as it's possible. First version of its structure is described below: </br>
+
+![alt text](resources/schemes/H2G_mission_design.jpg)
+
+
 ### Stack of technologies
 Following tech stack is used:
 1) MySQL rdbms
