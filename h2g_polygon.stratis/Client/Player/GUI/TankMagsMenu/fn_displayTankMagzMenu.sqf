@@ -75,9 +75,7 @@ _getAnyMagazines = {
 //--Find all mags--
 {
 	{
-		if(_x != "rhs_mag_Atomic_2a33" && _x != "rhs_mag_Atomic_2a_2633_26") then {
-			_magz pushBack _x;
-		};
+	    _magz pushBack _x;
 	} forEach (_x call _getAnyMagazines);
 } forEach _weaps; 
 

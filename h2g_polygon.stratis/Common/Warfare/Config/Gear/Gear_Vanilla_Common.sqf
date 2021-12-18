@@ -176,18 +176,6 @@ _i pushBack  "optic_Aco";
 _u pushBack  0;
 _p pushBack  100;
 
-_i pushBack  "CUP_optic_AIMM_MICROT1_OD";
-_u pushBack  2;
-_p pushBack  150;
-
-_i pushBack  "CUP_optic_Elcan_OD";
-_u pushBack  1;
-_p pushBack  150;
-
-_i pushBack  "CUP_optic_Eotech553_Coyote";
-_u pushBack  1;
-_p pushBack  100;
-
 _i pushBack  "optic_Nightstalker";
 _u pushBack  3;
 _p pushBack  300;

@@ -99,11 +99,9 @@ while {alive player && dialog} do {
 		_k = 0;
 		lbClear 230034;
 		{
-			if(_x != "CUP_PylonPod_ANAAQ_28" && _x != "CUP_PylonPod_ALQ_131" && _x != "rhs_mag_kh55sm_nocamo" && _x != "rhs_mag_kh55sm") then {
-				lbAdd[230034, getText (configFile >> "CfgMagazines" >> _x >> "displayName")];				
-				lbSetData [230034, _k, _x];
-				_k = _k + 1;
-			};			
+            lbAdd[230034, getText (configFile >> "CfgMagazines" >> _x >> "displayName")];
+            lbSetData [230034, _k, _x];
+            _k = _k + 1;
 		} foreach ((typeOf _veh) getCompatiblePylonMagazines lbData[230033, lbCurSel 230033]);
 
 		ctrlEnable[22004 , false];
