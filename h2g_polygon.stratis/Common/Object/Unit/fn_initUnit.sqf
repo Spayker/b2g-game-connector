@@ -16,9 +16,9 @@ _logik = (_side) call WFCO_FNC_GetSideLogic;
 
 // --- [Generic Vehicle initialization] (Run on all clients AND server)
 if !(local player) exitWith {}; //--- We don't need the server to process it.
-if!(isHeadLessClient) then {
+
 waitUntil {clientInitComplete}; //--- Wait for the client part.
-};
+
 
 _isMan = (_unit isKindOf 'Man');
 // --- [Generic Vehicle initialization] (Run on all clients)

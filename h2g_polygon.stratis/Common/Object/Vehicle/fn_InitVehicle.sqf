@@ -20,17 +20,6 @@ if(_isHQ) then {
 
         if(WF_C_BASE_ALLOW_TEAM_DAMMAGE <= 0 && ((side _causedBy) == (_unit getVariable "wf_side"))) then {
             _unit setDammage ((getDammage _unit) - _damage)
-        } else {
-            if(isHeadLessClient)then{
-                [_unit] call WFHC_FNC_BuildingDamaged
-                }
-            }
-    }];
-
-    _vehicle addMPEventHandler ["MPKilled", {
-    	params ["_unit", "_killer", "_instigator", "_useEffects"];
-    	if(isHeadLessClient)then{
-            [_unit, _killer] call WFHC_FNC_OnHQKilled
         }
     }];
 

@@ -230,7 +230,6 @@ class WF_Client {
         class initFaction {};
 		class doKeyDown {};
         class initKeybind {};
-        class initProfileVariables {};
     };
 
     class GuiServiceMenu {
@@ -338,8 +337,6 @@ class WF_Common {
     class Common {
         file = "Common";
         class initCommon {};
-        class initCommonConstants{};
-        class initParameters {};
     };
 
     class Array{
@@ -575,7 +572,6 @@ class WF_Common {
         file = "Common\Warfare\Town";
         class initTown {};
         class initTownMode {};
-        class initTowns {};
         class getTownsHeld {};
         class getTownsIncome {};
         class getSideTowns {};

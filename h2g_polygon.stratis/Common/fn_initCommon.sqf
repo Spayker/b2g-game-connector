@@ -75,23 +75,6 @@ WF_PRESENTSIDES = _presents;
 WF_DEFENDER = resistance;
 WF_DEFENDER_ID = (WF_DEFENDER) Call WFCO_FNC_GetSideID;
 
-//--- Import the desired global side variables.
-Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Core_Root\Root_Gue.sqf";
-Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Core_Root\Root_RU.sqf";
-Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Core_Root\Root_US.sqf";
-
-//--- Import the desired defenses.
-Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Defenses\Defenses_RU.sqf";
-Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Defenses\Defenses_US.sqf";
-Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Defenses\Defenses_Gue.sqf";
-
-//--- Server Exec.
-if (isServer || isHeadLessClient) then {
-	//--- Import the desired town groups.
-	Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Groups\Groups_US.sqf";
-	Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Groups\Groups_RU.sqf";
-	Call Compile preprocessFileLineNumbers "Common\Warfare\Config\Groups\Groups_Gue.sqf";
-};
 
 //--- Airports Init.
 [] spawn WFCO_fnc_initAirports;
