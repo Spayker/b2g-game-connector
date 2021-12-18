@@ -23,7 +23,7 @@ WF_C_INFANTRY_TO_REQUIP = [
     ['CUP_B_USMC_Soldier_AR_FROG_WDL', ['M249 PIP'], ['5.56mm 200Rnd M249 (Red TE4) Box x4']],
     ['CUP_I_RACS_Soldier_HAT_Urban', ['M16A2'], ['30Rnd_556x45 x6', 'Smoke GR x1', 'Dragon Launcher x1']]
 
-]; //--Example: ['rhs_vdv_des_at', ['AK-74M', '9M131'], ['7H10 30 AK-74 x8', 'RGN x1', '9M131 x1']]
+];
 
 WF_C_ADV_AIR_DEFENCE = [
 							["B_SAM_System_02_F", "B_SAM_System_03_F", "O_SAM_System_04_F", "B_Radar_System_01_F", "O_Radar_System_02_F", "CUP_WV_B_CRAM", "CUP_WV_B_CRAM_OPFOR"], //--Weapons--
