@@ -10,40 +10,12 @@ class CfgRemoteExec {
         mode = 2;
         jip = 1;
         /* Called on the Clients */
-		F(WFCL_FNC_ARRadarMarkerUpdate,CLIENT)
-		F(WFCL_FNC_AwardBountyPlayer,CLIENT)
-		F(WFCL_FNC_AwardBounty,CLIENT)
-		F(WFCL_FNC_doJump,CLIENT)
-		F(WFCL_FNC_setVehicleLock,CLIENT)
-		F(WFCL_FNC_ChangePlayerFunds,CLIENT)
-		F(WFCL_FNC_passVoteResults,CLIENT)
-		F(WFCL_FNC_UpdatgeRadarMarker,CLIENT)
 		F(setshotparents,CLIENT)
 		F(hint,CLIENT)
 		F(hintSilent,CLIENT)
 
         /* Called on the Server */
-		F(WFSE_FNC_GetGearTemplates,SERVER)
-		F(WFSE_FNC_SaveGearTemplate,SERVER)
-		F(WFSE_fnc_RequestMHQRepair,SERVER)
-		F(WFSE_fnc_RequestVehicleLock,SERVER)
-		F(WFSE_fnc_RequestChangeScore,SERVER)
-		F(WFSE_fnc_RequestNewCommander,SERVER)
-		F(WFSE_fnc_RequestCommanderVote,SERVER)
-		F(WFSE_fnc_RequestTeamUpdate,SERVER)
-		F(WFSE_fnc_RequestUpgrade,SERVER)
-		F(WFSE_fnc_RequestJoin,SERVER)
-		F(WFSE_fnc_RequestStructure,SERVER)
-		F(WFSE_fnc_RequestStructureSell,SERVER)
-		F(WFSE_fnc_RequestDefense,SERVER)
-		F(WFSE_fnc_RequestAutoWallConstructinChange,SERVER)
 		F(WFDC_FNC_LogContent,SERVER)
-		F(WFSE_FNC_GetTownGroups,SERVER)
-		F(WFSE_FNC_MarkTownInactive,SERVER)
-		F(WFSE_FNC_addEmptyVehicleToQueue,SERVER)
-		F(WFSE_FNC_destroyCamp,SERVER)
-		F(WFSE_FNC_repairCamp,SERVER)
-		F(WFSE_FNC_passVote,SERVER)
 
         /* Functions for everyone */
 		F(WFCL_FNC_LocalizeMessage,ANYONE)

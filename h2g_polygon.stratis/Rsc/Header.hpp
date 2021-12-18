@@ -11,7 +11,7 @@ onLoadMissionTime = false;
 
 //--- Properties.
 class Header {
-	gameType = CTI;
+	gameType = Sandbox;
 	minPlayers = 1;
 	maxPlayers = WF_MAXPLAYERS;
 };
