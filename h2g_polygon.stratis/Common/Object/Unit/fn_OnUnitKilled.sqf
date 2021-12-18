@@ -215,8 +215,7 @@ if(_shallUpdateStats) then {
 
 	if (isPlayer _killed) then {
 		if(_killed == _killer || name _killed == name _killer) then {		
-		    // toDo someday: replace dc logging
-			//[format ["%1 **%2** has been killed :skull_crossbones:", _killed_side Call WFCO_FNC_GetSideFLAG, name _killed]] remoteExec ["WFDC_FNC_LogContent", 2];
+			[format ["%1 **%2** has been killed :skull_crossbones:", _killed_side Call WFCO_FNC_GetSideFLAG, name _killed]] remoteExec ["WFDC_FNC_LogContent", 2];
 		} else {
 			_killerInfo = "";
 			_killerSmile = "";
@@ -225,6 +224,9 @@ if(_shallUpdateStats) then {
 				_killerInfo = format[" by %1 ", (side _killer) Call WFCO_FNC_GetSideFLAG];
 				if!(isPlayer _killer) then { 
 					_killerInfo = format["%1%2 ", _killerInfo,[_killer, "displayName"] call WFCO_FNC_GetConfigInfo]; 
+				} else {
+					_killerSmile = (WFDC_SMILES # 0) # (floor random count (WFDC_SMILES # 0));
+					_killedSmile = (WFDC_SMILES # 1) # (floor random count (WFDC_SMILES # 1));
 				};
 				_killerName = "";
 				if!((name _killer) isEqualTo "Error: No unit") then {
@@ -232,6 +234,8 @@ if(_shallUpdateStats) then {
 				};
 				_killerInfo = format["%1 **%2** %3", _killerInfo, _killerName, _killerSmile];
 			};		
+			
+			[format [":crossed_swords: %1**%2** %3 has been killed%4", _killed_side Call WFCO_FNC_GetSideFLAG, name _killed, _killedSmile, _killerInfo]] remoteExec ["WFDC_FNC_LogContent", 2];
 		};
 	};
 };

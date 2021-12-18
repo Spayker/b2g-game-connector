@@ -326,6 +326,12 @@ class TER
 	};
 };
 
+class WFDC {
+	class Log {
+		class LogContent { file = "Common\Logging\fn_LogContentDiscord.sqf"; };
+	};
+};
+
 class WF_Common {
     tag = "WFCO";
 

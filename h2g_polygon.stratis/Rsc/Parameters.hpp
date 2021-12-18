@@ -65,7 +65,7 @@ class Params {
 		title = "$STR_WF_PARAMETER_StartingDistance";
 		values[] = {-1,1000,1500,2000,2500,3000,3500,4000,4500,5000,5500,6000,6500,7000,7500,8000,8500,9000};
 		texts[] = {"$STR_WF_PARAMETER_StartingLocations_Random","1000m","1500m","2000m","2500m","3000m","3500m","4000m","4500m","5000m","5500m","6000m","6500m","7000m","7500m","8000m","8500m","9000m"};
-		default = 1500;
+		default = 5500;
 	};
 		class WF_C_BASE_STARTING_MODE {
 		title = "$STR_WF_PARAMETER_StartingLocations";
@@ -254,7 +254,7 @@ class Params {
 		title = "$STR_WF_PARAMETER_ViewDistance";
 		values[] = {200,500,800,1000,1500,2000,2500,3000,3500,4000,4500,5000};
 		texts[] = {"200m","500m","800m","1000m","1500m","2000m","2500m","3000m","3500m","4000m","4500m","5000m"};
-		default = 2000;
+		default = 4000;
 	};
 	class WF_C_MODULE_WF_EASA {
 		title = "$STR_WF_PARAMETER_EASA";
