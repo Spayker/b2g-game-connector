@@ -3,8 +3,6 @@
 //--- Header contains the mission tite.
 #include "Rsc\Header.hpp"
 
-#include "AICommand\config.cpp"
-
 //--- Styles
 #include "Rsc\Styles.hpp"
 

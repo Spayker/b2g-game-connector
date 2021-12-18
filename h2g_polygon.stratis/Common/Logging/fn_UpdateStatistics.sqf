@@ -1,1 +1,0 @@
-params ["_side", "_var", "_val"];WF_Logic setVariable [format["%1%2",_side,_var],((WF_Logic getVariable format["%1%2",_side,_var]) + _val),true];
