@@ -54,9 +54,6 @@ _isFirstOutTeam = WF_Client_Logic getVariable ["wf_isFirstOutTeam", false];
 		    }
 		};
 
-		if (_x in WF_ADV_ARTILLERY)then{ _isAdvVehicle = true};
-		if (_x in WF_FLY_UAVS)then{ _isAdvVehicle = true};
-
         if!(isNil '_selectedRole')then{
             if(_selectedRole == WF_SUPPORT)then{
                 if(_filler == 'Light')then{
