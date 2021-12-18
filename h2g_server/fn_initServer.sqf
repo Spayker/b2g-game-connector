@@ -238,17 +238,6 @@ if (_use_random) then {
 		for '_i' from 0 to count(missionNamespace getVariable Format["WF_%1STRUCTURES",_side])-2 do {_str set [_i, 0]};
 		_logik setVariable ["wf_structures_live", _str, true];
 
-		//--- start base
-		missionNamespace setVariable ["WF_HEADLESSCLIENT_ID", 0];
-		[_side, _pos] spawn {
-		    Params ['_side', '_pos'];
-		waitUntil{(missionNamespace getVariable "WF_HEADLESSCLIENT_ID") != 0};
-		_hc = missionNamespace getVariable "WF_HEADLESSCLIENT_ID";
-		if(_hc > 0) then {
-            [_side, _pos, missionNamespace getVariable format ["WF_NEURODEF_%1_BASE", _side]] remoteExecCall ["WFHC_FNC_CreateStartupBase", _hc]
-            }
-        };
-
 		//--- Radio: Initialize the announcers entities.
 		_radio_hq1 = (createGroup sideLogic) createUnit ["Logic",[0,0,0],[],0,"NONE"];
 		_radio_hq2 = (createGroup sideLogic) createUnit ["Logic",[0,0,0],[],0,"NONE"];

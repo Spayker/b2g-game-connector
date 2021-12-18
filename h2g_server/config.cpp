@@ -27,29 +27,12 @@ class CfgFunctions {
             class CleanTerrainRespawnPoint {};
         };
 
-        class ServerBaseRequest {
-            file = "waspServer\Base\Request";
-            class requestAutoWallConstructinChange {};
-            class requestDefense {};
-            class requestStructure {};
-            class requestStructureSell {};
-            class processBaseDefense {};
-        };
-
         class ServerCommander {
             file = "waspServer\Commander";
             class requestCommanderVote {};
             class requestNewCommander {};
             class voteForCommander {};
             class passVote {};
-        };
-
-        class ServerEconomy {
-            file = "waspServer\Economy";
-            class buyGroup {};
-            class changeAICommanderFunds {};
-            class getAICommanderFunds {};
-            class updateResources {};
         };
 
         class ServerPlayer {
@@ -95,25 +78,6 @@ class CfgFunctions {
             file = "waspServer\Unit\Arty";
             class fireRemoteArtillery {};
             class calculateArtyDamage {};
-        };
-
-        class ServerHeadlessClient {
-            file = "waspServer\HeadlessClient";
-            class addHeadlessClient {};
-        };
-
-        class ServerModuleAI {
-            file = "waspServer\Module\AI";
-            class aiComUpgrade {};
-            class delegateAIHeadless {};
-        };
-
-        class ServerModuleCruiseMissile {
-            file = "waspServer\Module\CruiseMissile";
-            class processCruiseMissileEvent {};
-            class processChemicalMissileEvent {};
-            class processTacticalNukeMissileEvent {};
-            class processMissileDamage {};
         };
 
         class ServerModuleRole {

@@ -55,13 +55,6 @@ if(missionNamespace getVariable[format["wf_cj_%1", _uid], true]) then {
 //--Update players global list--
 [1, _uid] spawn WFSE_FNC_updatePlayersList;
 
-//--- Headless Clients disconnection?.
-if (_uid == (missionNamespace getVariable["WF_HEADLESSCLIENT_UID", '0'])) then {
-	missionNamespace setVariable ["WF_HEADLESSCLIENT_ID", nil];
-	missionNamespace setVariable ["WF_HEADLESSCLIENT_UID", nil];
-	["INFORMATION", format ["fn_OnPlayerDisconnected.sqf: missionNamespace variable WF_HEADLESSCLIENT_ID [%1]", missionNamespace getVariable["WF_HEADLESSCLIENT_ID", 0]]] call WFCO_FNC_LogContent;
-};
-
 //--- Player had any objects created?
 _get = missionNamespace getVariable format ["WF_CLIENT_%1_OBJECTS", _uid];
 if !(isNil '_get') then {

@@ -209,7 +209,7 @@ while {!WF_GameOver} do {
                             missionNamespace setVariable [format["wf_ps_%1", _uid], nil]
                         }
                     }
-			} forEach (allPlayers - entities "HeadlessClient_F");
+			} forEach allPlayers;
 
 			[format["GAME IS OVER ID = %1",  missionNamespace getVariable["WF_GAME_ID", 0]], 1] call WFDC_FNC_LogContent;
             }
