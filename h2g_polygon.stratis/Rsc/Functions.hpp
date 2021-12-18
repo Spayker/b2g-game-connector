@@ -492,28 +492,6 @@ class WF_Common {
         class waypointsRemove {};
     };
 
-    class ObjectVehicle {
-        file = "Common\Object\Vehicle";
-        class initAdvancedSlingLoading {};
-        class getConfigVehicleCrewSlot {};
-        class getConfigVehicleTurrets {};
-        class getConfigVehicleTurretsReturn {};
-        class isVehicleAround {};
-        class balanceInit {};
-        class brokeTerObjsAround {};
-        class clearVehicleCargo {};
-        class createVehicle {};
-        class findTurretsRecursive {};
-        class handleIncomingMissile {};
-        class GetNearestVehicle {};
-        class placeSafe {};
-        class rearmVehicle {};
-        class requip_AIR_VEH {};
-        class initVehicle {};
-        class sellSupplyTruck {};
-        class unflipVehicle {};
-    };
-
     class UtilLocation {
         file = "Common\Utils\Location";
         class getClosestEntity {};
