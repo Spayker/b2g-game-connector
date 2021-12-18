@@ -37,15 +37,6 @@ createDialog "WF_RespawnMenu";
 
 titleCut["","BLACK IN",1];
 
-/* Re-add client UAV deploy handler */
-player addEventHandler ["WeaponAssembled", {
-	params ["_unit", "_staticWeapon"];
-	if((typeof _staticWeapon) in WF_AR2_UAVS) then {
-        _staticWeapon removeWeaponTurret ["Laserdesignator_mounted",[0]];
-        _staticWeapon removeMagazineTurret ["Laserbatteries",[0]]
-	}
-}];
-
 //--- Call the pre respawn routine.
 (player) Call WFCL_FNC_PreRespawnHandler;
 

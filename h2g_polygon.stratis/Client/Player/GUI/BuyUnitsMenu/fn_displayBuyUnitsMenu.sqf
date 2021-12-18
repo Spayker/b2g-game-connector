@@ -431,19 +431,10 @@ while {alive player && dialog} do {
                     _currentCost = ceil (_currentCost - (WF_C_MILITARY_BASE_DISCOUNT_PERCENT * _capturedMilitaryBases * _currentCost));
                 };
 
-                _side = switch (getNumber(configFile >> "CfgVehicles" >> _unit >> "side")) do {case 0: {east}; case 1: {west}; case 2: {resistance}; default {civilian}};
-                if(_side == civilian || _unit in WF_FLY_UAVS) then {
-                    {ctrlShow [_x,false]} forEach (_IDCSVehi);
-                    _driver = false;
-                    _gunner = false;
-                    _commander = false;
-                    _extracrew = false
-                };
-
                 _isInfantry = (_unit isKindOf 'Man');
 
                 //--- Update driver-gunner-commander icons.
-                if (!(_isInfantry) && !(_unit in WF_FLY_UAVS)) then {
+                if (!(_isInfantry)) then {
                     ctrlSetText [12036,"N/A"];
                     ctrlSetText [12037,str (getNumber (configFile >> 'CfgVehicles' >> _unit >> 'transportSoldier'))];
                     ctrlSetText [12038,str (getNumber (configFile >> 'CfgVehicles' >> _unit >> 'maxSpeed'))];
