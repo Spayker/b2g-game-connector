@@ -74,12 +74,6 @@ class CfgFunctions {
             class setLocalityOwner {};            
         };
 
-        class ServerUnitArty {
-            file = "waspServer\Unit\Arty";
-            class fireRemoteArtillery {};
-            class calculateArtyDamage {};
-        };
-
         class ServerModuleRole {
             file = "waspServer\Module\Role";
             class buyRole {};

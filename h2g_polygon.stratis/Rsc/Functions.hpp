@@ -468,7 +468,6 @@ class WF_Common {
 
     class ObjectUnitTeam {
         file = "Common\Object\Unit\Team";
-        class getTeamArtillery {};
         class getTeamMoveMode {};
         class getTeamMovePos {};
         class getTeamRespawn {};
@@ -513,14 +512,6 @@ class WF_Common {
         class initVehicle {};
         class sellSupplyTruck {};
         class unflipVehicle {};
-    };
-
-    class ObjectVehicleArty {
-        file = "Common\Object\Vehicle\Arty";
-        class fireArtillery {};
-        class isArtillery {};
-        class finishArtyMission {};
-        class prepareArtyMission {};
     };
 
     class UtilLocation {
