@@ -13,15 +13,15 @@ for '_i' from 0 to (count _list)-1 do {
 
     for '_j' from _i+1 to (count _list)-1 do {
         if (_isString) then {
-            if !([_list # _j, _list # _min] Call WFCO_fnc_compareString) then {_min = _j}
+            if !([_list # _j, _list # _min] Call H2GCO_fnc_compareString) then {_min = _j}
         } else {
             if ((_list # _j) < (_list # _min)) then {_min = _j};
         };
     };
 
     if (_min != _i) then {
-        _list = [_list, _i, _min] Call WFCO_fnc_swapArray;
-        _auxArray = [_auxArray, _i, _min] Call WFCO_fnc_swapArray;
+        _list = [_list, _i, _min] Call H2GCO_fnc_swapArray;
+        _auxArray = [_auxArray, _i, _min] Call H2GCO_fnc_swapArray;
     };
 };
 

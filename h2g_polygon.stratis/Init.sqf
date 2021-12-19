@@ -18,20 +18,20 @@ diag_log format ["## Mission Name: [%1]", WF_MISSIONNAME];
 diag_log format ["## Max players Defined: [%1]", WF_MAXPLAYERS];
 for '_i' from 0 to 3 do {diag_log "################################"};
 
-["INITIALIZATION", "initJIPCompatible.sqf: Starting JIP Initialization"] Call WFCO_FNC_LogContent;
+["INITIALIZATION", "initJIPCompatible.sqf: Starting JIP Initialization"] Call H2GCO_FNC_LogContent;
 WF_Client_SideJoined = civilian;
 
 //--- Server JIP Information
 if (isHostedServer || isDedicated) then { //--- JIP Handler, handle connection & disconnection.
-	onPlayerConnected {[_uid, _name, _id, _owner] spawn WFSE_FNC_OnPlayerConnected};
-	addMissionEventHandler ["HandleDisconnect",{_this spawn WFSE_FNC_OnPlayerDisconnected}];
+	onPlayerConnected {[_uid, _name, _id, _owner] spawn H2GSE_FNC_OnPlayerConnected};
+	addMissionEventHandler ["HandleDisconnect",{_this spawn H2GSE_FNC_OnPlayerDisconnected}];
 };
 
 //--- Client initialization, either hosted or pure client. Part I
 if (isHostedServer || !isDedicated) then {
-	["INITIALIZATION", "Init.sqf: Client detected... waiting for non null result..."] Call WFCO_FNC_LogContent;
+	["INITIALIZATION", "Init.sqf: Client detected... waiting for non null result..."] Call H2GCO_FNC_LogContent;
 	waitUntil {!isNull player};
-	["INITIALIZATION", "Init.sqf: Client is not null..."] Call WFCO_FNC_LogContent;
+	["INITIALIZATION", "Init.sqf: Client is not null..."] Call H2GCO_FNC_LogContent;
 };
 
 //--- Server & Client default View Distance.
@@ -47,12 +47,12 @@ if(isServer) then {
 
 //--- Server initialization.
 if (isHostedServer || isDedicated) then { //--- Run the server's part.
-	["INITIALIZATION", "initJIPCompatible.sqf: Executing the Server Initialization."] Call WFCO_FNC_LogContent;
-	[] spawn WFSE_fnc_initServer;
+	["INITIALIZATION", "initJIPCompatible.sqf: Executing the Server Initialization."] Call H2GCO_FNC_LogContent;
+	[] spawn H2GSE_fnc_initServer;
 };
 
 //--- Client initialization, either hosted or pure client. Part II
 if (isHostedServer || (!isDedicated)) then {
-	["INITIALIZATION", "Init.sqf: Executing the Client Initialization."] Call WFCO_FNC_LogContent;
-	[] spawn WFCL_fnc_initClient;
+	["INITIALIZATION", "Init.sqf: Executing the Client Initialization."] Call H2GCO_FNC_LogContent;
+	[] spawn H2GCL_fnc_initClient;
 };

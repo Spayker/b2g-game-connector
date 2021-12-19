@@ -1,22 +1,20 @@
 #include "version.sqf"
 
 //--- Header contains the mission tite.
-#include "Rsc\Header.hpp"
+// #include "Rsc\Header.hpp"
 
 //--- Styles
-#include "Rsc\Styles.hpp"
+// #include "Rsc\Styles.hpp"
 
 //--- Parameters contains the mission parameters.
 #include "Rsc\Parameters.hpp"
 
-// Notification HUD
-#include "Rsc\Notification\common.hpp"
-
 //--- Ressource contains the dialog ressources.
-#include "Rsc\Ressources.hpp"
+// #include "Rsc\Ressources.hpp"
 
 //--- Titles contains the titles (overlay).
-#include "Rsc\Titles.hpp"
+// #include "Rsc\Titles.hpp"
+
 //--Remote Exec rules--
 #include "Rsc\RemoteExec.hpp"
 

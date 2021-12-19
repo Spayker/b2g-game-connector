@@ -4,24 +4,24 @@ _target = _this;
 
 //--- Uniform, Vest and backpack
 _uniform = toLower(uniform _target);
-_uniform_items = (uniformItems _target) call WFCO_FNC_ArrayToLower;
+_uniform_items = (uniformItems _target) call H2GCO_FNC_ArrayToLower;
 _vest = toLower(vest _target);
-_vest_items = (vestItems _target) call WFCO_FNC_ArrayToLower;
+_vest_items = (vestItems _target) call H2GCO_FNC_ArrayToLower;
 _backpack = toLower(backpack _target);
-_backpack_items = (backpackItems _target) call WFCO_FNC_ArrayToLower;
+_backpack_items = (backpackItems _target) call H2GCO_FNC_ArrayToLower;
 
 //--- Weapons
 _primary = toLower(primaryWeapon _target);
-_primary_accessories = (primaryWeaponItems _target) call WFCO_FNC_ArrayToLower;
+_primary_accessories = (primaryWeaponItems _target) call H2GCO_FNC_ArrayToLower;
 _secondary = toLower(secondaryWeapon _target);
-_secondary_accessories = (secondaryWeaponItems _target) call WFCO_FNC_ArrayToLower;
+_secondary_accessories = (secondaryWeaponItems _target) call H2GCO_FNC_ArrayToLower;
 _handgun = toLower(handgunWeapon _target);
-_handgun_accessories = (handgunItems _target) call WFCO_FNC_ArrayToLower;
+_handgun_accessories = (handgunItems _target) call H2GCO_FNC_ArrayToLower;
 
 //--- Currently loaded magazines
-_primary_current_magazine = (primaryWeaponMagazine _target) call WFCO_FNC_ArrayToLower;
-_secondary_current_magazine = (secondaryWeaponMagazine _target) call WFCO_FNC_ArrayToLower;
-_handgun_current_magazine = (handgunMagazine _target) call WFCO_FNC_ArrayToLower;
+_primary_current_magazine = (primaryWeaponMagazine _target) call H2GCO_FNC_ArrayToLower;
+_secondary_current_magazine = (secondaryWeaponMagazine _target) call H2GCO_FNC_ArrayToLower;
+_handgun_current_magazine = (handgunMagazine _target) call H2GCO_FNC_ArrayToLower;
 
 //--- Accessories
 _headgear = toLower(headgear _target);
@@ -35,7 +35,7 @@ _binomag = "";
 } forEach weaponsitems _target;
 
 //--- Items
-_allitems = ((assignedItems _target) call WFCO_FNC_ArrayToLower) - [_headgear, _goggles];
+_allitems = ((assignedItems _target) call H2GCO_FNC_ArrayToLower) - [_headgear, _goggles];
 _items = [["", ["",""]], ["", "", "", "", ""]];
 
 {
@@ -62,7 +62,7 @@ _items = [["", ["",""]], ["", "", "", "", ""]];
 		}
 	};
 } forEach _allitems;
-_items = [[toLower ((_items select 0) select 0), ((_items select 0) select 1) call WFCO_FNC_ArrayToLower] , (_items select 1) call WFCO_FNC_ArrayToLower];
+_items = [[toLower ((_items select 0) select 0), ((_items select 0) select 1) call H2GCO_FNC_ArrayToLower] , (_items select 1) call H2GCO_FNC_ArrayToLower];
 
 //--- Return the preformated gear
 [

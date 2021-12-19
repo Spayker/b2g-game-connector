@@ -1,6 +1,6 @@
 Private ['_list'];
 
-["INITIALIZATION", Format ["fn_initClient.sqf: Client initialization begins at [%1]", time]] Call WFCO_FNC_LogContent;
+["INITIALIZATION", Format ["fn_initClient.sqf: Client initialization begins at [%1]", time]] Call H2GCO_FNC_LogContent;
 
 WF_Client_SideJoined = side player;
 WF_Client_SideJoinedText = str WF_Client_SideJoined;
@@ -44,7 +44,7 @@ _list = _list + (missionNamespace getVariable "wf_gear_list_misc");
 WF_C_GEAR_LIST = _list;
 
 //--- Global Client Variables.
-WF_Client_SideID = WF_Client_SideJoined Call WFCO_FNC_GetSideID;
+WF_Client_SideID = WF_Client_SideJoined Call H2GCO_FNC_GetSideID;
 WF_Client_Team = group player;
 
 //--Set default Shadows Distance if it wasn't loaded from the profile--
@@ -65,4 +65,4 @@ addMissionEventHandler ["Map", {
 	mapAnimCommit;
 }];
 
-["INITIALIZATION", Format ["fn_initClient.sqf: Client initialization ended at [%1]", time]] Call WFCO_FNC_LogContent;
+["INITIALIZATION", Format ["fn_initClient.sqf: Client initialization ended at [%1]", time]] Call H2GCO_FNC_LogContent;
