@@ -22,6 +22,12 @@ Sample mission must look as easy as it's possible. First version of its structur
 
 ![alt text](resources/schemes/H2G_mission_design.jpg)
 
+## Affected UI
+
+New UI screen (shown below) explains process of training data applying by a player. </br>
+
+![alt text](resources/ui/H2G_game_ui.jpg)
+
 
 ### Stack of technologies
 Following tech stack is used:
