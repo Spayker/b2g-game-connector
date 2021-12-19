@@ -10,7 +10,7 @@ _new = (_gear select 0) select 0;
 
 _item = _new select 0;
 
-_accessories = (_new select 1) call WFCO_FNC_ArrayToLower;
+_accessories = (_new select 1) call H2GCO_FNC_ArrayToLower;
 _magazines = _new select 2;
 
 if (primaryWeapon _unit != _item && primaryWeapon _unit != "") then {_unit removeWeapon (primaryWeapon _unit)};
@@ -23,7 +23,7 @@ if (_item != "") then {
         _unit addMagazine _x;
     }foreach _magazines;
     _unit addWeapon _item;
-	_accessories_current = (primaryWeaponItems _unit) call WFCO_FNC_ArrayToLower;
+	_accessories_current = (primaryWeaponItems _unit) call H2GCO_FNC_ArrayToLower;
 	{if (!(_x in _accessories) && (_x != "")) then {_unit removePrimaryWeaponItem _x}} forEach _accessories_current;
 	{if (!(_x in _accessories_current) && (_x != "")) then {_unit addPrimaryWeaponItem _x}} forEach (_accessories + _magazines);
 };
@@ -31,13 +31,13 @@ if (_item != "") then {
 //--- Secondary
 _new = (_gear select 0) select 1;
 _item = _new select 0;
-_accessories = (_new select 1) call WFCO_FNC_ArrayToLower;
+_accessories = (_new select 1) call H2GCO_FNC_ArrayToLower;
 _magazines = _new select 2;
 
 if (secondaryWeapon _unit != _item && secondaryWeapon _unit != "") then {_unit removeWeapon (secondaryWeapon _unit)};
 if (secondaryWeapon _unit != _item && _item != "") then {_unit addWeapon _item};
 if (_item != "") then {
-	_accessories_current = (secondaryWeaponItems _unit) call WFCO_FNC_ArrayToLower;
+	_accessories_current = (secondaryWeaponItems _unit) call H2GCO_FNC_ArrayToLower;
 	{if (!(_x in _accessories) && (_x != "")) then {_unit removeSecondaryWeaponItem _x}} forEach _accessories_current;
 	{if (!(_x in _accessories_current) && (_x != "")) then {_unit addSecondaryWeaponItem _x}} forEach (_accessories + _magazines);
 };
@@ -45,13 +45,13 @@ if (_item != "") then {
 //--- Handgun
 _new = (_gear select 0) select 2;
 _item = _new select 0;
-_accessories = (_new select 1) call WFCO_FNC_ArrayToLower;
+_accessories = (_new select 1) call H2GCO_FNC_ArrayToLower;
 _magazines = _new select 2;
 
 if (handgunWeapon _unit != _item && handgunWeapon _unit != "") then {_unit removeWeapon (handgunWeapon _unit)};
 if (handgunWeapon _unit != _item && _item != "") then {_unit addWeapon _item};
 if (_item != "") then {
-	_accessories_current = (handgunItems _unit) call WFCO_FNC_ArrayToLower;
+	_accessories_current = (handgunItems _unit) call H2GCO_FNC_ArrayToLower;
 	{if (!(_x in _accessories) && (_x != "")) then {_unit removeHandgunItem _x}} forEach _accessories_current;
 	{if (!(_x in _accessories_current) && (_x != "")) then {_unit addHandgunItem _x}} forEach (_accessories + _magazines);
 };
@@ -68,14 +68,14 @@ if (_item != "") then {
 _new = _gear select 1;
 
 //--- Check if the containers are ok
-if (!((((_gear select 1) select 2) select 0) isEqualTo backpack _unit) || [((_gear select 1) select 2) select 1, backpackItems _unit] call WFCO_FNC_ArrayDiffers) then {
-	[_unit, ((_gear select 1) select 2) select 0, ((_gear select 1) select 2) select 1] call WFCO_FNC_EquipContainerBackpack;
+if (!((((_gear select 1) select 2) select 0) isEqualTo backpack _unit) || [((_gear select 1) select 2) select 1, backpackItems _unit] call H2GCO_FNC_ArrayDiffers) then {
+	[_unit, ((_gear select 1) select 2) select 0, ((_gear select 1) select 2) select 1] call H2GCO_FNC_EquipContainerBackpack;
 };
-if (!((((_gear select 1) select 1) select 0) isEqualTo vest _unit) || [((_gear select 1) select 1) select 1, vestItems _unit] call WFCO_FNC_ArrayDiffers) then {
-	[_unit, ((_gear select 1) select 1) select 0, ((_gear select 1) select 1) select 1] call WFCO_FNC_EquipContainerVest;
+if (!((((_gear select 1) select 1) select 0) isEqualTo vest _unit) || [((_gear select 1) select 1) select 1, vestItems _unit] call H2GCO_FNC_ArrayDiffers) then {
+	[_unit, ((_gear select 1) select 1) select 0, ((_gear select 1) select 1) select 1] call H2GCO_FNC_EquipContainerVest;
 };
-if (!((((_gear select 1) select 0) select 0) isEqualTo uniform _unit) || [((_gear select 1) select 0) select 1, uniformItems _unit] call WFCO_FNC_ArrayDiffers) then {
-	[_unit, ((_gear select 1) select 0) select 0, ((_gear select 1) select 0) select 1] call WFCO_FNC_EquipContainerUniform;
+if (!((((_gear select 1) select 0) select 0) isEqualTo uniform _unit) || [((_gear select 1) select 0) select 1, uniformItems _unit] call H2GCO_FNC_ArrayDiffers) then {
+	[_unit, ((_gear select 1) select 0) select 0, ((_gear select 1) select 0) select 1] call H2GCO_FNC_EquipContainerUniform;
 };
 
 

@@ -29,7 +29,7 @@ switch _mode do {
 		*/
 		params ["_unit"];
 		/* EXAMPLE */
-		Call WFCL_FNC_GetPlayerFunds
+		Call H2GCL_FNC_GetPlayerFunds
 	};
 	case "setMoney":{
 		/*
@@ -45,6 +45,6 @@ switch _mode do {
 		*/
 		params ["_unit", "_change"];
 		/* EXAMPLE */
-		(_change) call WFCL_FNC_ChangePlayerFunds;
+		(_change) call H2GCL_FNC_ChangePlayerFunds;
 	};
 };

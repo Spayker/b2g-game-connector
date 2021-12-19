@@ -14,13 +14,10 @@ class CfgRemoteExec {
 		F(hint,CLIENT)
 		F(hintSilent,CLIENT)
 
-        /* Called on the Server */
-		F(WFDC_FNC_LogContent,SERVER)
-
         /* Functions for everyone */
-		F(WFCL_FNC_LocalizeMessage,ANYONE)
-		F(WFCL_FNC_SetTask,ANYONE)		
-		F(WFCL_FNC_CampCaptured,ANYONE)
+		F(H2GCL_FNC_LocalizeMessage,ANYONE)
+		F(H2GCL_FNC_SetTask,ANYONE)
+		F(H2GCL_FNC_CampCaptured,ANYONE)
 		F(BIS_fnc_taskCreate,ANYONE)
 		F(BIS_fnc_setTask,ANYONE)
 		F(BIS_fnc_taskSetDescription,ANYONE)

@@ -1,5 +1,5 @@
-class WF_Client {
-    tag = "WFCL";
+class H2G_Client {
+    tag = "H2GCL";
 
     class ClientFunctions {
         file = "Client";
@@ -37,8 +37,8 @@ class TER
 	};
 };
 
-class WF_Common {
-    tag = "WFCO";
+class H2G_Common {
+    tag = "H2GCO";
 
     class Common {
         file = "Common";
